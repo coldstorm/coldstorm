@@ -1,6 +1,6 @@
-Coldstorm.controller("LoginCtrl", ["$scope", "$location", "UserService", "Channel", function($scope, $location, User, Channel)
+Coldstorm.controller("LoginCtrl", ["$scope", "$location", "User", "Channel", function($scope, $location, User, Channel)
 {
-    $scope.user = User;
+    $scope.user = User.get("~");
     
     $scope.login = function()
     {

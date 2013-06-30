@@ -11,6 +11,8 @@ Coldstorm.provider("Channel", function()
                 topic: "",
                 users: []
             };
+            
+            return registry[name];
         };
         
         this.get = function(name)
