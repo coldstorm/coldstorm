@@ -1,4 +1,4 @@
-Coldstorm.service("UserService", function()
+Coldstorm.factory("UserService", function()
 {
     var user = {
         username: "",
