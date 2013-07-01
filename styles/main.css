@@ -1,30 +1,30 @@
 *, *:before, *:after
 {   
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body
 {
-	background-color: #1a1c1f;
-	font-family: verdana, sans-serif;
-	font-size: 10px;
+    background-color: #1a1c1f;
+    font-family: verdana, sans-serif;
+    font-size: 10px;
 }
 
 .login
 {
-	background-color: #202226;
-	border: 1px solid #24272e;
-	border-radius: 3px;
-	margin-left: 40%;
-	margin-top: 10%;
-	width: 20%;
+    background-color: #202226;
+    border: 1px solid #24272e;
+    border-radius: 3px;
+    margin-left: 40%;
+    margin-top: 10%;
+    width: 20%;
 }
 
 .login h1
 {
-	color: #babbbf;
-	margin-bottom: 0;
-	text-align: center;
+    color: #babbbf;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 .login label
@@ -64,120 +64,113 @@ body
 
 .login button
 {
-	background-color: #24272e;
-	border: 1px solid #2a2e36;
-	border-radius: 3px;
-	color: #babbbf;
-	font-size: 1.5em;
-	margin-bottom: 1em;
-	margin-left: 30%;
-	margin-top: 2em;
-	padding: 3px;
-	text-align: center;
-	width: 40%;
+    background-color: #24272e;
+    border: 1px solid #2a2e36;
+    border-radius: 3px;
+    color: #babbbf;
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    margin-left: 30%;
+    margin-top: 2em;
+    padding: 3px;
+    text-align: center;
+    width: 40%;
 }
 
-#chat {
-	position: absolute;
-	top: -2000px;
-	left: 50%;
-	margin-left:-45%;
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	width: 90%;
-	height: 90%;
-	border-width: 1px;
-	border-radius: 3px;
-	/*margin-top: -23%;*/
-} 
+.chat
+{
+    background-color: #202226;
+    border: 1px solid #24272e;
+    border-radius: 3px;
+    height: 90%;
+    margin-left: 5%;
+    margin-top: 50px;
+    width: 90%;
+}
 
 div.inner {
-	border-style:solid;
-	border-color:#2a2e36;
-	background-color: #24272e;
-	border-width: 1px;
-	border-radius: 3px;
+    border-style:solid;
+    border-color:#2a2e36;
+    background-color: #24272e;
+    border-width: 1px;
+    border-radius: 3px;
 } 
 
 #group{
-	position: absolute;
-	top: 0px;
-	left: 0px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 #textbox {
-	position: absolute;
-	left: 3px;
-	top: 43px;
-	/*width: 600px;*/
-	right: 195px;
-	/*height: 527px;*/
-	bottom: 28px;
-	overflow:auto;
-	word-wrap:break-word;
-	overflow-y: scroll;
-	border-top-left-radius:0px;
+    position: absolute;
+    left: 3px;
+    top: 43px;
+    /*width: 600px;*/
+    right: 195px;
+    /*height: 527px;*/
+    bottom: 28px;
+    overflow:auto;
+    word-wrap:break-word;
+    overflow-y: scroll;
+    border-top-left-radius:0px;
 }
 #userbox {
-	position: absolute;
-	right: 3px;
-	top: 43px;
-	width: 187px;
-	/*height: 552px;*/
-	bottom: 3px;
-	overflow:auto;
-	word-wrap:none;
+    position: absolute;
+    right: 3px;
+    top: 43px;
+    width: 187px;
+    /*height: 552px;*/
+    bottom: 3px;
+    overflow:auto;
+    word-wrap:none;
 }
 
 #editbox {
-	position: absolute;
-	left: 3px;
-	bottom: 3px;
-	height: 20px;
-	/*width: 600px;*/
-	right: 195px;
+    position: absolute;
+    left: 3px;
+    bottom: 3px;
+    height: 20px;
+    /*width: 600px;*/
+    right: 195px;
 }
 
 textarea {
-	border-style:solid;
-	border-color:#2a2e36;
-	background-color: #24272e;
-	border-width: 1px;
-	border-radius: 3px;	
+    border-style:solid;
+    border-color:#2a2e36;
+    background-color: #24272e;
+    border-width: 1px;
+    border-radius: 3px;	
 }
 
 input
 {
-	background-color: #24272e;	
-	border: 1px #2a2e36 solid;
-	border-radius: 3px;
-	color: #babbbf;
-	font-size: 10px;
-	padding: 3px;
-	width: 100%;
+    background-color: #24272e;	
+    border: 1px #2a2e36 solid;
+    border-radius: 3px;
+    color: #babbbf;
+    font-size: 10px;
+    padding: 3px;
+    width: 100%;
 }
 
 .tabs
 {
-	height:20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .tab
 {
-    display: inline-block;
-    border-top: 1px #2a2e36;
-    border-right: 1px #2a2e36;
-    border-left: 1px #2a2e36;
-    border-bottom: 0px;
-    border-style: solid;
-    border-color: #2a2e36;
-
     background-color: #24272e;
+    border: 1px solid #2a2e36;
+    border-bottom: 0px;
+    color: #8c9096;
+    display: inline-block;
+    margin-right: 2px;
     padding-left: 4px;
     padding-right: 4px;
-    margin-right: 2px;
-    color: #8c9096;
 }
 
 .tab
@@ -209,58 +202,58 @@ input
 }
 
 #motd{
-	position: absolute;
-	/*width: 600px;*/
-	right: 10px;
-	height: 15px;
-	top: 3px;
-	left: 4px;
-	color: #8c9096;
-	text-align: right;
-		word-wrap:break-word;
-	overflow: auto;
+    position: absolute;
+    /*width: 600px;*/
+    right: 10px;
+    height: 15px;
+    top: 3px;
+    left: 4px;
+    color: #8c9096;
+    text-align: right;
+	    word-wrap:break-word;
+    overflow: auto;
 }
 #timestamp{
-	color: #373f4e;
+    color: #373f4e;
 }
 #text {
-	color: #babbbf;
+    color: #babbbf;
 }
 pre{
-	color: #babbbf;
+    color: #babbbf;
 }
 #highlight{
-	color: #ff921e;
-	font-weight: bold;
+    color: #ff921e;
+    font-weight: bold;
 }
 #textcontrol{
-	color: #808080;
+    color: #808080;
 }
 a{
-	color: inherit;
-	text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 a.color{
-	color:#4a7691;
+    color:#4a7691;
 }
 #spacer{
-	width: 4px;
-	margin:3px;
+    width: 4px;
+    margin:3px;
 }
 p{
-	margin:2px;
-	
+    margin:2px;
+
 }
 
 span.link {
-	width:100%;
-	height:100%;
-	top:0;
-	left: 0;
+    width:100%;
+    height:100%;
+    top:0;
+    left: 0;
 
-	z-index: 1;
+    z-index: 1;
 
-	/*background-image: url('/images/empty.gif');*/
+    /*background-image: url('/images/empty.gif');*/
 }
 
 #c0 {	color:#A0A0A0; }
@@ -298,120 +291,120 @@ span.link {
 #greentext { color: #789922; }
 
 #popup{
-	position: absolute;
-	left: 50%;
-	width: 350px;
-	margin-left: -175px;
-	height: 200px;
-	top: -2000px;
-	margin-top: -100px;
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
-	
+    position: absolute;
+    left: 50%;
+    width: 350px;
+    margin-left: -175px;
+    height: 200px;
+    top: -2000px;
+    margin-top: -100px;
+    border-style:solid;
+    border-color:#24272e;
+    background-color: #202226;
+    border-width: 1px;
+    border-radius: 3px;
+
 }
 #dismissbutton{
-	position: absolute;
-	left: 0;
-	top: 170px;
-	width: 100%;
+    position: absolute;
+    left: 0;
+    top: 170px;
+    width: 100%;
 }
 
 p{
-	vertical-align:text-center;
+    vertical-align:text-center;
 }
 p.flag{
-	margin-top:3px;
-	margin-bottom:3px;
-	
+    margin-top:3px;
+    margin-bottom:3px;
+
 }
 
 
 img.flag{
-	vertical-align:middle;
+    vertical-align:middle;
 }
 
 #spoiler{
-	background-color: #000000;
-	color: #000000;
+    background-color: #000000;
+    color: #000000;
 }
 #spoiler:hover{
-	color: inherit;
+    color: inherit;
 }
 
 #youtube{
-	position: absolute;
-	width: 800px;
-	height: 600px;
-	left: 50%;
-	top: -2000px;;
-	margin-top: -300px;
-	margin-left: -400px;
-		
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    left: 50%;
+    top: -2000px;;
+    margin-top: -300px;
+    margin-left: -400px;
+	
+    border-style:solid;
+    border-color:#24272e;
+    background-color: #202226;
+    border-width: 1px;
+    border-radius: 3px;
 }
 
 div.closebutton{
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	right: 12px;
-	top: 12px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 12px;
+    top: 12px;
 
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
-	font-size: 18px;
-	color: #babbbf;
-	vertical-align:middle;
-	vertical-align:text-center;
-	text-align: center;
-	z-index:20;
-	
+    border-style:solid;
+    border-color:#24272e;
+    background-color: #202226;
+    border-width: 1px;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #babbbf;
+    vertical-align:middle;
+    vertical-align:text-center;
+    text-align: center;
+    z-index:20;
+
 }
 div.widebutton{
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	right: 12px;
-	top: 12px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 12px;
+    top: 12px;
 
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
-	font-size: 18px;
-	color: #babbbf;
-	vertical-align:middle;
-	vertical-align:text-center;
-	text-align: center;
-	
+    border-style:solid;
+    border-color:#24272e;
+    background-color: #202226;
+    border-width: 1px;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #babbbf;
+    vertical-align:middle;
+    vertical-align:text-center;
+    text-align: center;
+
 }
 div.hidebutton{
-	position: absolute;
-	width: 24px;
-	height: 24px;
-	right: 12px;
-	top: 12px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    right: 12px;
+    top: 12px;
 
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
-	font-size: 18px;
-	color: #babbbf;
-	vertical-align:middle;
-	vertical-align:text-center;
-	text-align: center;
-	
+    border-style:solid;
+    border-color:#24272e;
+    background-color: #202226;
+    border-width: 1px;
+    border-radius: 3px;
+    font-size: 18px;
+    color: #babbbf;
+    vertical-align:middle;
+    vertical-align:text-center;
+    text-align: center;
+
 }

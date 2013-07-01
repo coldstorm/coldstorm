@@ -1,1 +1,11 @@
-<tabs></tabs>
+<div class="chat">
+    <header>
+        <tabs></tabs>
+        <motd source="channel.topic"></motd>
+    </header>
+    <main>
+        <chat source="channel.chat"></chat>
+        <userlist source="channel.users"></userlist>
+        <input type="text" class="chat-input" ng-model="input.text" />
+    </main>
+</div>
