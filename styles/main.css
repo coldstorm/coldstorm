@@ -147,11 +147,17 @@ header
     height: 21px;
 }
 
-.users
+.userlist
 {
     float: right;
+    width: 10%;
+}
+
+.users
+{
     list-style: none;
-    width: 20%;
+    margin: 0;
+    padding: 0;
 }
 
 div.inner {

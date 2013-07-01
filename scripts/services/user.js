@@ -12,7 +12,9 @@ Coldstorm.provider("User", function()
         {
             registry[name] = {
                 color: "#FFFFFF",
-                nickName: name
+                country: "United States",
+                flag: "us",
+                nickName: name,
             };
             
             if (name == "~")
