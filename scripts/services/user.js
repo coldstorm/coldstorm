@@ -15,6 +15,11 @@ Coldstorm.provider("User", function()
                 nickName: name
             };
             
+            if (name == "~")
+            {
+                registry[name].nickName = "";
+            }
+            
             return registry[name];
         };
         

@@ -7,13 +7,13 @@
 	    Username
     </label>
 	
-	<input id="username" type="text" ng-model="user.nickName" />
+	<input id="username" type="text" ng-model="user.nickName" required />
 	
 	<label for="password">
 	    Password
     </label>
 	
-	<input id="password" type="password" ng-model="user.password" />
+	<input id="password" type="password" ng-model="user.password" required />
 	
 	<label for="color">
 	    Color
@@ -21,7 +21,7 @@
 	
 	<script type="text/javascript" src="jscolor/jscolor.js"></script>
 	
-	<input id="color" type="color" ng-model="user.color" />
+	<input id="color" type="color" ng-model="user.color" required />
 	
 	<button ng-click="login()">Login</button>
 </div>
