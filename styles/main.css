@@ -10,24 +10,6 @@ body
 	font-size: 10px;
 }
 
-h1
-{
-	color: #babbbf;
-	margin-bottom: 0;
-	text-align: center;
-}
-
-label
-{
-    display: block;
-    color: #babbbf;
-    font-size: 1.5em;
-    font-weight: bold;
-    padding-bottom: 0.4em;
-    padding-top: 1.5em;
-    text-align: center;
-}
-
 .login
 {
 	background-color: #202226;
@@ -38,6 +20,24 @@ label
 	width: 20%;
 }
 
+.login h1
+{
+	color: #babbbf;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+.login label
+{
+    display: block;
+    color: #babbbf;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 0.4em;
+    padding-top: 1.5em;
+    text-align: center;
+}
+
 .login input
 {
     display: block;
@@ -45,7 +45,7 @@ label
     width: 70%;
 }
 
-.btn-login
+.login button
 {
 	background-color: #24272e;
 	border: 1px solid #2a2e36;
