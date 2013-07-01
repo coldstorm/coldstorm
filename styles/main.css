@@ -1,7 +1,63 @@
-body {
+*, *:before, *:after
+{   
+	box-sizing: border-box;
+}
+
+body
+{
 	background-color: #1a1c1f;
-	font-family: verdana,sans-serif;
+	font-family: verdana, sans-serif;
 	font-size: 10px;
+}
+
+h1
+{
+	color: #babbbf;
+	margin-bottom: 0;
+	text-align: center;
+}
+
+label
+{
+    display: block;
+    color: #babbbf;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding-bottom: 0.4em;
+    padding-top: 1.5em;
+    text-align: center;
+}
+
+.login
+{
+	background-color: #202226;
+	border: 1px solid #24272e;
+	border-radius: 3px;
+	margin-left: 40%;
+	margin-top: 10%;
+	width: 20%;
+}
+
+.login input
+{
+    display: block;
+    margin-left: 15%;
+    width: 70%;
+}
+
+.btn-login
+{
+	background-color: #24272e;
+	border: 1px solid #2a2e36;
+	border-radius: 3px;
+	color: #babbbf;
+	font-size: 1.5em;
+	margin-bottom: 1em;
+	margin-left: 30%;
+	margin-top: 2em;
+	padding: 3px;
+	text-align: center;
+	width: 40%;
 }
 
 #chat {
@@ -66,87 +122,23 @@ div.inner {
 	right: 195px;
 }
 
-#loginfield {
-	position: absolute;
-	left: 50%;
-	margin-left:-105px;
-	top: 80px;
-	height: 20px;
-	width: 210px;
-}
-#loginpassfield {
-	position: absolute;
-	left: 50%;
-	margin-left:-105px;
-	top: 150px;
-	height: 20px;
-	width: 210px;
-}
-#logincolorfield {
-	position: absolute;
-	left: 50%;
-	margin-left:-105px;
-	top: 220px;
-	height: 20px;
-	width: 210px;
-}
-
-
-
 textarea {
 	border-style:solid;
 	border-color:#2a2e36;
 	background-color: #24272e;
 	border-width: 1px;
-	border-radius: 3px;
-	
+	border-radius: 3px;	
 }
-input {
-	border-style:none;
-	border-color:#2a2e36;
-	
-	border-width: 0px;
+
+input
+{
+	background-color: #24272e;	
+	border: 1px #2a2e36 solid;
 	border-radius: 3px;
-	margin: 0px;
-	
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	right:0px;
-	bottom: 0px;
-	
-	/*top: 50%;*/
-	/*margin-top: -10px;*/
 	color: #babbbf;
-	font-family: verdana,sans-serif;
 	font-size: 10px;
-	padding-left:2px;
-	padding-right:2px;
+	padding: 3px;
 	width: 100%;
-	height: 100%;
-	background-color: #24272e;
-	    background-color: rgba(0, 0, 0, 0);
-    /* For IE 5.5 - 7*/
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000000, endColorstr=#00000000);
-    /* For IE 8*/
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000000, endColorstr=#00000000)";
-	
-	
-}
-input.big{
-	/*width: 100%;
-	height: 100%;*/
-}
-input.small{
-	/*width: 200px;
-	position: absolute;
-	left: 50%;
-	margin-left:-100px;
-	top: 50%;
-	margin-top:-10px;*/
-	/*	width: 100%;
-	height: 100%;*/
-	
 }
 
 .tabs
@@ -254,78 +246,6 @@ span.link {
 	/*background-image: url('/images/empty.gif');*/
 }
 
-#login{
-	position: absolute;
-	left: 50%;
-	width: 300px;
-	margin-left: -150px;
-	height: 300px;
-	top: 50%;
-	margin-top: -150px;
-	border-style:solid;
-	border-color:#24272e;
-	background-color: #202226;
-	border-width: 1px;
-	border-radius: 3px;
-	
-}
-
-h1{
-	/*position: absolute;*/
-	text-align: center;
-	color:#babbbf; 
-	left: 50%;
-	font-family: verdana,sans-serif;
-}
-h2{
-
-	text-align: center;
-	color:#babbbf; 
-	left: 50%;
-	font-family: verdana,sans-serif;
-	/*top: 290px;*/
-}
-#username{
-	position: absolute;
-	left: 0;
-	top: 45px;
-	width: 100%;
-}
-#pass{
-	position: absolute;
-	left: 0;
-	top: 115px;
-	width: 100%;
-}
-#color{
-	position: absolute;
-	left: 0;
-	top: 185px;
-	width: 100%;
-}
-
-#loginbutton{
-	position: absolute;
-	left: 0;
-	top: 270px;
-	width: 100%;
-}
-button{
-	position: absolute;
-	text-align: center;
-	left: 50%;
-	width: 120px;
-	margin-left: -60px;
-	
-	border-style:solid;
-	border-color:#2a2e36;
-	background-color: #24272e;
-	border-width: 1px;
-	border-radius: 3px;
-	
-	color: #babbbf;
-}
-
 #c0 {	color:#A0A0A0; }
 #c1 {	color:#000000; }
 #c2 {	color:#3535B3; }
@@ -380,10 +300,6 @@ button{
 	left: 0;
 	top: 170px;
 	width: 100%;
-}
-
-input.color{
-	position:absolute;width:100%;height:100%;left:0px;top:50%;
 }
 
 p{

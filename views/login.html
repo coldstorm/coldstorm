@@ -1,27 +1,27 @@
-<div id="login">
-    <div id="title" >
+<div id="login" class="login">
+    <div class="title">
 		<h1>Coldstorm</h1>
 	</div>
 	
-	<div id="username" >
-		<h2>Username</h2>
-	</div>
+	<label for="username">
+	    Username
+    </label>
 	
-	<div id="loginfield" class="inner"><input class="small" type="text" size="26" ng-model="user.nickName" /></div>
+	<input id="username" type="text" ng-model="user.nickName" />
 	
-	<div id="pass">
-		<h2>Password</h2>
-	</div>
+	<label for="password">
+	    Password
+    </label>
 	
-	<div id="loginpassfield" class="inner"><input class="small" type="password" size="26" ng-model="user.password" /></div>
+	<input id="password" type="password" ng-model="user.password" />
 	
-	<div id="color">
-		<h2>Color</h2>
-	</div>
+	<label for="color">
+	    Color
+    </label>
 	
 	<script type="text/javascript" src="jscolor/jscolor.js"></script>
 	
-	<div id="logincolorfield" class="inner"><input id="lagcolor" class="color" style="	left: 0px;	top: 0px;	right:0px;	bottom: 0px;"  /></div>
+	<input id="color" type="color" ng-model="user.color" />
 	
-	<div id="loginbutton"><button ng-click="login()">Login</button></div>
+	<button ng-click="login()" class="btn-login">Login</button>
 </div>
