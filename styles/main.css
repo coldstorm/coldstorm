@@ -149,49 +149,54 @@ input.small{
 	
 }
 
-#tabline{
-	position: absolute;
-	left: 3px;
-	top: 25px;
+.tabs
+{
 	height:20px;
-	/*width: 600px;*/
-	right: 200px;
 }
-#tab{
-	display: inline-block;
-	  border-top:    1px #2a2e36;
-	  border-right:  1px #2a2e36;
-	  border-left: 1px #2a2e36;
-	  border-bottom: 0px;
-	  	border-style:solid;
-	border-color:#2a2e36;
-	  
-	  background-color: #24272e;
-	  height: 18px;
-	  padding-left: 4px;
-	  padding-right: 4px;
-        margin-right: 2px;
-	  color: #8c9096;
 
+.tab
+{
+    display: inline-block;
+    border-top: 1px #2a2e36;
+    border-right: 1px #2a2e36;
+    border-left: 1px #2a2e36;
+    border-bottom: 0px;
+    border-style: solid;
+    border-color: #2a2e36;
 
-}
-#tab.active{
+    background-color: #24272e;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: 2px;
     color: #8c9096;
 }
-#tab.inactive{
-	background-color: #202226;
-	border-color: #24272e;
-	height:17px;
-	color: #626569;
+
+.tab
+{
+    background-color: #202226;
+    border-color: #24272e;
+    color: #626569;
+    height: 17px;
+    margin-top: 1px;
 }
-#tab.highlight{
-	color: #ff921e;
+
+.tab.active
+{
+    color: #8c9096;
+    height: 18px;
+    margin-top: 0;
 }
-#tab.inactivehighlight{
-	background-color: #202226;
-	border-color: #24272e;
-	height:17px;
-	color: #ff921e;
+
+.tab.highlight
+{
+    background-color: #202226;
+    border-color: #24272e;
+    color: #ff921e;
+}
+
+.tab.active.highlight
+{
+    color: #ff921e;
 }
 
 #motd{

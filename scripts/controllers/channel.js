@@ -1,6 +1,12 @@
-Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "User", "Channel", function($scope, $routeParams, User, Channel)
+Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "$location", "User", "Channel", function($scope, $routeParams, $location, User, Channel)
 {
-    $scope.channel = Channel.get($routeParams.channelName);
+    var channelName = $routeParams.channelName
+    if (!channelName)
+    {
+        channelName = "#" + $location.hash();
+    }
+    
+    $scope.channel = Channel.get(channelName);
     $scope.user = User.get("~");
     
     $scope.channels = Channel.all();

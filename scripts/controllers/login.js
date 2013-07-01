@@ -5,6 +5,7 @@ Coldstorm.controller("LoginCtrl", ["$scope", "$location", "User", "Channel", fun
     $scope.login = function()
     {
         Channel.register("#coldstorm");
+        Channel.register("#2");
         
         $location.path("/channels/#coldstorm");
     };

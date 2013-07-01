@@ -6,6 +6,8 @@ Coldstorm.provider("Channel", function()
     {
         this.register = function(name)
         {
+            name = name.replace("%23", "#");
+            
             registry[name] = {
                 name: name,
                 topic: "",
@@ -23,7 +25,7 @@ Coldstorm.provider("Channel", function()
             {
                 channels.push(registry[channel]);
             }
-            console.log(channels);
+            
             return channels;
         };
         

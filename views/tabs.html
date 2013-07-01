@@ -1,8 +1,8 @@
 <ul class="tabs">
-    <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active: channelTab.name==channel.name }">
+    <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel) }">
         <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
     </li>
-    <li ng-repeat="user in conversations" class="tab">
-        {{ user.nickName }}
+    <li ng-repeat="userTab in conversations" class="tab">
+        {{ userTab.nickName }}
     </li>
 </ul>
