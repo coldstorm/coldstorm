@@ -147,6 +147,13 @@ header
     height: 21px;
 }
 
+.users
+{
+    float: right;
+    list-style: none;
+    width: 20%;
+}
+
 div.inner {
     border-style:solid;
     border-color:#2a2e36;

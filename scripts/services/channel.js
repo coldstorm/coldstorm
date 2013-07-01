@@ -29,6 +29,14 @@ Coldstorm.provider("Channel", function()
                     line.message = message;
                     
                     this.lines.push(line);
+                    
+                    return this;
+                },
+                addUser: function(user)
+                {
+                    this.users.push(user);
+                    
+                    return this;
                 },
                 name: name,
                 lines: [],

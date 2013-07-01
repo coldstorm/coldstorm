@@ -4,8 +4,10 @@ Coldstorm.controller("LoginCtrl", ["$scope", "$location", "User", "Channel", fun
     
     $scope.login = function()
     {
-        Channel.register("#coldstorm").addLine("Testing line colors", $scope.user);
-        Channel.register("#2");
+        var cs = Channel.register("#coldstorm")
+            .addLine("Testing line colors", $scope.user)
+            .addUser($scope.user);
+        var two = Channel.register("#2");
         
         $location.path("/channels/#coldstorm");
     };
