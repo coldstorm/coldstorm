@@ -1,4 +1,4 @@
-var Coldstorm = angular.module("coldstorm", []);
+var Coldstorm = angular.module("coldstorm", ["ui.bootstrap"]);
 
 Coldstorm.config(["$routeProvider", function ($routeProvider)
 {
