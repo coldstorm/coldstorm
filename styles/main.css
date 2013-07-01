@@ -85,6 +85,7 @@ body
     height: 90%;
     margin-left: 5%;
     margin-top: 50px;
+    padding: 3px;
     width: 90%;
 }
 
@@ -184,6 +185,7 @@ input
 
 .tab.active
 {
+    background-color: #24272e;
     color: #8c9096;
     height: 18px;
     margin-top: 0;
@@ -201,17 +203,14 @@ input
     color: #ff921e;
 }
 
-#motd{
-    position: absolute;
-    /*width: 600px;*/
-    right: 10px;
-    height: 15px;
-    top: 3px;
-    left: 4px;
+.motd
+{
     color: #8c9096;
-    text-align: right;
-	    word-wrap:break-word;
+    height: 15px;
+    margin-right: 3px;
     overflow: auto;
+    text-align: right;
+    word-wrap: break-word;
 }
 #timestamp{
     color: #373f4e;

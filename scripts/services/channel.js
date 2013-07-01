@@ -10,7 +10,7 @@ Coldstorm.provider("Channel", function()
             
             registry[name] = {
                 name: name,
-                topic: "",
+                topic: "Temporary topic",
                 users: []
             };
             
