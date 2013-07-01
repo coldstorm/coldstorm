@@ -9,10 +9,30 @@ Coldstorm.provider("Channel", function()
             name = name.replace("%23", "#");
             
             registry[name] = {
+                addLine: function(message, author)
+                {
+                    line = {
+                        author: null,
+                        message: "",
+                        time: new Date()
+                    };
+                    
+                    if (author)
+                    {
+                        line.author = author;
+                    }
+                    
+                    line.message = message;
+                    
+                    this.lines.push(line);
+                },
                 name: name,
+                lines: [],
                 topic: "Temporary topic",
                 users: []
             };
+            
+            registry[name].addLine("You joined the room.");
             
             return registry[name];
         };

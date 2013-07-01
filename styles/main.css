@@ -89,6 +89,18 @@ body
     width: 90%;
 }
 
+.lines
+{
+    background-color: #24272e;
+    border: 1px solid #2a2e36;
+    border-radius: 3px;
+    border-top-left-radius: 0;
+    height: 80%;
+    overflow: auto;
+    overflow-y: scroll;
+    word-wrap: break-word;
+}
+
 div.inner {
     border-style:solid;
     border-color:#2a2e36;
@@ -103,19 +115,6 @@ div.inner {
     left: 0px;
 }
 
-#textbox {
-    position: absolute;
-    left: 3px;
-    top: 43px;
-    /*width: 600px;*/
-    right: 195px;
-    /*height: 527px;*/
-    bottom: 28px;
-    overflow:auto;
-    word-wrap:break-word;
-    overflow-y: scroll;
-    border-top-left-radius:0px;
-}
 #userbox {
     position: absolute;
     right: 3px;
