@@ -14,12 +14,16 @@ Coldstorm.provider("Channel", function()
                     line = {
                         author: null,
                         message: "",
+                        systemMessage: false,
                         time: new Date()
                     };
                     
                     if (author)
                     {
                         line.author = author;
+                    } else
+                    {
+                        line.systemMessage = true;
                     }
                     
                     line.message = message;

@@ -1,7 +1,7 @@
 <div class="lines">
     <div class="line" ng-repeat="line in lines">
         <span class="time">[{{ line.time | date:"HH:mm" }}]</span>
-        <span class="author" ng-click="pm(line.author)" ng-show="line.author">{{ line.author.nickName }}</span>
-        <span class="message">{{ line.message }}</span>
+        <span class="author" ng-click="pm(line.author)" ng-show="line.author" style="color: {{ line.author.color }}">{{ line.author.nickName }}</span>
+        <span class="message" ng-class="{ systemMessage: line.systemMessage }">{{ line.message }}</span>
     </div>
 </div>
