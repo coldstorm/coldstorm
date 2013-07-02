@@ -1,8 +1,8 @@
 <div class="userlist">
     <ul class="users">
         <li class="user" ng-repeat="user in users">
-            <a style="color: {{ user.color }}" ng-click="pm(user)" title="{{ user.country }}">
-                <img ng-src="flags/{{ user.flag }}.png" />
+            <a style="color: {{ user.color }}" ng-click="pm(user)">
+                <img ng-src="flags/{{ user.flag }}.png" title="{{ user.country }}" />
                 {{ user.nickName }}
             </a>
         </li>

@@ -132,6 +132,11 @@ header
     color: #373f4e;
 }
 
+.author
+{
+    cursor: pointer;
+}
+
 .message
 {
     color: #babbbf;
@@ -149,7 +154,12 @@ header
 
 .userlist
 {
+    background-color: #24272e;
+    border: 1px solid #24272e;
+    border-radius: 3px;
     float: right;
+    height: calc(100% - 21px - 35px - 4px);
+    margin-left: 4px;
     width: 10%;
 }
 
@@ -158,6 +168,11 @@ header
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+.user
+{
+    cursor: pointer;
 }
 
 div.inner {
