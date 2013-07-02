@@ -25,6 +25,28 @@ main
     height: 100%;
 }
 
+input
+{
+    display: block;
+    outline: 0;
+   -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
+    transition: border linear 0.2s, box-shadow linear 0.2s;
+}
+
+input:focus
+{
+    border: 1px solid #babbbf;
+   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
+}
+
+input:focus:invalid
+{
+    border: 1px solid #b94a48;
+   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
+}
+
 .container
 {
     height: 100%;
@@ -60,26 +82,8 @@ main
 
 .login input
 {
-    display: block;
     margin-left: 15%;
-    outline: 0;
-   -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
-    transition: border linear 0.2s, box-shadow linear 0.2s;
     width: 70%;
-}
-
-.login input:focus
-{
-    border: 1px solid #babbbf;
-   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
-}
-
-.login input:focus:invalid
-{
-    border: 1px solid #b94a48;
-   -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
 }
 
 .login button

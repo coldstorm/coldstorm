@@ -7,6 +7,8 @@ Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "$location", "Use
     }
     
     $scope.channel = Channel.get(channelName);
+    $scope.channel.active = false;
+    
     $scope.user = User.get("~");
     
     $scope.channels = Channel.all();

@@ -1,5 +1,5 @@
 <ul class="tabs">
-    <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel) }">
+    <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel), highlight:channelTab.active }">
         <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
     </li>
     <li ng-repeat="userTab in conversations" class="tab">
