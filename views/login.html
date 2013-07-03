@@ -1,4 +1,4 @@
-<div class="login">
+<form class="login" name="loginForm" ng-submit="login()">
     <div class="title">
 		<h1>Coldstorm</h1>
 	</div>
@@ -23,5 +23,5 @@
 	
 	<input id="color" type="color" ng-model="user.color" required />
 	
-	<button ng-click="login()">Login</button>
-</div>
+	<button type="submit">Login</button>
+</form>
