@@ -165,6 +165,7 @@ header
     height: calc(100% - 21px - 35px - 4px);
     margin-left: 4px;
     width: 10%;
+    word-wrap: break-word;
 }
 
 .users
@@ -177,6 +178,13 @@ header
 .user
 {
     cursor: pointer;
+    margin-top: 3px;
+}
+
+img.flag
+{
+    vertical-align: middle;
+    margin-left: 3px;
 }
 
 div.inner {
