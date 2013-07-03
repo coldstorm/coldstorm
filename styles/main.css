@@ -159,7 +159,7 @@ header
 .userlist
 {
     background-color: #24272e;
-    border: 1px solid #24272e;
+    border: 1px solid #2a2e36;
     border-radius: 3px;
     float: right;
     height: calc(100% - 21px - 35px - 4px);
