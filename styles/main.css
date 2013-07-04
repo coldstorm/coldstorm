@@ -154,6 +154,7 @@ header
 .chat-input
 {
     height: 21px;
+    width: calc(90% - 4px);
 }
 
 .userlist
@@ -162,7 +163,7 @@ header
     border: 1px solid #2a2e36;
     border-radius: 3px;
     float: right;
-    height: calc(100% - 21px - 35px - 4px);
+    height: calc(100% - 35px);
     margin-left: 4px;
     width: 10%;
     word-wrap: break-word;
