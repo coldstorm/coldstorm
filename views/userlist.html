@@ -3,7 +3,7 @@
         <li class="user" ng-repeat="user in users">
             <a style="color: {{ user.color }}" ng-click="pm(user)">
                 <img class="flag" ng-src="flags/{{ user.flag }}.png" title="{{ user.country }}" />
-                {{ user.nickName }}
+                {{ user.rank + user.nickName }}
             </a>
         </li>
     </ul>

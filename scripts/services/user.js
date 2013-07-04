@@ -15,6 +15,7 @@ Coldstorm.provider("User", function()
                 country: "United States",
                 flag: "us",
                 nickName: name,
+                rank: ""
             };
             
             if (name == "~")
