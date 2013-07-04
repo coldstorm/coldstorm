@@ -244,6 +244,7 @@ input
 .tabs
 {
     height: 20px;
+    width: calc(90% - 4px);
     margin: 0;
     padding: 0;
 }
