@@ -59,6 +59,11 @@ Coldstorm.factory("Connection", function()
         onClose: function(handler)
         {
             closeHandlers.push(handler);
+        },
+        send: function(message)
+        {
+            connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
+            console.log("> " + message);
         }
     };
 });
