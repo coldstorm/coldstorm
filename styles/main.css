@@ -20,6 +20,11 @@ body
     padding: 0;
 }
 
+a[ng-click]
+{
+    cursor: pointer;
+}
+
 main
 {
     height: 100%;

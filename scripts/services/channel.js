@@ -39,6 +39,10 @@ Coldstorm.provider("Channel", function()
                     return this;
                 },
                 active: false,
+                leave: function()
+                {
+                    delete registry[name];
+                },
                 lines: [],
                 name: name,
                 topic: "Temporary topic",
