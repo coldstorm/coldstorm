@@ -8,7 +8,7 @@ Coldstorm.factory("Connection", function()
     
     connection.on("open", function()
     {
-        for (handlerIndex in openHandlers)
+        for (var handlerIndex = 0; handlerIndex < openHandlers.length; handlerIndex++)
         {
             var handler = openHandlers[handlerIndex];
             
@@ -36,7 +36,7 @@ Coldstorm.factory("Connection", function()
     
     connection.on("close", function()
     {
-        for (handlerIndex in closeHandlers)
+        for (var handlerIndex = 0; handlerIndex < closeHandlers.length; handlerIndex++)
         {
             var handler = closeHandlers[handlerIndex];
             
