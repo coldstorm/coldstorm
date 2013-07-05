@@ -5,6 +5,5 @@ Coldstorm.directive("tabs", function()
         replace: true,
         restrict: "E",
         templateUrl: "views/tabs.html",
-        transclude: true
     };
 });

@@ -38,7 +38,7 @@ Coldstorm.provider("Channel", function()
                     
                     return this;
                 },
-                active: true,
+                active: false,
                 lines: [],
                 name: name,
                 topic: "Temporary topic",
