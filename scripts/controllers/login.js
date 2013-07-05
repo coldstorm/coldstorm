@@ -11,7 +11,7 @@ Coldstorm.controller("LoginCtrl",
         Connection.onOpen(function()
         {
             Connection.send("NICK " + $scope.user.nickName);
-            Connection.send("USER " + $scope.user.color.substring(1) + $scope.user.flag + " - - :New coldstormer");
+            Connection.send("USER " + $scope.user.color.substring(1).toUpperCase() + $scope.user.flag + " - - :New coldstormer");
         });
         
         Connection.onMessage(function(message)
