@@ -19,12 +19,13 @@ Coldstorm.factory("Connection", function()
     connection.on("message", function()
     {
         var messages = connection.rQshiftStr().split("\r\n");
+        messages = messages.filter(function(n) { return n });
         
-        for (messageIndex in messages)
+        for (var messageIndex = 0; messageIndex < messages.length; messageIndex++)
         {
             var message = messages[messageIndex];
             
-            for (handlerIndex in messageHandlers)
+            for (var handlerIndex = 0; handlerIndex < messageHandlers.length; handlerIndex++)
             {
                 var handler = messageHandlers[handlerIndex];
                 
