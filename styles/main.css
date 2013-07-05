@@ -128,6 +128,7 @@ header
 {
     background-color: #24272e;
     border: 1px solid #2a2e36;
+    border-top: none;
     border-radius: 3px;
     border-top-left-radius: 0;
     height: calc(100% - 21px - 35px - 4px);
@@ -259,6 +260,9 @@ input
 {
     background-color: #24272e;
     border: 1px solid #2a2e36;
+    border-top: 1px solid #2a2e36;
+    border-left: 1px solid #2a2e36;
+    border-right: 1px solid #2a2e36;
     border-bottom: 0px;
     color: #8c9096;
     display: inline-block;
@@ -270,7 +274,11 @@ input
 .tab
 {
     background-color: #202226;
-    border-color: #24272e;
+    /*border-color: #24272e;*/
+    border-top: 1px solid #2a2e36;
+    border-left: 1px solid #2a2e36;
+    border-right: 1px solid #2a2e36;
+    border-bottom: 0px;
     color: #626569;
     height: 17px;
     margin-top: 1px;
