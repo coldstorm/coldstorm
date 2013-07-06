@@ -1,6 +1,6 @@
 Coldstorm.controller("LoginCtrl",
-    ["$scope", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel",
-    function($scope, $rootScope, $location, $timeout, Connection, User, Channel)
+    ["$scope", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel", "Parser",
+    function($scope, $rootScope, $location, $timeout, Connection, User, Channel, Parser)
 {
     $scope.user = User.get("~");
     
@@ -16,7 +16,7 @@ Coldstorm.controller("LoginCtrl",
         
         Connection.onMessage(function(message)
         {
-            console.log("Message received:", message);
+            Parser.parse(message);
         });
         
         Connection.onClose(function()
