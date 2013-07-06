@@ -278,15 +278,15 @@ input
     border-right: 1px solid #2a2e36;
     border-bottom: none;
     color: #626569;
-    height: 19px;
-    margin-top: 1px;
+    height: 17px;
+    margin-top: 3px;
 }
 
 .tab.active
 {
     background-color: #24272e;
     color: #8c9096;
-    height: 20px;
+    height: 18px;
     margin-top: 0;
 }
 
