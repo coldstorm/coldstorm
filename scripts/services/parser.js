@@ -1,4 +1,4 @@
-Coldstorm.factory("Parser", function()
+Coldstorm.factory("Parser", ["Connection", function(Connection)
 {
     var messages = [];
     
@@ -33,6 +33,8 @@ Coldstorm.factory("Parser", function()
     registerMessage(noticeMessage);
     var motdMessage = new Message(function(parts){return (parts[1]=="372")}, function(parts){console.log("< " + parts.join(" "))});
     registerMessage(motdMessage);
+    var pingMessage = new Message(function(parts){return (parts[0]=="PING")}, function(parts){console.log("< " + parts.join(" ")); Connection.send("PONG " + parts[1])});
+    registerMessage(pingMessage);
     
     return {
         
@@ -53,4 +55,4 @@ Coldstorm.factory("Parser", function()
         
         addMessage: registerMessage
     };
-});
+}]);
