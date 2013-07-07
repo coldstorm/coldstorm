@@ -36,7 +36,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User", func
     
     function getUser(parts)
     {
-        var regexp = /^([A-Za-z0-9_\-\[\]\\^{}|`]+)!([A-Za-z0-9_\-\~]+)\@([A-Za-z0-9\.\-]+)/i;
+        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
         var matches = parts[0].match(regexp);
         
         if (matches != null)
@@ -104,7 +104,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User", func
             $rootScope.$apply(function(){user.rank = ranks[ranks.length-1]});
         }
         
-        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([A-Za-z]{2})$/i;
+        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
         var matches = username.match(colorflag_regexp);
         
         if (matches != null)
