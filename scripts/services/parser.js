@@ -1,4 +1,4 @@
-Coldstorm.factory("Parser", ["Connection", function(Connection)
+Coldstorm.factory("Parser", ["Connection", "Channel", "User", function(Connection, Channel, User)
 {
     var messages = [];
     
@@ -29,12 +29,85 @@ Coldstorm.factory("Parser", ["Connection", function(Connection)
         return parts;
     }
     
+    function getChannel(parts)
+    {
+        return Channel.get(parts[2]);
+    }
+    
+    function getUser(parts)
+    {
+        var regexp = /^([A-Za-z0-9_\-\[\]\\^{}|`]+)!([A-Za-z0-9_\-\~]+)\@([A-Za-z0-9\.\-]+)/i;
+        var matches = parts[0].match(regexp);
+        
+        if (matches != null)
+        {
+            return User.get(matches[1]);
+        }
+        
+        return null;
+    }
+    
+    var welcomeMessage = new Message(function(parts){return (parts[1]=="001")}, function(parts){console.log("< " + parts.join(" ")); Connection.send("JOIN #test")});
+    registerMessage(welcomeMessage);
+    
     var noticeMessage = new Message(function(parts){return (parts[1]=="NOTICE")}, function(parts){console.log("< " + parts.join(" "))});
     registerMessage(noticeMessage);
+    
     var motdMessage = new Message(function(parts){return (parts[1]=="372")}, function(parts){console.log("< " + parts.join(" "))});
     registerMessage(motdMessage);
+    
     var pingMessage = new Message(function(parts){return (parts[0]=="PING")}, function(parts){console.log("< " + parts.join(" ")); Connection.send("PONG " + parts[1])});
     registerMessage(pingMessage);
+    
+    var privMessage = new Message(function(parts){return (parts[1]=="PRIVMSG") && (getChannel(parts) != null)}, 
+    function(parts)
+    {
+        var channel = getChannel(parts);
+        var user = getUser(parts);
+        var line = parts.slice(3).join(" ");
+        channel.addLine(line, user); 
+    });
+    registerMessage(privMessage);
+    
+    var namesMessage = new Message(function(parts){return (parts[1]=="353")}, 
+    function(parts)
+    {
+       var channel = Channel.get(parts[4]);
+       parts = parts.slice(5).filter(function(n){return n});
+       
+       for (var i = 0; i < parts.length; i++)
+       {
+            if (["+","%","@"].indexOf(parts[i][0]) != -1)
+            {
+                var user = User.register(parts[i].substring(1), null, null, parts[i][0]);
+            } else {
+                var user = User.register(parts[i], null, null, null);
+            }
+            channel.addUser(user);
+       }
+       
+       Connection.send("WHO " + channel.name);
+    });
+    registerMessage(namesMessage);
+    
+    var whoMessage = new Message(function(parts){return (parts[1]=="352")},
+    function(parts)
+    {
+        parts = parts.slice(3).filter(function(n){return n});
+        var user = User.get(parts[4]);
+        var username = parts[1];
+        
+        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([A-Za-z]{2})$/i;
+        var matches = username.match(colorflag_regexp);
+        
+        if (matches != null)
+        {
+            user.color = '#' + matches[1];
+            user.flag = matches[2];
+        }
+        
+    });
+    registerMessage(whoMessage);
     
     return {
         
@@ -51,6 +124,8 @@ Coldstorm.factory("Parser", ["Connection", function(Connection)
                     message.process(parts);
                 }
             }
+            
+            console.log("[raw] " + line);
         },
         
         addMessage: registerMessage
