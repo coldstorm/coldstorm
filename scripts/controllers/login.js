@@ -24,11 +24,8 @@ Coldstorm.controller("LoginCtrl",
             console.log("Closed");
         });
         
-        var cs = Channel.register("#Coldstorm")
-            .addLine("Testing line colors", $scope.user)
-            .addUser($scope.user);
+        var cs = Channel.register("#Coldstorm");
         var two = Channel.register("#2");
-        var test = Channel.register("#test");
         
         $timeout(function()
         {
@@ -36,7 +33,6 @@ Coldstorm.controller("LoginCtrl",
             
             $rootScope.$broadcast("channel.message", { channel: cs });
             $rootScope.$broadcast("channel.message", { channel: two });
-            $rootScope.$broadcast("channel.message", { channel: test });
         }, 1000);
         
         $location.path("/channels/#Coldstorm");

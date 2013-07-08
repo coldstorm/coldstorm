@@ -1,4 +1,4 @@
-Coldstorm.factory("Parser", ["Connection", "Channel", "User", function(Connection, Channel, User)
+Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User", function($rootScope, Connection, Channel, User)
 {
     var messages = [];
     
@@ -47,7 +47,7 @@ Coldstorm.factory("Parser", ["Connection", "Channel", "User", function(Connectio
         return null;
     }
     
-    var welcomeMessage = new Message(function(parts){return (parts[1]=="001")}, function(parts){console.log("< " + parts.join(" ")); Connection.send("JOIN #test")});
+    var welcomeMessage = new Message(function(parts){return (parts[1]=="001")}, function(parts){console.log("< " + parts.join(" "))});
     registerMessage(welcomeMessage);
     
     var noticeMessage = new Message(function(parts){return (parts[1]=="NOTICE")}, function(parts){console.log("< " + parts.join(" "))});
@@ -65,7 +65,8 @@ Coldstorm.factory("Parser", ["Connection", "Channel", "User", function(Connectio
         var channel = getChannel(parts);
         var user = getUser(parts);
         var line = parts.slice(3).join(" ");
-        channel.addLine(line, user); 
+        
+        $rootScope.$apply(function(){channel.addLine(line, user)});
     });
     registerMessage(privMessage);
     
@@ -96,16 +97,24 @@ Coldstorm.factory("Parser", ["Connection", "Channel", "User", function(Connectio
         parts = parts.slice(3).filter(function(n){return n});
         var user = User.get(parts[4]);
         var username = parts[1];
+        var ranks = parts[5].substring(1);
+        
+        if (ranks != null && ranks != "" && ranks != "*")
+        {
+            $rootScope.$apply(function(){user.rank = ranks[ranks.length-1]});
+        }
         
         var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([A-Za-z]{2})$/i;
         var matches = username.match(colorflag_regexp);
         
         if (matches != null)
         {
-            user.color = '#' + matches[1];
-            user.flag = matches[2];
+            $rootScope.$apply(function()
+            {
+                user.color = '#' + matches[1];
+                user.flag = matches[2];
+            });
         }
-        
     });
     registerMessage(whoMessage);
     
