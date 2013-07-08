@@ -36,6 +36,23 @@ Coldstorm.provider("Channel", function()
                 {
                     this.users.push(user);
                     
+                    this.users = this.users.sort(function(a, b)
+                    {
+                        var ranks = ["", "+", "%", "@"];
+                        
+                        if (a.rank != b.rank)
+                        {
+                            if (ranks.indexOf(a.rank) > ranks.indexOf(b.rank))
+                            {
+                                return -1;
+                            }
+                            
+                            return 1;
+                        }
+                        
+                        return a.nickName.localeCompare(b.nickName);
+                    });
+                    
                     return this;
                 },
                 active: false,
