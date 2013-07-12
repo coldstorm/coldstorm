@@ -21,7 +21,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
     {
         for (var i = 0; i < parts.length; i++)
         {
-            if (parts[i][0] == ':')
+            if (parts[i][0] === ":")
             {
                 parts[i] = parts[i].substring(1);
             }
@@ -40,7 +40,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
         var matches = parts[0].match(regexp);
 
-        if (matches != null)
+        if (matches !== null)
         {
             return User.get(matches[1]);
         }
@@ -48,18 +48,28 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         return null;
     }
 
+    var welcomeHandlers = [];
+
     var welcomeMessage = new Message(function(parts)
     {
-            return (parts[1]=="001");
+        return parts[1] === "001";
     }, function(parts)
     {
-        return;
+        for (var i = 0; i < welcomeHandlers.length; i++)
+        {
+            welcomeHandlers[i]();
+        }
     });
     registerMessage(welcomeMessage);
 
+    Connection.onWelcome = function(handler)
+    {
+        welcomeHandlers.push(handler);
+    };
+
     var noticeMessage = new Message(function(parts)
     {
-        return (parts[1]=="NOTICE");
+        return parts[1] === "NOTICE";
     }, function(parts)
     {
         return;
@@ -68,7 +78,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
 
     var motdMessage = new Message(function(parts)
     {
-        return (parts[1]=="372");
+        return parts[1] === "372";
     }, function(parts)
     {
         return;
@@ -77,7 +87,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
 
     var pingMessage = new Message(function(parts)
     {
-        return (parts[0]=="PING");
+        return parts[0] === "PING";
     }, function(parts)
     {
         Connection.send("PONG " + parts[1]);
@@ -86,23 +96,24 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
 
     var privMessage = new Message(function(parts)
     {
-        return (parts[1]=="PRIVMSG") && (getChannel(parts) != null);
+        return parts[1] === "PRIVMSG" && getChannel(parts) !== null;
     }, function(parts)
     {
         var channel = getChannel(parts);
         var user = getUser(parts);
         var line = parts.slice(3).join(" ");
 
-        $rootScope.$apply(function()
-        {
-            channel.addLine(line, user);
+        $rootScope.$broadcast("channel.message", {
+            channel: channel,
+            user: user,
+            line: line
         });
     });
     registerMessage(privMessage);
 
     var namesMessage = new Message(function(parts)
     {
-        return (parts[1]=="353");
+        return parts[1] === "353";
     }, function(parts)
     {
         var channel = Channel.get(parts[4]);
@@ -123,12 +134,14 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
        }
 
        Connection.send("WHO " + channel.name);
+
+       $rootScope.$broadcast("channel.joined", channel);
     });
     registerMessage(namesMessage);
 
     var whoMessage = new Message(function(parts)
     {
-        return (parts[1]=="352");
+        return parts[1] === "352";
     }, function(parts)
     {
         parts = parts.slice(3).filter(function(n){return n});
@@ -148,12 +161,17 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         {
             $rootScope.$apply(function()
             {
-                user.color = '#' + matches[1];
+                user.color = "#" + matches[1];
                 user.flag = matches[2];
             });
         }
     });
     registerMessage(whoMessage);
+
+    $rootScope.$on("channel.join", function(evt, channel)
+    {
+        Connection.send("JOIN " + channel.name);
+    });
 
     $rootScope.$on("channel.close", function(evt, channel)
     {
@@ -163,6 +181,8 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
     return {
         parse: function(line)
         {
+            console.log("< " + line);
+
             var parts = clean(line.split(" "));
 
             for (var mIndex = 0; mIndex < messages.length; mIndex++)
@@ -174,7 +194,6 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
                     message.process(parts);
                 }
             }
-            console.log("< " + line);
         },
 
         addMessage: registerMessage

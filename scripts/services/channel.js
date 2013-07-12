@@ -2,6 +2,23 @@ Coldstorm.factory("Channel", function($rootScope)
 {
     var registry = { };
 
+    $rootScope.$on("channel.joined", function(evt, channel)
+    {
+        channel.addLine("You joined the room.");
+    });
+
+    $rootScope.$on("channel.message", function(evt, message)
+    {
+        channel = message.channel;
+        line = message.line;
+        user = message.user;
+
+        $rootScope.$apply(function()
+        {
+            channel.addLine(line, user);
+        });
+    });
+
     channels = {
         register: function(name)
         {
@@ -55,6 +72,10 @@ Coldstorm.factory("Channel", function($rootScope)
                     return this;
                 },
                 active: false,
+                join: function()
+                {
+                    $rootScope.$broadcast("channel.join", this);
+                },
                 leave: function()
                 {
                     $rootScope.$broadcast("channel.close", this);
@@ -66,8 +87,6 @@ Coldstorm.factory("Channel", function($rootScope)
                 topic: "Temporary topic",
                 users: []
             };
-
-            registry[name].addLine("You joined the room.");
 
             return registry[name];
         },
