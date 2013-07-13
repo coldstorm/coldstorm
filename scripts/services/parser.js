@@ -167,6 +167,23 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         }
     });
     registerMessage(whoMessage);
+    
+    var joinMessage = new Message(function(parts)
+    {
+        return parts[1] === "JOIN";
+    }, function(parts)
+    {
+        var user = getUser(parts);
+        var channel = Channel.get(parts[2]);
+        
+        if (user.nickName === User.get("~").nickName)
+        {
+            $rootScope.$broadcast("channel.joined", channel);
+        } else {
+            channel.addLine(user.nickName + " joined the room.");
+        }
+    });
+    registerMessage(joinMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {

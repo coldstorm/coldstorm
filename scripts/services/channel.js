@@ -12,11 +12,8 @@ Coldstorm.factory("Channel", function($rootScope)
         channel = message.channel;
         line = message.line;
         user = message.user;
-
-        $rootScope.$apply(function()
-        {
-            channel.addLine(line, user);
-        });
+        
+        channel.addLine(line, user);
     });
 
     channels = {
@@ -43,8 +40,12 @@ Coldstorm.factory("Channel", function($rootScope)
                     }
 
                     line.message = message;
+                    var channel = this;
 
-                    this.lines.push(line);
+                    $rootScope.$apply(function()
+                    {
+                        channel.lines.push(line)
+                    });
 
                     return this;
                 },
