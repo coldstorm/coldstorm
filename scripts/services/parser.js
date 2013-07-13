@@ -182,6 +182,28 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         }
     });
     registerMessage(joinMessage);
+    
+    var partMessage = new Message(function(parts)
+    {
+        return parts[1] === "PART";
+    }, function(parts)
+    {
+        var user = getUser(parts);
+        var channel = Channel.get(parts[2]);
+        var reason = parts.slice(3).join(" ");
+        
+        if (user.nickName !== User.get("~").nickName)
+        {
+            if (reason == null)
+            {
+                channel.addLine(user.nickName + " left the room.");
+            } else {
+                channel.addLine(user.nickName + " left the room (" + reason + ").");
+            }
+            //remove the user from the channel
+        }
+    });
+    registerMessage(partMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
