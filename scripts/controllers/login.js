@@ -41,7 +41,6 @@ Coldstorm.controller("LoginCtrl",
 
             $rootScope.$broadcast("channel.message", { channel: cs });
             $rootScope.$broadcast("channel.message", { channel: two });
-            $rootScope.$broadcast("channel.message", { channel: test });
         }, 1000);
 
         $location.path("/channels/#Coldstorm");

@@ -74,7 +74,7 @@ Coldstorm.factory("Channel", function($rootScope)
                 active: false,
                 join: function()
                 {
-                    $rootScope.$broadcast("channel.joined", this);
+                    $rootScope.$broadcast("channel.join", this);
                 },
                 leave: function()
                 {

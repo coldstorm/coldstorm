@@ -134,6 +134,8 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
        }
 
        Connection.send("WHO " + channel.name);
+
+       $rootScope.$broadcast("channel.joined", channel);
     });
     registerMessage(namesMessage);
 
@@ -166,7 +168,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
     });
     registerMessage(whoMessage);
 
-    $rootScope.$on("channel.joined", function(evt, channel)
+    $rootScope.$on("channel.join", function(evt, channel)
     {
         Connection.send("JOIN " + channel.name);
     });
