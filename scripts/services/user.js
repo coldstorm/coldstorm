@@ -8,14 +8,14 @@ Coldstorm.provider("User", function()
     {
         var provider = { };
         
-        provider.register = function(name, color, flag, rank)
+        provider.register = function(name, color, flag)
         {
             registry[name] = {
                 color: color != null ? color : "#FFFFFF",
                 country: "United States",
                 flag: flag != null ? flag : "US",
                 nickName: name,
-                rank: rank != null ? rank : ""
+                ranks: []
             };
             
             if (name == "~")

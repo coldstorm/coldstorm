@@ -126,9 +126,9 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
        {
             if (["+","%","@"].indexOf(parts[i][0]) != -1)
             {
-                var user = User.register(parts[i].substring(1), null, null, parts[i][0]);
+                var user = User.register(parts[i].substring(1), null, null);
             } else {
-                var user = User.register(parts[i], null, null, null);
+                var user = User.register(parts[i], null, null);
             }
             channel.addUser(user);
        }
@@ -143,13 +143,15 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
     }, function(parts)
     {
         parts = parts.slice(3).filter(function(n){return n});
+        var channel = Channel.get(parts[0]);
         var user = User.get(parts[4]);
+        
         var username = parts[1];
-        var ranks = parts[5].substring(1);
+        var rank = parts[5].charAt(parts[5].length-1);
 
-        if (ranks != null && ranks != "" && ranks != "*")
+        if (rank != "" && ["+","%","@"].indexOf(rank) != -1)
         {
-            $rootScope.$apply(function(){user.rank = ranks[ranks.length-1]});
+            $rootScope.$apply(function(){user.ranks[channel.name] = rank});
         }
 
         var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
@@ -166,6 +168,50 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
     });
     registerMessage(whoMessage);
     
+    var whoisuserMessage = new Message(function(parts)
+    {
+        return parts[1] === "311";
+    }, function(parts)
+    {
+        parts = parts.slice(3);
+        var user = User.get(parts[0]);
+        var username = parts[1];
+        
+        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
+        var matches = username.match(colorflag_regexp);
+        
+        if (matches != null)
+        {
+            $rootScope.$apply(function()
+            {
+                user.color = "#" + matches[1];
+                user.flag = matches[2];
+            });
+        }
+    });
+    registerMessage(whoisuserMessage);
+    
+    var whoischannelsMessage = new Message(function(parts)
+    {
+        return parts[1] === "319";
+    }, function(parts)
+    {
+        parts = parts.slice(3);
+        var user = User.get(parts[0]);
+        
+        for (var i = 0; i < parts.length; i++)
+        {
+            if (["+","%","@"].indexOf(parts[i][0]) != -1)
+            {
+                var rank = parts[i][0];
+                var channel = parts[i].substring(1);
+                
+                user.ranks[channel] = rank;
+            }
+        }
+    });
+    registerMessage(whoischannelsMessage);
+    
     var joinMessage = new Message(function(parts)
     {
         return parts[1] === "JOIN";
@@ -179,7 +225,10 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
             $rootScope.$broadcast("channel.joined", channel);
         } else {
             channel.addLine(user.nickName + " joined the room.");
+            channel.addUser(user);
         }
+        
+        Connection.send("WHOIS " + user.nickName);
     });
     registerMessage(joinMessage);
     
