@@ -35,14 +35,6 @@ Coldstorm.controller("LoginCtrl",
             console.log("Closed");
         });
 
-        $timeout(function()
-        {
-            // Fire the messages after a second so the directive loads
-
-            $rootScope.$broadcast("channel.message", { channel: cs });
-            $rootScope.$broadcast("channel.message", { channel: two });
-        }, 1000);
-
         $location.path("/channels/#Coldstorm");
     };
 }]);
