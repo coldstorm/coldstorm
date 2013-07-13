@@ -79,8 +79,8 @@ Coldstorm.factory("Channel", function($rootScope)
                 leave: function()
                 {
                     $rootScope.$broadcast("channel.close", this);
-
-                    delete registry[name];
+                    
+                    delete registry[this.name];
                 },
                 lines: [],
                 name: name,

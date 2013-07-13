@@ -8,6 +8,7 @@ Coldstorm.controller("TabsCtrl", ["$scope", function($scope)
         {
             return;
         }
+        
         $scope.$apply(function()
         {
             message.channel.active = true;
