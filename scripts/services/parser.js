@@ -310,11 +310,32 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
             user = User.get(matches[1]);
         }
         
-        channel.topicauthor = user;
-        var date = new Date(parts[2]*1000);
-        channel.topicdate = "Topic set on " + date.toUTCString();
+        $rootScope.$apply(function(){
+            channel.topicauthor = user;
+            var date = new Date(parts[2]*1000);
+            channel.topicdate = "Topic set on " + date.toLocaleString();
+        });
     });
     registerMessage(topicinfoMessage);
+    
+    var topicchangeMessage = new Message(function(parts)
+    {
+        return parts[1] === "TOPIC";
+    }, function(parts)
+    {
+        var author = getUser(parts);
+        var channel = Channel.get(parts[2]);
+        var topic = parts.slice(3).join(" ");
+        var date = new Date(Date.now());
+        
+        $rootScope.$apply(function(){
+            channel.topic = topic;
+            channel.topicauthor = author;
+            channel.topicdate = date.toLocaleString();
+        });
+        channel.addLine("Topic was changed by " + author.nickName + ".");
+    });
+    registerMessage(topicchangeMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
