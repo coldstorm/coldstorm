@@ -4,7 +4,7 @@ Coldstorm.directive("userlist", function()
         controller: "UserListCtrl",
         replace: true,
         restrict: "E",
-        scope: { users: "=source" },
+        scope: { users: "=users", channel: "=channel" },
         templateUrl: "views/userlist.html",
         transclude: true
     };

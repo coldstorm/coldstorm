@@ -4,7 +4,7 @@
         <tabs></tabs>
     </header>
     <main>
-        <userlist source="channel.users"></userlist>
+        <userlist users="channel.users" channel="channel"></userlist>
         <lines source="channel.lines"></lines>
         <form ng-submit="send()">
             <input type="text" class="chat-input" ng-model="input.text" />
