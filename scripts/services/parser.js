@@ -126,9 +126,9 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
        {
             if (["+","%","@"].indexOf(parts[i][0]) != -1)
             {
-                var user = User.register(parts[i].substring(1), null, null);
+                var user = User.get(parts[i].substring(1));
             } else {
-                var user = User.register(parts[i], null, null);
+                var user = User.get(parts[i]);
             }
             channel.addUser(user);
        }
@@ -173,7 +173,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         return parts[1] === "311";
     }, function(parts)
     {
-        parts = parts.slice(3);
+        parts = parts.slice(3).filter(function(n){return n});
         var user = User.get(parts[0]);
         var username = parts[1];
         
@@ -196,7 +196,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         return parts[1] === "319";
     }, function(parts)
     {
-        parts = parts.slice(3);
+        parts = parts.slice(3).filter(function(n){return n});
         var user = User.get(parts[0]);
         
         for (var i = 0; i < parts.length; i++)
@@ -249,10 +249,35 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
             } else {
                 channel.addLine(user.nickName + " left the room (" + reason + ").");
             }
-            //remove the user from the channel
+            channel.users.splice(channel.users.indexOf(user), 1);
         }
     });
     registerMessage(partMessage);
+    
+    var quitMessage = new Message(function(parts)
+    {
+        return parts[1] === "QUIT";
+    }, function(parts)
+    {
+        var user = getUser(parts);
+        var reason = parts.slice(2).join(" ");
+        
+        var channels = Channel.all();
+        for (var i = 0; i < channels.length; i++)
+        {
+            if (channels[i].users.indexOf(user) != -1)
+            {
+                if (reason == null)
+                {
+                    channels[i].addLine(user.nickName + " quit.");
+                } else {
+                    channels[i].addLine(user.nickName + " quit (" + reason + ").");
+                }
+                channels[i].users.splice(channels[i].users.indexOf(user), 1);
+            }
+        }
+    });
+    registerMessage(quitMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
