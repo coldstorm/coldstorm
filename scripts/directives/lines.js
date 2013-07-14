@@ -4,7 +4,7 @@ Coldstorm.directive("lines", function()
         controller: "LinesCtrl",
         replace: true,
         restrict: "E",
-        scope: { lines: "=source" },
+        scope: { lines: "=lines", channel: "=channel" },
         templateUrl: "views/lines.html",
         transclude: true
     };
