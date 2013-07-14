@@ -6,6 +6,8 @@
     <main>
         <userlist source="channel.users"></userlist>
         <lines source="channel.lines"></lines>
-        <input type="text" class="chat-input" ng-model="input.text" />
+        <form ng-submit="send()">
+            <input type="text" class="chat-input" ng-model="input.text" />
+        </form>
     </main>
 </div>

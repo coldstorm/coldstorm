@@ -1,5 +1,6 @@
-Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "$location",
-    "User", "Channel", function($scope, $routeParams, $location, User, Channel)
+Coldstorm.controller("ChannelCtrl",
+    ["$scope", "$routeParams", "$location", "User", "Channel", "Connection",
+    function($scope, $routeParams, $location, User, Channel, Connection)
 {
     var channelName = $routeParams.channelName
     
@@ -11,6 +12,31 @@ Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "$location",
     }
     
     $scope.channel = Channel.get(channelName);
+    
+    $scope.user = User.get("~");
+    
+    $scope.send = function()
+    {
+        var line = $scope.input.text;
+        
+        if (line.length < 1)
+        {
+            return;
+        }
+        
+        // Clear the line
+        
+        $scope.input.text = "";
+        
+        if (line[0] === "/")
+        {
+            Connection.send(line.substring(1))
+            
+            return;
+        }
+        
+        Connection.send("PRIVMSG " + $scope.channel.name + " " + line);
+    };
     
     $scope.$watch("channel.active", function()
     {
@@ -29,8 +55,6 @@ Coldstorm.controller("ChannelCtrl", ["$scope", "$routeParams", "$location",
             }
         }
     });
-    
-    $scope.user = User.get("~");
     
     $scope.$watch(function()
     {
