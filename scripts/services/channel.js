@@ -85,7 +85,9 @@ Coldstorm.factory("Channel", function($rootScope)
                 },
                 lines: [],
                 name: name,
-                topic: "Temporary topic",
+                topic: "",
+                topicauthor: {},
+                topicdate: "",
                 users: []
             };
 

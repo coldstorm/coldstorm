@@ -278,6 +278,43 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         }
     });
     registerMessage(quitMessage);
+    
+    var topicMessage = new Message(function(parts)
+    {
+        return parts[1] === "332";
+    }, function(parts)
+    {
+        parts = parts.slice(3).filter(function(n){return n});
+        var channel = Channel.get(parts[0]);
+        
+        if (channel != null)
+        {
+            $rootScope.$apply(function() {channel.topic = parts.slice(1).join(" ")});
+        }
+    });
+    registerMessage(topicMessage);
+    
+    var topicinfoMessage = new Message(function(parts)
+    {
+        return parts[1] === "333";
+    }, function(parts)
+    {
+        parts = parts.slice(3).filter(function(n){return n});
+        var channel = Channel.get(parts[0]);
+        var user;
+        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
+        var matches = parts[1].match(regexp);
+        
+        if (matches !== null)
+        {
+            user = User.get(matches[1]);
+        }
+        
+        channel.topicauthor = user;
+        var date = new Date(parts[2]*1000);
+        channel.topicdate = "Topic set on " + date.toUTCString();
+    });
+    registerMessage(topicinfoMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
