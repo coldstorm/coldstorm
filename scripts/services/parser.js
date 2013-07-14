@@ -165,6 +165,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
                 user.flag = matches[2];
             });
         }
+        channel.sortusers();
     });
     registerMessage(whoMessage);
     
@@ -199,14 +200,26 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         parts = parts.slice(3).filter(function(n){return n});
         var user = User.get(parts[0]);
         
-        for (var i = 0; i < parts.length; i++)
+        for (var i = 1; i < parts.length; i++)
         {
             if (["+","%","@"].indexOf(parts[i][0]) != -1)
             {
                 var rank = parts[i][0];
-                var channel = parts[i].substring(1);
+                var channel = Channel.get(parts[i].substring(1));
                 
-                user.ranks[channel] = rank;
+                if (channel)
+                {
+                    user.ranks[channel.name] = rank;
+                    channel.sortusers();
+                }
+            } else {
+                var channel = Channel.get(parts[i]);
+                
+                if (channel)
+                {
+                    user.ranks[channel.name] = "";
+                    channel.sortusers();
+                }
             }
         }
     });
@@ -226,6 +239,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         } else {
             channel.addLine(user.nickName + " joined the room.");
             channel.addUser(user);
+            channel.sortusers();
         }
         
         Connection.send("WHOIS " + user.nickName);

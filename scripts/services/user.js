@@ -13,7 +13,7 @@ Coldstorm.provider("User", function()
             registry[name] = {
                 color: color != null ? color : "#FFFFFF",
                 country: "United States",
-                flag: flag != null ? flag : "US",
+                flag: flag != null ? flag : "QQ",
                 nickName: name,
                 ranks: []
             };

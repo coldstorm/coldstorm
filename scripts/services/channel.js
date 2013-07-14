@@ -53,22 +53,7 @@ Coldstorm.factory("Channel", function($rootScope)
                 {
                     this.users.push(user);
 
-                    this.users = this.users.sort(function(a, b)
-                    {
-                        var ranks = ["", "+", "%", "@"];
-
-                        if (a.rank != b.rank)
-                        {
-                            if (ranks.indexOf(a.rank) > ranks.indexOf(b.rank))
-                            {
-                                return -1;
-                            }
-
-                            return 1;
-                        }
-
-                        return a.nickName.localeCompare(b.nickName);
-                    });
+                    this.sortusers();
 
                     return this;
                 },
@@ -88,7 +73,30 @@ Coldstorm.factory("Channel", function($rootScope)
                 topic: "",
                 topicauthor: {},
                 topicdate: "",
-                users: []
+                users: [],
+                sortusers: function()
+                {
+                    var channel = this;
+                    $rootScope.$apply(function()
+                    {
+                        channel.users = channel.users.sort(function(a, b)
+                        {
+                            var ranks = ["", "+", "%", "@"];
+                            
+                            if (a.ranks[channel.name] != b.ranks[channel.name])
+                            {
+                                if (ranks.indexOf(a.ranks[channel.name]) > ranks.indexOf(b.ranks[channel.name]))
+                                {
+                                    return -1;
+                                }
+                                
+                                return 1;
+                            }
+                            
+                            return a.nickName.localeCompare(b.nickName);
+                        });
+                    });
+                }
             };
 
             return registry[name];
