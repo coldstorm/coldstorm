@@ -37,7 +37,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
 
     function getUser(parts)
     {
-        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
+        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
         var matches = parts[0].match(regexp);
 
         if (matches !== null)
@@ -302,7 +302,7 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         parts = parts.slice(3).filter(function(n){return n});
         var channel = Channel.get(parts[0]);
         var user;
-        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
+        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
         var matches = parts[1].match(regexp);
         
         if (matches !== null)
