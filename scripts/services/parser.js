@@ -1,5 +1,5 @@
-Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
-    function($rootScope, Connection, Channel, User)
+Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "User",
+    function($http, $rootScope, Connection, Channel, User)
 {
     var messages = [];
 
@@ -165,6 +165,14 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
                 user.flag = matches[2];
             });
         }
+        
+        $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function(data){
+            if (data[1][0].name)
+            {
+                user.country = data[1][0].name;
+            }
+        });
+        
         channel.sortusers();
     });
     registerMessage(whoMessage);
@@ -189,6 +197,13 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
                 user.flag = matches[2];
             });
         }
+        
+        $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function(data){
+            if (data[1][0].name)
+            {
+                user.country = data[1][0].name;
+            }
+        });
     });
     registerMessage(whoisuserMessage);
     
