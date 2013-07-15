@@ -350,6 +350,37 @@ Coldstorm.factory("Parser", ["$rootScope", "Connection", "Channel", "User",
         channel.addLine("Topic was changed by " + author.nickName + ".");
     });
     registerMessage(topicchangeMessage);
+    
+    var kickMessage = new Message(function(parts)
+    {
+        return parts[1] === "KICK";
+    }, function(parts)
+    {
+        var kicker = getUser(parts);
+        var channel = Channel.get(parts[2]);
+        var target = User.get(parts[3]);
+        var reason = parts.slice(4).join(" ");
+        
+        if (target.nickName === User.get("~").nickName)
+        {
+            if (reason == null)
+            {
+                channel.addLine("You were kicked by " + kicker.nickName + ".");
+            } else {
+                channel.addLine("You were kicked by " + kicker.nickName + " (" + reason + ").");
+            }
+            $rootScope.$apply(function(){channel.users.length = 0});
+        } else {
+            if (reason == null)
+            {
+                channel.addLine(target.nickName + " was kicked by " + kicker.nickName + ".");
+            } else {
+                channel.addLine(target.nickName + " was kicked by " + kicker.nickName + " (" + reason + ").");
+            }
+            $rootScope.$apply(function(){channel.users.splice(channel.users.indexOf(target), 1)});
+        }
+    });
+    registerMessage(kickMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
