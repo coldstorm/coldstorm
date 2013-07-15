@@ -24,4 +24,10 @@
 	<input id="color" type="color" ng-model="user.color" required />
 	
 	<button type="submit">Login</button>
+    
+    <div class="preview" style="color:{{ user.color }}">
+        <span class="time">[11:11]</span>
+        <span style="color:{{ user.color }}">{{ user.nickName }} </span>
+        <span class="message">I love this color!</span>
+    </div>
 </form>

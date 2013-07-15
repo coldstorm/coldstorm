@@ -107,6 +107,17 @@ input:focus:invalid
     width: 40%;
 }
 
+div.preview
+{
+    background-color: #24272e;
+    border: 1px solid #2a2e36;
+    border-radius: 3px;
+    margin-left: 15%;
+    margin-bottom: 1em;
+    padding: 3px;
+    width: 70%;
+}
+
 .chat
 {
     background-color: #202226;
@@ -200,7 +211,7 @@ div.inner {
     background-color: #24272e;
     border-width: 1px;
     border-radius: 3px;
-} 
+}
 
 #group{
     position: absolute;
