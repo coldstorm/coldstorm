@@ -1,9 +1,14 @@
 Coldstorm.controller("LoginCtrl",
-    ["$scope", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel", "Parser",
-    function($scope, $rootScope, $location, $timeout, Connection, User, Channel, Parser)
+    ["$scope", "$http", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel", "Parser",
+    function($scope, $http, $rootScope, $location, $timeout, Connection, User, Channel, Parser)
 {
     $scope.user = User.get("~");
-
+    
+    $http.jsonp("http://freegeoip.net/json/?callback=JSON_CALLBACK").success(function(data) {
+        $scope.user.country = data.country_name;
+        $scope.user.flag = data.country_code;
+    });
+    
     $scope.login = function()
     {
         var cs = Channel.register("#Coldstorm");
