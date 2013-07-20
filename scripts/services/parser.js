@@ -360,7 +360,7 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         $rootScope.$apply(function(){
             channel.topic = topic;
             channel.topicauthor = author;
-            channel.topicdate = date.toLocaleString();
+            channel.topicdate = "Topic set on " + date.toLocaleString();
         });
         channel.addLine("Topic was changed by " + author.nickName + ".");
     });
@@ -405,6 +405,7 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         var setter = getUser(parts);
         var target = parts[2];
         var modes = parts[3];
+        var parameters = parts.slice(4);
         
         if (target === User.get("~").nickName)
         {
@@ -412,7 +413,71 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         } else {
             target = Channel.get(target);
             //this is a channel mode
-            target.addLine(setter.nickName + " sets modes " + modes);
+            var action = "";
+            var currMode = "";
+            var paramIndex = 0;
+            var userTarget;
+            for (var i = 0; i < modes.length; i++)
+            {
+                switch (modes[i])
+                {
+                    case '+':
+                        action = "sets";
+                        break;
+                    case '-':
+                        action = "removes";
+                        break;
+                    case 'i':
+                        currMode = "invite only";
+                        break;
+                    case 'm':
+                        currMode = "moderated";
+                        break;
+                    case 'n':
+                        currMode = "no outside messages";
+                        break;
+                    case 'p':
+                        currMode = "private";
+                        break;
+                    case 's':
+                        currMode = "secret";
+                        break;
+                    case 't':
+                        currMode = "topic protection";
+                        break;
+                    case 'v':
+                        currMode = "voice";
+                        userTarget = User.get(parameters[paramIndex]);
+                        paramIndex++;
+                        break;
+                    case 'h':
+                        currMode = "halfop";
+                        userTarget = User.get(parameters[paramIndex]);
+                        paramIndex++;
+                        break
+                    case 'o':
+                        currMode = "op";
+                        userTarget = User.get(parameters[paramIndex]);
+                        paramIndex++;
+                        break;
+                    default:
+                      
+                }
+                
+                if ("imnpst".indexOf(modes[i]) != -1)
+                {
+                    target.addLine(setter.nickName + " " + action + " mode \"" + currMode + "\".");
+                } else if ("vho".indexOf(modes[i]) != -1)
+                {
+                    if (action === "sets")
+                    {
+                        target.addLine(setter.nickName + " gives " + currMode + " to " + userTarget.nickName + ".");
+                    } else if (action === "removes")
+                    {
+                        target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
+                    }
+                }
+            }
         }
     });
     registerMessage(modeMessage);
