@@ -396,6 +396,26 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         }
     });
     registerMessage(kickMessage);
+    
+    var modeMessage = new Message(function(parts)
+    {
+        return parts[1] === "MODE";
+    }, function(parts)
+    {
+        var setter = getUser(parts);
+        var target = parts[2];
+        var modes = parts[3];
+        
+        if (target === User.get("~").nickName)
+        {
+            //this is my mode, ignore
+        } else {
+            target = Channel.get(target);
+            //this is a channel mode
+            target.addLine(setter.nickName + " sets modes " + modes);
+        }
+    });
+    registerMessage(modeMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
