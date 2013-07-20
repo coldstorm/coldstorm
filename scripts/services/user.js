@@ -36,6 +36,16 @@ Coldstorm.provider("User", function()
             }
         };
         
+        provider.move = function(oldName, newName)
+        {
+            if (oldName in registry)
+            {
+                registry[newName] = registry[oldName];
+                
+                delete registry[oldName];
+            }
+        };
+        
         return provider;
     };
 });

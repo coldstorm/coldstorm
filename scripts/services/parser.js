@@ -481,6 +481,42 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         }
     });
     registerMessage(modeMessage);
+    
+    var nickMessage = new Message(function(parts)
+    {
+        return parts[1] === "NICK";
+    }, function(parts)
+    {
+        var user = getUser(parts);
+        var newNickName = parts[2];
+        
+        console.log(Channel.all());
+        
+        var channels = Channel.all();
+        
+        for (var i = 0; i < channels.length; i++)
+        {
+            var channel = channels[i];
+            
+            console.log(channel);
+            
+            if (user.nickName === User.get("~").nickName)
+            {
+                channel.addLine("You were previously " + user.nickName + ".");
+            } else {
+                channel.addLine(newNickName + " was previously " +
+                                user.nickName + ".");
+            }
+        }
+        
+        $rootScope.$apply(function()
+        {
+            User.move(user.nickName, newNickName);
+            
+            user.nickName = newNickName;
+        })
+    });
+    registerMessage(nickMessage);
 
     $rootScope.$on("channel.join", function(evt, channel)
     {
