@@ -448,16 +448,37 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
                     case 'v':
                         currMode = "voice";
                         userTarget = User.get(parameters[paramIndex]);
+                        if (action === "sets")
+                        {
+                            userTarget.addRank(target, '+');
+                        } else if (action === "removes")
+                        {
+                            userTarget.removeRank(target, '+');
+                        }
                         paramIndex++;
                         break;
                     case 'h':
                         currMode = "halfop";
                         userTarget = User.get(parameters[paramIndex]);
+                        if (action === "sets")
+                        {
+                            userTarget.addRank(target, '%');
+                        } else if (action === "removes")
+                        {
+                            userTarget.removeRank(target, '%');
+                        }
                         paramIndex++;
                         break
                     case 'o':
                         currMode = "op";
                         userTarget = User.get(parameters[paramIndex]);
+                        if (action === "sets")
+                        {
+                            userTarget.addRank(target, '@');
+                        } else if (action === "removes")
+                        {
+                            userTarget.removeRank(target, '@');
+                        }
                         paramIndex++;
                         break;
                     default:
