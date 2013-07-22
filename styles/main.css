@@ -199,6 +199,20 @@ header
     margin-top: 3px;
 }
 
+.option
+{
+    color: #808080;
+    cursor: pointer;
+    margin-top: 1px;
+    margin-left: 30px;
+    display: block;
+}
+
+.option:hover
+{
+    font-weight: bold;
+}
+
 img.flag
 {
     vertical-align: middle;
