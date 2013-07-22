@@ -1,4 +1,6 @@
-<div class="motd" title="{{ date }}">
-    {{ message }} 
-    <user user="author"></user>
+<div class="motd">
+    <div class="motd" title="Topic set on {{ date }}" ng-show="message && author">
+        {{ message }} 
+        (by <user user="author"></user>)
+    </div>
 </div>

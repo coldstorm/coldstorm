@@ -342,7 +342,7 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         $rootScope.$apply(function(){
             channel.topicauthor = user;
             var date = new Date(parts[2]*1000);
-            channel.topicdate = "Topic set on " + date.toLocaleString();
+            channel.topicdate = date.toLocaleString();
         });
     });
     registerMessage(topicinfoMessage);
@@ -360,7 +360,7 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
         $rootScope.$apply(function(){
             channel.topic = topic;
             channel.topicauthor = author;
-            channel.topicdate = "Topic set on " + date.toLocaleString();
+            channel.topicdate = date.toLocaleString();
         });
         channel.addLine("Topic was changed by " + author.nickName + ".");
     });
