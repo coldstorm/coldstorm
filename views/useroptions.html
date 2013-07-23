@@ -1,5 +1,5 @@
-<div ng-show="userOptions">
-    <span class="option" ng-click="query(user)">query</span>
-    <span class="option" ng-click="kick(user)">kick</span>
-    <span class="option" ng-click="ban(user)">ban</span>
+<div ng-show="showOptions">
+    <span class="option" ng-click="query(user);showOptions = !showOptions">query</span>
+    <span class="option" ng-click="kick(user);showOptions = !showOptions">kick</span>
+    <span class="option" ng-click="ban(user);showOptions = !showOptions">ban</span>
 </div>

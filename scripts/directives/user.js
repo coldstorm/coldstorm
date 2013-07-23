@@ -19,7 +19,7 @@ Coldstorm.directive("user", function()
             }],
         replace: true,
         restrict: "E",
-        scope: { user: "=user", channel: "=channel" },
+        scope: { user: "=user", channel: "=channel", showOptions: "=options"},
         templateUrl: "views/user.html",
         transclude: true
     };

@@ -4,7 +4,7 @@ Coldstorm.directive("useroptions", function()
         controller: "UserOptionsCtrl",
         replace: true,
         restrict: "E",
-        scope: { user: "=user" },
+        scope: { user: "=user", showOptions: "=options" },
         templateUrl: "views/useroptions.html",
         transclude: true
     };
