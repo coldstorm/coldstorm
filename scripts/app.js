@@ -1,4 +1,4 @@
-var Coldstorm = angular.module("coldstorm", []);
+var Coldstorm = angular.module("coldstorm", ['colorpicker.module']);
 
 Coldstorm.config(["$routeProvider", function ($routeProvider)
 {

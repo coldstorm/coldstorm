@@ -1,29 +1,27 @@
 <form class="login" name="loginForm" ng-submit="login()">
     <div class="title">
-		<h1>Coldstorm</h1>
-	</div>
-	
-	<label for="username">
-	    Username
+        <h1>Coldstorm</h1>
+    </div>
+    
+    <label for="username">
+        Username
     </label>
-	
-	<input id="username" type="text" ng-model="user.nickName" required />
-	
-	<label for="password">
-	    Password
+    
+    <input id="username" type="text" ng-model="user.nickName" required />
+    
+    <label for="password">
+        Password
     </label>
-	
-	<input id="password" type="password" ng-model="user.password" required />
-	
-	<label for="color">
-	    Color
+    
+    <input id="password" type="password" ng-model="user.password" required />
+    
+    <label for="color">
+        Color
     </label>
-	
-	<script type="text/javascript" src="jscolor/jscolor.js"></script>
-	
-	<input id="color" type="color" ng-model="user.color" required />
-	
-	<button type="submit">Login</button>
+    
+    <input colorpicker="hex" class="span2" value="" type="text" ng-model="user.color" />
+    
+    <button type="submit">Login</button>
     
     <div class="preview" style="color:{{ user.color }}">
         <span class="time">[11:11]</span>
@@ -31,3 +29,4 @@
         <span class="message">I love this color!</span>
     </div>
 </form>
+ 
