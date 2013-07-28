@@ -1,4 +1,4 @@
-Coldstorm.directive("tabs", function()
+Coldstorm.directive("tabs", function ()
 {
     return {
         controller: "TabsCtrl",

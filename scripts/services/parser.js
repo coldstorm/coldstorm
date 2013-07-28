@@ -1,572 +1,586 @@
 Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "User",
-    function($http, $rootScope, Connection, Channel, User)
-{
-    var messages = [];
-
-    function Message(check, process)
+    function ($http, $rootScope, Connection, Channel, User)
     {
-        message = new Object();
-        message.check = check;
-        message.process = process;
+        var messages = [];
 
-        return message;
-    }
-
-    function registerMessage(message)
-    {
-        messages.push(message);
-    }
-
-    function clean(parts)
-    {
-        for (var i = 0; i < parts.length; i++)
+        function Message(check, process)
         {
-            if (parts[i][0] === ":")
-            {
-                parts[i] = parts[i].substring(1);
-            }
+            message = new Object();
+            message.check = check;
+            message.process = process;
+
+            return message;
         }
 
-        return parts;
-    }
-
-    function getChannel(parts)
-    {
-        return Channel.get(parts[2]);
-    }
-
-    function getUser(parts)
-    {
-        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-        var matches = parts[0].match(regexp);
-
-        if (matches !== null)
+        function registerMessage(message)
         {
-            return User.get(matches[1]);
+            messages.push(message);
         }
 
-        return null;
-    }
-
-    var welcomeHandlers = [];
-
-    var welcomeMessage = new Message(function(parts)
-    {
-        return parts[1] === "001";
-    }, function(parts)
-    {
-        for (var i = 0; i < welcomeHandlers.length; i++)
+        function clean(parts)
         {
-            welcomeHandlers[i]();
-        }
-    });
-    registerMessage(welcomeMessage);
-
-    Connection.onWelcome = function(handler)
-    {
-        welcomeHandlers.push(handler);
-    };
-
-    var noticeMessage = new Message(function(parts)
-    {
-        return parts[1] === "NOTICE";
-    }, function(parts)
-    {
-        return;
-    });
-    registerMessage(noticeMessage);
-
-    var motdMessage = new Message(function(parts)
-    {
-        return parts[1] === "372";
-    }, function(parts)
-    {
-        return;
-    });
-    registerMessage(motdMessage);
-
-    var pingMessage = new Message(function(parts)
-    {
-        return parts[0] === "PING";
-    }, function(parts)
-    {
-        Connection.send("PONG " + parts[1]);
-    });
-    registerMessage(pingMessage);
-
-    var privMessage = new Message(function(parts)
-    {
-        return parts[1] === "PRIVMSG" && getChannel(parts) !== null;
-    }, function(parts)
-    {
-        var channel = getChannel(parts);
-        var user = getUser(parts);
-        var line = parts.slice(3).join(" ");
-
-        $rootScope.$broadcast("channel.message", {
-            channel: channel,
-            user: user,
-            line: line
-        });
-    });
-    registerMessage(privMessage);
-
-    var namesMessage = new Message(function(parts)
-    {
-        return parts[1] === "353";
-    }, function(parts)
-    {
-        var channel = Channel.get(parts[4]);
-        parts = parts.slice(5).filter(function(n)
-        {
-            return n;
-        });
-
-       for (var i = 0; i < parts.length; i++)
-       {
-            if (["+","%","@"].indexOf(parts[i][0]) != -1)
+            for (var i = 0; i < parts.length; i++)
             {
-                var user = User.get(parts[i].substring(1));
-            } else {
-                var user = User.get(parts[i]);
-            }
-            channel.addUser(user);
-       }
-
-       Connection.send("WHO " + channel.name);
-    });
-    registerMessage(namesMessage);
-
-    var whoMessage = new Message(function(parts)
-    {
-        return parts[1] === "352";
-    }, function(parts)
-    {
-        parts = parts.slice(3).filter(function(n){return n});
-        var channel = Channel.get(parts[0]);
-        var user = User.get(parts[4]);
-        
-        var username = parts[1];
-        var rank = parts[5].charAt(parts[5].length-1);
-
-        if (rank != "" && ["+","%","@"].indexOf(rank) != -1)
-        {
-            $rootScope.$apply(function(){user.ranks[channel.name] = rank});
-        }
-
-        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-        var matches = username.match(colorflag_regexp);
-
-        if (matches != null)
-        {
-            $rootScope.$apply(function()
-            {
-                user.color = "#" + matches[1];
-                user.flag = matches[2];
-            });
-        }
-        
-        $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function(data){
-            if (data[1][0].name)
-            {
-                user.country = data[1][0].name;
-            }
-        });
-        
-        channel.sortusers();
-    });
-    registerMessage(whoMessage);
-    
-    var whoisuserMessage = new Message(function(parts)
-    {
-        return parts[1] === "311";
-    }, function(parts)
-    {
-        parts = parts.slice(3).filter(function(n){return n});
-        var user = User.get(parts[0]);
-        var username = parts[1];
-        
-        var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-        var matches = username.match(colorflag_regexp);
-        
-        if (matches != null)
-        {
-            $rootScope.$apply(function()
-            {
-                user.color = "#" + matches[1];
-                user.flag = matches[2];
-            });
-        }
-        
-        $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function(data){
-            if (data[1][0].name)
-            {
-                user.country = data[1][0].name;
-            }
-        });
-    });
-    registerMessage(whoisuserMessage);
-    
-    var whoischannelsMessage = new Message(function(parts)
-    {
-        return parts[1] === "319";
-    }, function(parts)
-    {
-        parts = parts.slice(3).filter(function(n){return n});
-        var user = User.get(parts[0]);
-        
-        for (var i = 1; i < parts.length; i++)
-        {
-            if (["+","%","@"].indexOf(parts[i][0]) != -1)
-            {
-                var rank = parts[i][0];
-                var channel = Channel.get(parts[i].substring(1));
-                
-                if (channel)
+                if (parts[i][0] === ":")
                 {
-                    user.ranks[channel.name] = rank;
-                    channel.sortusers();
-                }
-            } else {
-                var channel = Channel.get(parts[i]);
-                
-                if (channel)
-                {
-                    user.ranks[channel.name] = "";
-                    channel.sortusers();
+                    parts[i] = parts[i].substring(1);
                 }
             }
+
+            return parts;
         }
-    });
-    registerMessage(whoischannelsMessage);
-    
-    var joinMessage = new Message(function(parts)
-    {
-        return parts[1] === "JOIN";
-    }, function(parts)
-    {
-        var user = getUser(parts);
-        var channel = Channel.get(parts[2]);
-        
-        if (user.nickName === User.get("~").nickName)
+
+        function getChannel(parts)
         {
-            $rootScope.$broadcast("channel.joined", channel);
-        } else {
-            channel.addLine(user.nickName + " joined the room.");
-            channel.addUser(user);
+            return Channel.get(parts[2]);
+        }
+
+        function getUser(parts)
+        {
+            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
+            var matches = parts[0].match(regexp);
+
+            if (matches !== null)
+            {
+                return User.get(matches[1]);
+            }
+
+            return null;
+        }
+
+        var welcomeHandlers = [];
+
+        var welcomeMessage = new Message(function (parts)
+        {
+            return parts[1] === "001";
+        }, function (parts)
+        {
+            for (var i = 0; i < welcomeHandlers.length; i++)
+            {
+                welcomeHandlers[i]();
+            }
+        });
+        registerMessage(welcomeMessage);
+
+        Connection.onWelcome = function (handler)
+        {
+            welcomeHandlers.push(handler);
+        };
+
+        var noticeMessage = new Message(function (parts)
+        {
+            return parts[1] === "NOTICE";
+        }, function (parts)
+        {
+            return;
+        });
+        registerMessage(noticeMessage);
+
+        var motdMessage = new Message(function (parts)
+        {
+            return parts[1] === "372";
+        }, function (parts)
+        {
+            return;
+        });
+        registerMessage(motdMessage);
+
+        var pingMessage = new Message(function (parts)
+        {
+            return parts[0] === "PING";
+        }, function (parts)
+        {
+            Connection.send("PONG " + parts[1]);
+        });
+        registerMessage(pingMessage);
+
+        var privMessage = new Message(function (parts)
+        {
+            return parts[1] === "PRIVMSG" && getChannel(parts) !== null;
+        }, function (parts)
+        {
+            var channel = getChannel(parts);
+            var user = getUser(parts);
+            var line = parts.slice(3).join(" ");
+
+            $rootScope.$broadcast("channel.message", {
+                channel: channel,
+                user: user,
+                line: line
+            });
+        });
+        registerMessage(privMessage);
+
+        var namesMessage = new Message(function (parts)
+        {
+            return parts[1] === "353";
+        }, function (parts)
+        {
+            var channel = Channel.get(parts[4]);
+            parts = parts.slice(5).filter(function (n)
+            {
+                return n;
+            });
+
+            for (var i = 0; i < parts.length; i++)
+            {
+                if (["+", "%", "@"].indexOf(parts[i][0]) != -1)
+                {
+                    var user = User.get(parts[i].substring(1));
+                } else
+                {
+                    var user = User.get(parts[i]);
+                }
+                channel.addUser(user);
+            }
+
+            Connection.send("WHO " + channel.name);
+        });
+        registerMessage(namesMessage);
+
+        var whoMessage = new Message(function (parts)
+        {
+            return parts[1] === "352";
+        }, function (parts)
+        {
+            parts = parts.slice(3).filter(function (n) { return n });
+            var channel = Channel.get(parts[0]);
+            var user = User.get(parts[4]);
+
+            var username = parts[1];
+            var rank = parts[5].charAt(parts[5].length - 1);
+
+            if (rank != "" && ["+", "%", "@"].indexOf(rank) != -1)
+            {
+                $rootScope.$apply(function () { user.ranks[channel.name] = rank });
+            }
+
+            var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
+            var matches = username.match(colorflag_regexp);
+
+            if (matches != null)
+            {
+                $rootScope.$apply(function ()
+                {
+                    user.color = "#" + matches[1];
+                    user.flag = matches[2];
+                });
+            }
+
+            $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
+            {
+                if (data[1][0].name)
+                {
+                    user.country = data[1][0].name;
+                }
+            });
+
             channel.sortusers();
-        }
-        
-        Connection.send("WHOIS " + user.nickName);
-    });
-    registerMessage(joinMessage);
-    
-    var partMessage = new Message(function(parts)
-    {
-        return parts[1] === "PART";
-    }, function(parts)
-    {
-        var user = getUser(parts);
-        var channel = Channel.get(parts[2]);
-        var reason = parts.slice(3).join(" ");
-        
-        if (user.nickName !== User.get("~").nickName)
-        {
-            if (reason == null)
-            {
-                channel.addLine(user.nickName + " left the room.");
-            } else {
-                channel.addLine(user.nickName + " left the room (" + reason + ").");
-            }
-            channel.users.splice(channel.users.indexOf(user), 1);
-        }
-    });
-    registerMessage(partMessage);
-    
-    var quitMessage = new Message(function(parts)
-    {
-        return parts[1] === "QUIT";
-    }, function(parts)
-    {
-        var user = getUser(parts);
-        var reason = parts.slice(2).join(" ");
-        
-        var channels = Channel.all();
-        for (var i = 0; i < channels.length; i++)
-        {
-            if (channels[i].users.indexOf(user) != -1)
-            {
-                if (reason == null)
-                {
-                    channels[i].addLine(user.nickName + " quit.");
-                } else {
-                    channels[i].addLine(user.nickName + " quit (" + reason + ").");
-                }
-                channels[i].users.splice(channels[i].users.indexOf(user), 1);
-            }
-        }
-    });
-    registerMessage(quitMessage);
-    
-    var topicMessage = new Message(function(parts)
-    {
-        return parts[1] === "332";
-    }, function(parts)
-    {
-        parts = parts.slice(3).filter(function(n){return n});
-        var channel = Channel.get(parts[0]);
-        
-        if (channel != null)
-        {
-            $rootScope.$apply(function() {channel.topic = parts.slice(1).join(" ")});
-        }
-    });
-    registerMessage(topicMessage);
-    
-    var topicinfoMessage = new Message(function(parts)
-    {
-        return parts[1] === "333";
-    }, function(parts)
-    {
-        parts = parts.slice(3).filter(function(n){return n});
-        var channel = Channel.get(parts[0]);
-        var user;
-        var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-        var matches = parts[1].match(regexp);
-        
-        if (matches !== null)
-        {
-            user = User.get(matches[1]);
-        }
-        
-        $rootScope.$apply(function(){
-            channel.topicauthor = user;
-            var date = new Date(parts[2]*1000);
-            channel.topicdate = date.toLocaleString();
         });
-    });
-    registerMessage(topicinfoMessage);
-    
-    var topicchangeMessage = new Message(function(parts)
-    {
-        return parts[1] === "TOPIC";
-    }, function(parts)
-    {
-        var author = getUser(parts);
-        var channel = Channel.get(parts[2]);
-        var topic = parts.slice(3).join(" ");
-        var date = new Date(Date.now());
-        
-        $rootScope.$apply(function(){
-            channel.topic = topic;
-            channel.topicauthor = author;
-            channel.topicdate = date.toLocaleString();
-        });
-        channel.addLine("Topic was changed by " + author.nickName + ".");
-    });
-    registerMessage(topicchangeMessage);
-    
-    var kickMessage = new Message(function(parts)
-    {
-        return parts[1] === "KICK";
-    }, function(parts)
-    {
-        var kicker = getUser(parts);
-        var channel = Channel.get(parts[2]);
-        var target = User.get(parts[3]);
-        var reason = parts.slice(4).join(" ");
-        
-        if (target.nickName === User.get("~").nickName)
+        registerMessage(whoMessage);
+
+        var whoisuserMessage = new Message(function (parts)
         {
-            if (reason == null)
-            {
-                channel.addLine("You were kicked by " + kicker.nickName + ".");
-            } else {
-                channel.addLine("You were kicked by " + kicker.nickName + " (" + reason + ").");
-            }
-            $rootScope.$apply(function(){channel.users.length = 0});
-        } else {
-            if (reason == null)
-            {
-                channel.addLine(target.nickName + " was kicked by " + kicker.nickName + ".");
-            } else {
-                channel.addLine(target.nickName + " was kicked by " + kicker.nickName + " (" + reason + ").");
-            }
-            $rootScope.$apply(function(){channel.users.splice(channel.users.indexOf(target), 1)});
-        }
-    });
-    registerMessage(kickMessage);
-    
-    var modeMessage = new Message(function(parts)
-    {
-        return parts[1] === "MODE";
-    }, function(parts)
-    {
-        var setter = getUser(parts);
-        var target = parts[2];
-        var modes = parts[3];
-        var parameters = parts.slice(4);
-        
-        if (target === User.get("~").nickName)
+            return parts[1] === "311";
+        }, function (parts)
         {
-            //this is my mode, ignore
-        } else {
-            target = Channel.get(target);
-            //this is a channel mode
-            var action = "";
-            var currMode = "";
-            var paramIndex = 0;
-            var userTarget;
-            for (var i = 0; i < modes.length; i++)
+            parts = parts.slice(3).filter(function (n) { return n });
+            var user = User.get(parts[0]);
+            var username = parts[1];
+
+            var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
+            var matches = username.match(colorflag_regexp);
+
+            if (matches != null)
             {
-                switch (modes[i])
+                $rootScope.$apply(function ()
                 {
-                    case '+':
-                        action = "sets";
-                        break;
-                    case '-':
-                        action = "removes";
-                        break;
-                    case 'i':
-                        currMode = "invite only";
-                        break;
-                    case 'm':
-                        currMode = "moderated";
-                        break;
-                    case 'n':
-                        currMode = "no outside messages";
-                        break;
-                    case 'p':
-                        currMode = "private";
-                        break;
-                    case 's':
-                        currMode = "secret";
-                        break;
-                    case 't':
-                        currMode = "topic protection";
-                        break;
-                    case 'v':
-                        currMode = "voice";
-                        userTarget = User.get(parameters[paramIndex]);
-                        if (action === "sets")
-                        {
-                            userTarget.addRank(target, '+');
-                        } else if (action === "removes")
-                        {
-                            userTarget.removeRank(target, '+');
-                        }
-                        paramIndex++;
-                        break;
-                    case 'h':
-                        currMode = "halfop";
-                        userTarget = User.get(parameters[paramIndex]);
-                        if (action === "sets")
-                        {
-                            userTarget.addRank(target, '%');
-                        } else if (action === "removes")
-                        {
-                            userTarget.removeRank(target, '%');
-                        }
-                        paramIndex++;
-                        break
-                    case 'o':
-                        currMode = "op";
-                        userTarget = User.get(parameters[paramIndex]);
-                        if (action === "sets")
-                        {
-                            userTarget.addRank(target, '@');
-                        } else if (action === "removes")
-                        {
-                            userTarget.removeRank(target, '@');
-                        }
-                        paramIndex++;
-                        break;
-                    default:
-                      
+                    user.color = "#" + matches[1];
+                    user.flag = matches[2];
+                });
+            }
+
+            $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
+            {
+                if (data[1][0].name)
+                {
+                    user.country = data[1][0].name;
                 }
-                
-                if ("imnpst".indexOf(modes[i]) != -1)
+            });
+        });
+        registerMessage(whoisuserMessage);
+
+        var whoischannelsMessage = new Message(function (parts)
+        {
+            return parts[1] === "319";
+        }, function (parts)
+        {
+            parts = parts.slice(3).filter(function (n) { return n });
+            var user = User.get(parts[0]);
+
+            for (var i = 1; i < parts.length; i++)
+            {
+                if (["+", "%", "@"].indexOf(parts[i][0]) != -1)
                 {
-                    target.addLine(setter.nickName + " " + action + " mode \"" + currMode + "\".");
-                } else if ("vho".indexOf(modes[i]) != -1)
+                    var rank = parts[i][0];
+                    var channel = Channel.get(parts[i].substring(1));
+
+                    if (channel)
+                    {
+                        user.ranks[channel.name] = rank;
+                        channel.sortusers();
+                    }
+                } else
                 {
-                    if (action === "sets")
+                    var channel = Channel.get(parts[i]);
+
+                    if (channel)
                     {
-                        target.addLine(setter.nickName + " gives " + currMode + " to " + userTarget.nickName + ".");
-                    } else if (action === "removes")
-                    {
-                        target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
+                        user.ranks[channel.name] = "";
+                        channel.sortusers();
                     }
                 }
             }
-        }
-    });
-    registerMessage(modeMessage);
-    
-    var nickMessage = new Message(function(parts)
-    {
-        return parts[1] === "NICK";
-    }, function(parts)
-    {
-        var user = getUser(parts);
-        var newNickName = parts[2];
-        
-        console.log(Channel.all());
-        
-        var channels = Channel.all();
-        
-        for (var i = 0; i < channels.length; i++)
+        });
+        registerMessage(whoischannelsMessage);
+
+        var joinMessage = new Message(function (parts)
         {
-            var channel = channels[i];
-            
-            console.log(channel);
-            
+            return parts[1] === "JOIN";
+        }, function (parts)
+        {
+            var user = getUser(parts);
+            var channel = Channel.get(parts[2]);
+
             if (user.nickName === User.get("~").nickName)
             {
-                channel.addLine("You were previously " + user.nickName + ".");
-            } else {
-                channel.addLine(newNickName + " was previously " +
-                                user.nickName + ".");
-            }
-        }
-        
-        $rootScope.$apply(function()
-        {
-            User.move(user.nickName, newNickName);
-            
-            user.nickName = newNickName;
-        })
-    });
-    registerMessage(nickMessage);
-
-    $rootScope.$on("channel.join", function(evt, channel)
-    {
-        Connection.send("JOIN " + channel.name);
-    });
-
-    $rootScope.$on("channel.close", function(evt, channel)
-    {
-        Connection.send("PART " + channel.name);
-    });
-
-    return {
-        parse: function(line)
-        {
-            console.log("< " + line);
-
-            var parts = clean(line.split(" "));
-
-            for (var mIndex = 0; mIndex < messages.length; mIndex++)
+                $rootScope.$broadcast("channel.joined", channel);
+            } else
             {
-                var message = messages[mIndex];
+                channel.addLine(user.nickName + " joined the room.");
+                channel.addUser(user);
+                channel.sortusers();
+            }
 
-                if (message.check(parts))
+            Connection.send("WHOIS " + user.nickName);
+        });
+        registerMessage(joinMessage);
+
+        var partMessage = new Message(function (parts)
+        {
+            return parts[1] === "PART";
+        }, function (parts)
+        {
+            var user = getUser(parts);
+            var channel = Channel.get(parts[2]);
+            var reason = parts.slice(3).join(" ");
+
+            if (user.nickName !== User.get("~").nickName)
+            {
+                if (reason == null)
                 {
-                    message.process(parts);
+                    channel.addLine(user.nickName + " left the room.");
+                } else
+                {
+                    channel.addLine(user.nickName + " left the room (" + reason + ").");
+                }
+                channel.users.splice(channel.users.indexOf(user), 1);
+            }
+        });
+        registerMessage(partMessage);
+
+        var quitMessage = new Message(function (parts)
+        {
+            return parts[1] === "QUIT";
+        }, function (parts)
+        {
+            var user = getUser(parts);
+            var reason = parts.slice(2).join(" ");
+
+            var channels = Channel.all();
+            for (var i = 0; i < channels.length; i++)
+            {
+                if (channels[i].users.indexOf(user) != -1)
+                {
+                    if (reason == null)
+                    {
+                        channels[i].addLine(user.nickName + " quit.");
+                    } else
+                    {
+                        channels[i].addLine(user.nickName + " quit (" + reason + ").");
+                    }
+                    channels[i].users.splice(channels[i].users.indexOf(user), 1);
                 }
             }
-        },
+        });
+        registerMessage(quitMessage);
 
-        addMessage: registerMessage
-    };
-}]);
+        var topicMessage = new Message(function (parts)
+        {
+            return parts[1] === "332";
+        }, function (parts)
+        {
+            parts = parts.slice(3).filter(function (n) { return n });
+            var channel = Channel.get(parts[0]);
+
+            if (channel != null)
+            {
+                $rootScope.$apply(function () { channel.topic = parts.slice(1).join(" ") });
+            }
+        });
+        registerMessage(topicMessage);
+
+        var topicinfoMessage = new Message(function (parts)
+        {
+            return parts[1] === "333";
+        }, function (parts)
+        {
+            parts = parts.slice(3).filter(function (n) { return n });
+            var channel = Channel.get(parts[0]);
+            var user;
+            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
+            var matches = parts[1].match(regexp);
+
+            if (matches !== null)
+            {
+                user = User.get(matches[1]);
+            }
+
+            $rootScope.$apply(function ()
+            {
+                channel.topicauthor = user;
+                var date = new Date(parts[2] * 1000);
+                channel.topicdate = date.toLocaleString();
+            });
+        });
+        registerMessage(topicinfoMessage);
+
+        var topicchangeMessage = new Message(function (parts)
+        {
+            return parts[1] === "TOPIC";
+        }, function (parts)
+        {
+            var author = getUser(parts);
+            var channel = Channel.get(parts[2]);
+            var topic = parts.slice(3).join(" ");
+            var date = new Date(Date.now());
+
+            $rootScope.$apply(function ()
+            {
+                channel.topic = topic;
+                channel.topicauthor = author;
+                channel.topicdate = date.toLocaleString();
+            });
+            channel.addLine("Topic was changed by " + author.nickName + ".");
+        });
+        registerMessage(topicchangeMessage);
+
+        var kickMessage = new Message(function (parts)
+        {
+            return parts[1] === "KICK";
+        }, function (parts)
+        {
+            var kicker = getUser(parts);
+            var channel = Channel.get(parts[2]);
+            var target = User.get(parts[3]);
+            var reason = parts.slice(4).join(" ");
+
+            if (target.nickName === User.get("~").nickName)
+            {
+                if (reason == null)
+                {
+                    channel.addLine("You were kicked by " + kicker.nickName + ".");
+                } else
+                {
+                    channel.addLine("You were kicked by " + kicker.nickName + " (" + reason + ").");
+                }
+                $rootScope.$apply(function () { channel.users.length = 0 });
+            } else
+            {
+                if (reason == null)
+                {
+                    channel.addLine(target.nickName + " was kicked by " + kicker.nickName + ".");
+                } else
+                {
+                    channel.addLine(target.nickName + " was kicked by " + kicker.nickName + " (" + reason + ").");
+                }
+                $rootScope.$apply(function () { channel.users.splice(channel.users.indexOf(target), 1) });
+            }
+        });
+        registerMessage(kickMessage);
+
+        var modeMessage = new Message(function (parts)
+        {
+            return parts[1] === "MODE";
+        }, function (parts)
+        {
+            var setter = getUser(parts);
+            var target = parts[2];
+            var modes = parts[3];
+            var parameters = parts.slice(4);
+
+            if (target === User.get("~").nickName)
+            {
+                //this is my mode, ignore
+            } else
+            {
+                target = Channel.get(target);
+                //this is a channel mode
+                var action = "";
+                var currMode = "";
+                var paramIndex = 0;
+                var userTarget;
+                for (var i = 0; i < modes.length; i++)
+                {
+                    switch (modes[i])
+                    {
+                        case '+':
+                            action = "sets";
+                            break;
+                        case '-':
+                            action = "removes";
+                            break;
+                        case 'i':
+                            currMode = "invite only";
+                            break;
+                        case 'm':
+                            currMode = "moderated";
+                            break;
+                        case 'n':
+                            currMode = "no outside messages";
+                            break;
+                        case 'p':
+                            currMode = "private";
+                            break;
+                        case 's':
+                            currMode = "secret";
+                            break;
+                        case 't':
+                            currMode = "topic protection";
+                            break;
+                        case 'v':
+                            currMode = "voice";
+                            userTarget = User.get(parameters[paramIndex]);
+                            if (action === "sets")
+                            {
+                                userTarget.addRank(target, '+');
+                            } else if (action === "removes")
+                            {
+                                userTarget.removeRank(target, '+');
+                            }
+                            paramIndex++;
+                            break;
+                        case 'h':
+                            currMode = "halfop";
+                            userTarget = User.get(parameters[paramIndex]);
+                            if (action === "sets")
+                            {
+                                userTarget.addRank(target, '%');
+                            } else if (action === "removes")
+                            {
+                                userTarget.removeRank(target, '%');
+                            }
+                            paramIndex++;
+                            break
+                        case 'o':
+                            currMode = "op";
+                            userTarget = User.get(parameters[paramIndex]);
+                            if (action === "sets")
+                            {
+                                userTarget.addRank(target, '@');
+                            } else if (action === "removes")
+                            {
+                                userTarget.removeRank(target, '@');
+                            }
+                            paramIndex++;
+                            break;
+                        default:
+
+                    }
+
+                    if ("imnpst".indexOf(modes[i]) != -1)
+                    {
+                        target.addLine(setter.nickName + " " + action + " mode \"" + currMode + "\".");
+                    } else if ("vho".indexOf(modes[i]) != -1)
+                    {
+                        if (action === "sets")
+                        {
+                            target.addLine(setter.nickName + " gives " + currMode + " to " + userTarget.nickName + ".");
+                        } else if (action === "removes")
+                        {
+                            target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
+                        }
+                    }
+                }
+            }
+        });
+        registerMessage(modeMessage);
+
+        var nickMessage = new Message(function (parts)
+        {
+            return parts[1] === "NICK";
+        }, function (parts)
+        {
+            var user = getUser(parts);
+            var newNickName = parts[2];
+
+            console.log(Channel.all());
+
+            var channels = Channel.all();
+
+            for (var i = 0; i < channels.length; i++)
+            {
+                var channel = channels[i];
+
+                console.log(channel);
+
+                if (user.nickName === User.get("~").nickName)
+                {
+                    channel.addLine("You were previously " + user.nickName + ".");
+                } else
+                {
+                    channel.addLine(newNickName + " was previously " +
+                                    user.nickName + ".");
+                }
+            }
+
+            $rootScope.$apply(function ()
+            {
+                User.move(user.nickName, newNickName);
+
+                user.nickName = newNickName;
+            })
+        });
+        registerMessage(nickMessage);
+
+        $rootScope.$on("channel.join", function (evt, channel)
+        {
+            Connection.send("JOIN " + channel.name);
+        });
+
+        $rootScope.$on("channel.close", function (evt, channel)
+        {
+            Connection.send("PART " + channel.name);
+        });
+
+        return {
+            parse: function (line)
+            {
+                console.log("< " + line);
+
+                var parts = clean(line.split(" "));
+
+                for (var mIndex = 0; mIndex < messages.length; mIndex++)
+                {
+                    var message = messages[mIndex];
+
+                    if (message.check(parts))
+                    {
+                        message.process(parts);
+                    }
+                }
+            },
+
+            addMessage: registerMessage
+        };
+    }]);

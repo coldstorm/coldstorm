@@ -1,28 +1,28 @@
-Coldstorm.factory("Channel", function($rootScope)
+Coldstorm.factory("Channel", function ($rootScope)
 {
-    var registry = { };
+    var registry = {};
 
-    $rootScope.$on("channel.joined", function(evt, channel)
+    $rootScope.$on("channel.joined", function (evt, channel)
     {
         channel.addLine("You joined the room.");
     });
 
-    $rootScope.$on("channel.message", function(evt, message)
+    $rootScope.$on("channel.message", function (evt, message)
     {
         channel = message.channel;
         line = message.line;
         user = message.user;
-        
+
         channel.addLine(line, user);
     });
 
     channels = {
-        register: function(name)
+        register: function (name)
         {
             name = name.replace("%23", "#");
 
             registry[name] = {
-                addLine: function(message, author)
+                addLine: function (message, author)
                 {
                     line = {
                         author: null,
@@ -42,14 +42,14 @@ Coldstorm.factory("Channel", function($rootScope)
                     line.message = message;
                     var channel = this;
 
-                    $rootScope.$apply(function()
+                    $rootScope.$apply(function ()
                     {
                         channel.lines.push(line)
                     });
 
                     return this;
                 },
-                addUser: function(user)
+                addUser: function (user)
                 {
                     this.users.push(user);
 
@@ -58,14 +58,14 @@ Coldstorm.factory("Channel", function($rootScope)
                     return this;
                 },
                 active: false,
-                join: function()
+                join: function ()
                 {
                     $rootScope.$broadcast("channel.join", this);
                 },
-                leave: function()
+                leave: function ()
                 {
                     $rootScope.$broadcast("channel.close", this);
-                    
+
                     delete registry[this.name];
                 },
                 lines: [],
@@ -74,25 +74,25 @@ Coldstorm.factory("Channel", function($rootScope)
                 topicauthor: {},
                 topicdate: "",
                 users: [],
-                sortusers: function()
+                sortusers: function ()
                 {
                     var channel = this;
-                    $rootScope.$apply(function()
+                    $rootScope.$apply(function ()
                     {
-                        channel.users = channel.users.sort(function(a, b)
+                        channel.users = channel.users.sort(function (a, b)
                         {
                             var ranks = ["", "+", "%", "@"];
-                            
+
                             if (a.ranks[channel.name] != b.ranks[channel.name])
                             {
                                 if (ranks.indexOf(a.ranks[channel.name]) > ranks.indexOf(b.ranks[channel.name]))
                                 {
                                     return -1;
                                 }
-                                
+
                                 return 1;
                             }
-                            
+
                             return a.nickName.localeCompare(b.nickName);
                         });
                     });
@@ -102,7 +102,7 @@ Coldstorm.factory("Channel", function($rootScope)
             return registry[name];
         },
 
-        all: function()
+        all: function ()
         {
             var channels = [];
 
@@ -114,7 +114,7 @@ Coldstorm.factory("Channel", function($rootScope)
             return channels;
         },
 
-        get: function(name)
+        get: function (name)
         {
             return registry[name];
         }

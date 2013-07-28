@@ -1,4 +1,4 @@
-Coldstorm.factory("Connection", function()
+Coldstorm.factory("Connection", function ()
 {
     var connection = new Websock();
 
@@ -6,7 +6,7 @@ Coldstorm.factory("Connection", function()
     var messageHandlers = [];
     var closeHandlers = [];
 
-    connection.on("open", function()
+    connection.on("open", function ()
     {
         for (var handlerIndex = 0; handlerIndex < openHandlers.length; handlerIndex++)
         {
@@ -16,10 +16,10 @@ Coldstorm.factory("Connection", function()
         }
     });
 
-    connection.on("message", function()
+    connection.on("message", function ()
     {
         var messages = connection.rQshiftStr().split("\r\n");
-        messages = messages.filter(function(n) { return n });
+        messages = messages.filter(function (n) { return n });
 
         for (var messageIndex = 0; messageIndex < messages.length; messageIndex++)
         {
@@ -34,7 +34,7 @@ Coldstorm.factory("Connection", function()
         }
     });
 
-    connection.on("close", function()
+    connection.on("close", function ()
     {
         for (var handlerIndex = 0; handlerIndex < closeHandlers.length; handlerIndex++)
         {
@@ -45,23 +45,23 @@ Coldstorm.factory("Connection", function()
     });
 
     return {
-        connect: function(uri)
+        connect: function (uri)
         {
             connection.open(uri);
         },
-        onOpen: function(handler)
+        onOpen: function (handler)
         {
             openHandlers.push(handler);
         },
-        onMessage: function(handler)
+        onMessage: function (handler)
         {
             messageHandlers.push(handler);
         },
-        onClose: function(handler)
+        onClose: function (handler)
         {
             closeHandlers.push(handler);
         },
-        send: function(message)
+        send: function (message)
         {
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
             console.log("> " + message);

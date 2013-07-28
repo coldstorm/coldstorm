@@ -1,4 +1,4 @@
-Coldstorm.directive("lines", function()
+Coldstorm.directive("lines", function ()
 {
     return {
         controller: "LinesCtrl",
