@@ -48,6 +48,18 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
             return null;
         }
 
+        // Checks if the message is a CTCP message and returns the CTCP command or null
+        function getCTCP(parts)
+        {
+            if ((parts[1] === "NOTICE" || parts[1] === "PRIVMSG") && parts[3].indexOf("\001") === 0)
+            {
+                parts[3] = parts[3].replace("\001", "");
+                return parts[3];
+            }
+
+            return null;
+        }
+
         var welcomeHandlers = [];
 
         var welcomeMessage = new Message(function (parts)
@@ -96,7 +108,9 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
 
         var privMessage = new Message(function (parts)
         {
-            return parts[1] === "PRIVMSG" && getChannel(parts) !== null;
+            return (parts[1] === "PRIVMSG" &&
+                    getChannel(parts) !== null &&
+                    getCTCP(parts) === null);
         }, function (parts)
         {
             var channel = getChannel(parts);
@@ -552,6 +566,15 @@ Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Us
             })
         });
         registerMessage(nickMessage);
+
+        var actionMessage = new Message(function (parts)
+        {
+            return getCTCP(parts) === "ACTION";
+        }, function (parts)
+        {
+            console.log("Received CTCP ACTION");
+        });
+        registerMessage(actionMessage);
 
         $rootScope.$on("channel.join", function (evt, channel)
         {
