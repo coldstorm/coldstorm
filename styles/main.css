@@ -142,9 +142,20 @@ header {
     color: #babbbf;
 }
 
+    .message .spoiler {
+        background-color: #000000;
+        color: #000000;
+    }
+
+        .message .spoiler:hover {
+            background-color: inherit;
+            color: inherit;
+        }
+
 .systemMessage {
     color: #808080;
 }
+
 
 .chat-input {
     height: 21px;
