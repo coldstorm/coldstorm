@@ -1,4 +1,4 @@
-Coldstorm.directive("user", function ()
+Directives.directive("user", function ()
 {
     return {
         controller: ["$scope", function ($scope)

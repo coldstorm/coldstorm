@@ -1,4 +1,4 @@
-Coldstorm.factory("Channel", function ($rootScope)
+Services.factory("Channel", function ($rootScope)
 {
     var registry = {};
 

@@ -1,4 +1,4 @@
-Coldstorm.controller("TabsCtrl", ["$scope", function ($scope)
+Controllers.controller("TabsCtrl", ["$scope", function ($scope)
 {
     $scope.$on("channel.message", function (evt, message)
     {

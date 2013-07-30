@@ -1,4 +1,4 @@
-Coldstorm.factory("Connection", function ()
+Services.factory("Connection", function ()
 {
     var connection = new Websock();
 

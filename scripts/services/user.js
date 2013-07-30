@@ -1,4 +1,4 @@
-Coldstorm.provider("User", function ()
+Services.provider("User", function ()
 {
     var currentUser = "";
 

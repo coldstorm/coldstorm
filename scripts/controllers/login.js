@@ -1,4 +1,4 @@
-Coldstorm.controller("LoginCtrl",
+Controllers.controller("LoginCtrl",
     ["$scope", "$http", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel", "Parser",
     function ($scope, $http, $rootScope, $location, $timeout, Connection, User, Channel, Parser)
     {

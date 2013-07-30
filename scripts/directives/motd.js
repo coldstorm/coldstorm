@@ -1,4 +1,4 @@
-Coldstorm.directive("motd", function ()
+Directives.directive("motd", function ()
 {
     return {
         controller: "MotdCtrl",

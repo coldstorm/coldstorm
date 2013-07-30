@@ -1,4 +1,4 @@
-Coldstorm.directive("useroptions", function ()
+Directives.directive("useroptions", function ()
 {
     return {
         controller: "UserOptionsCtrl",

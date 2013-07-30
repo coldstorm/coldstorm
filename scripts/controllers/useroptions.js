@@ -1,4 +1,4 @@
-Coldstorm.controller("UserOptionsCtrl", ["$scope", function ($scope)
+Controllers.controller("UserOptionsCtrl", ["$scope", function ($scope)
 {
 
 }]);

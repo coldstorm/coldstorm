@@ -1,4 +1,4 @@
-Coldstorm.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "User",
+Services.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "User",
     function ($http, $rootScope, Connection, Channel, User)
     {
         var messages = [];

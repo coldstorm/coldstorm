@@ -1,4 +1,4 @@
-Coldstorm.controller("ChannelCtrl",
+Controllers.controller("ChannelCtrl",
     ["$scope", "$routeParams", "$location", "User", "Channel", "Connection",
     function ($scope, $routeParams, $location, User, Channel, Connection)
     {

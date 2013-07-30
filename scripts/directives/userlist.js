@@ -1,4 +1,4 @@
-Coldstorm.directive("userlist", function ()
+Directives.directive("userlist", function ()
 {
     return {
         controller: "UserListCtrl",

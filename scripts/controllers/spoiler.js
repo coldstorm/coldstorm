@@ -1,4 +1,4 @@
-﻿Coldstorm.controller("SpoilerCtrl", function ()
+﻿Controllers.controller("SpoilerCtrl", function ()
 {
 
 });

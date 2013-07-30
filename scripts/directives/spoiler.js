@@ -1,4 +1,4 @@
-﻿Coldstorm.directive("spoiler", function ()
+﻿Directives.directive("spoiler", function ()
 {
     return {
         controller: "SpoilerCtrl",

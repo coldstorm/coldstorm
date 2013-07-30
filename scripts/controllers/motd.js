@@ -1,4 +1,4 @@
-Coldstorm.controller("MotdCtrl", ["$scope", function ($scope)
+Controllers.controller("MotdCtrl", ["$scope", function ($scope)
 {
 
 }]);

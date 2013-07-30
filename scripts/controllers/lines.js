@@ -1,4 +1,4 @@
-Coldstorm.controller("LinesCtrl", ["$scope", function ($scope)
+Controllers.controller("LinesCtrl", ["$scope", function ($scope)
 {
 
 }]);
