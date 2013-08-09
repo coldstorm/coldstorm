@@ -42,10 +42,17 @@ Services.factory("Channel", function ($rootScope)
                     line.message = message;
                     var channel = this;
 
-                    $rootScope.$apply(function ()
+                    if ($rootScope.$$phase == "$scope" ||
+                        $rootScope.$$phase == "$digest")
                     {
-                        channel.lines.push(line)
-                    });
+                        $rootScope.$apply(function ()
+                        {
+                            channel.lines.push(line);
+                        });
+                    } else
+                    {
+                        channel.lines.push(line);
+                    }
 
                     return this;
                 },
