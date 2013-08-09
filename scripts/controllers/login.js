@@ -12,8 +12,8 @@ Controllers.controller("LoginCtrl",
 
         $scope.login = function ()
         {
-            var cs = Channel.register("#Coldstorm");
-            var two = Channel.register("#2");
+            //var cs = Channel.register("#Coldstorm");
+            //var two = Channel.register("#2");
 
             var test = Channel.register("#test");
 
@@ -41,6 +41,6 @@ Controllers.controller("LoginCtrl",
                 console.log("Closed");
             });
 
-            $location.path("/channels/#Coldstorm");
+            $location.path("/channels/#test");
         };
     }]);
