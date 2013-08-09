@@ -22,12 +22,19 @@ Controllers.controller("LoginCtrl",
             Connection.onOpen(function ()
             {
                 Connection.send("NICK " + $scope.user.nickName);
-                Connection.send("USER " + $scope.user.color.substring(1).toUpperCase() +
+                Connection.send("USER " +
+                    $scope.user.color.substring(1).toUpperCase() +
                     $scope.user.flag + " - - :New coldstormer");
 
                 Connection.onWelcome(function ()
                 {
                     test.join();
+
+                    if ($scope.user.password)
+                    {
+                        Connection.send("PRIVMSG NickServ identify " +
+                            $scope.user.password);
+                    }
                 });
             });
 
