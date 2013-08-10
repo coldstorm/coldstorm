@@ -37,8 +37,8 @@ function ($rootScope, User)
                     line.message = message;
                     var query = this;
 
-                    if ($rootScope.$$phase == "$scope" ||
-                        $rootScope.$$phase == "$digest")
+                    if ($rootScope.$$phase != "$scope" &&
+                        $rootScope.$$phase != "$digest")
                     {
                         $rootScope.$apply(function ()
                         {
