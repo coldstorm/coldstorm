@@ -4,6 +4,8 @@ Controllers.controller("LoginCtrl",
     {
         $scope.user = User.get("~");
 
+        $location.hash("");
+
         $http.jsonp("http://freegeoip.net/json/?callback=JSON_CALLBACK").success(function (data)
         {
             $scope.user.country = data.country_name;
