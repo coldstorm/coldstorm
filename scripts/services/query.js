@@ -35,7 +35,7 @@ function ($rootScope, User)
                     }
 
                     line.message = message;
-                    var channel = this;
+                    var query = this;
 
                     if ($rootScope.$$phase == "$scope" ||
                         $rootScope.$$phase == "$digest")

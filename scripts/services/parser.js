@@ -1,6 +1,6 @@
 Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
-    "Channel", "User",
-    function ($http, $location, $rootScope, Connection, Channel, User)
+    "Channel", "User", "Query",
+    function ($http, $location, $rootScope, Connection, Channel, User, Query)
     {
         var messages = [];
 
@@ -34,6 +34,11 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
         function getChannel(parts)
         {
             return Channel.get(parts[2]);
+        }
+
+        function getQuery (parts)
+        {
+            return Query.get(parts[2]);
         }
 
         function getUser(parts)
@@ -118,11 +123,27 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
             var user = getUser(parts);
             var line = parts.slice(3).join(" ");
 
-            $rootScope.$broadcast("channel.message", {
-                channel: channel,
-                user: user,
-                line: line
-            });
+            if (channel !== undefined)
+            {
+                $rootScope.$broadcast("channel.message", {
+                    channel: channel,
+                    user: user,
+                    line: line
+                });
+            } else
+            {
+                var query = Query.get(user.nickName) ||
+                            Query.register(user.nickName);
+
+                if (query !== undefined)
+                {
+                    $rootScope.$broadcast("query.message", {
+                        query: query,
+                        user: user,
+                        line: line
+                    });
+                }
+            }
         });
         registerMessage(privMessage);
 

@@ -36,7 +36,7 @@ Controllers.controller("QueryCtrl",
                 return;
             }
             
-            $scope.channel.addLine(line, $scope.user);
+            $scope.query.addLine(line, $scope.user);
 
             Connection.send("PRIVMSG " + $scope.query.user.nickName + " " +
                             line);
