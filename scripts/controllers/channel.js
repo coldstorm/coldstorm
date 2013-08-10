@@ -19,6 +19,14 @@ Controllers.controller("ChannelCtrl",
             channelName = "#" + $location.hash();
         }
 
+        if ($location.hash())
+        {
+            $location.path("/channels/" + channelName);
+            $location.hash("");
+
+            return;
+        }
+
         $scope.channel = Channel.get(channelName);
 
         $scope.send = function ()

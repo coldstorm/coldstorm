@@ -1,5 +1,6 @@
-Services.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "User",
-    function ($http, $rootScope, Connection, Channel, User)
+Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
+    "Channel", "User",
+    function ($http, $location, $rootScope, Connection, Channel, User)
     {
         var messages = [];
 
@@ -268,6 +269,15 @@ Services.factory("Parser", ["$http", "$rootScope", "Connection", "Channel", "Use
 
             if (user.nickName === User.get("~").nickName)
             {
+                var switchToChannel = channel === undefined;
+
+                channel = channel || Channel.register(parts[2]);
+
+                if (switchToChannel)
+                {
+                    $location.path("/channels/" + parts[2]);
+                }
+
                 $rootScope.$broadcast("channel.joined", channel);
             } else
             {
