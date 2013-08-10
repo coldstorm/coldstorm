@@ -42,8 +42,8 @@ Services.factory("Channel", function ($rootScope)
                     line.message = message;
                     var channel = this;
 
-                    if ($rootScope.$$phase == "$scope" ||
-                        $rootScope.$$phase == "$digest")
+                    if ($rootScope.$$phase != "$apply" &&
+                        $rootScope.$$phase != "$digest")
                     {
                         $rootScope.$apply(function ()
                         {
