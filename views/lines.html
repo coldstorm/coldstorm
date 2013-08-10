@@ -2,6 +2,7 @@
     <div class="line" ng-repeat="line in lines">
         <span class="time">[{{ line.time | date:"HH:mm" }}]</span>
         <user user="line.author" channel="channel"></user>
-        <span class="message" ng-class="{ systemMessage: line.systemMessage }">{{ line.message }}</span>
+        <span class="message" ng-class="{ systemMessage: line.systemMessage }"
+            ng-bind-html-unsafe="line.message | line"></span>
     </div>
 </div>
