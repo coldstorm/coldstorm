@@ -2,6 +2,14 @@ Controllers.controller("ChannelCtrl",
     ["$scope", "$routeParams", "$location", "User", "Channel", "Connection",
     function ($scope, $routeParams, $location, User, Channel, Connection)
     {
+        $scope.user = User.get("~");
+
+        if ($scope.user.nickName === "")
+        {
+            $location.path("/login");
+            return;
+        }
+
         var channelName = $routeParams.channelName
 
         // Handle hashes in the URI representing the start of channel names
@@ -12,8 +20,6 @@ Controllers.controller("ChannelCtrl",
         }
 
         $scope.channel = Channel.get(channelName);
-
-        $scope.user = User.get("~");
 
         $scope.send = function ()
         {
