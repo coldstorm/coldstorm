@@ -24,4 +24,14 @@ Controllers.controller("TabsCtrl", ["$scope", function ($scope)
         
         return first.name == second.name;
     };
+
+    $scope.queryEquals = function (first, second)
+    {
+        if (first === undefined || second === undefined)
+        {
+            return false;
+        }
+
+        return first.user.nickName == second.user.nickName;
+    }
 }]);

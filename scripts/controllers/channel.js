@@ -53,7 +53,7 @@ Controllers.controller("ChannelCtrl",
             
             $scope.channel.addLine(line, $scope.user);
 
-            Connection.send("PRIVMSG " + $scope.channel.name + " " + line);
+            Connection.send("PRIVMSG " + $scope.channel.name + " :" + line);
         };
 
         $scope.$watch("channel.active", function ()
