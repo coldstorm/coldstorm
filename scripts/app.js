@@ -15,6 +15,10 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
             templateUrl: "views/channel.html",
             controller: "ChannelCtrl"
         }).
+        when("/query/:nickName", {
+            templateUrl: "views/query.html",
+            controller: "QueryCtrl"
+        }).
         otherwise({
             redirectTo: "/login"
         });
