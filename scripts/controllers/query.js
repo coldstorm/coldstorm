@@ -1,6 +1,8 @@
 Controllers.controller("QueryCtrl",
-    ["$scope", "$routeParams", "$location", "User", "Channel", "Connection",
-    function ($scope, $routeParams, $location, User, Channel, Connection)
+    ["$scope", "$routeParams", "$location", "User", "Channel", "Query",
+    "Connection",
+    function ($scope, $routeParams, $location, User, Channel, Query,
+    Connection)
     {
         $scope.user = User.get("~");
 
@@ -12,7 +14,7 @@ Controllers.controller("QueryCtrl",
 
         var nickName = $routeParams.nickName
 
-        $scope.query = Query.get(nickName);
+        $scope.query = Query.get(nickName) || Query.register(nickName);
 
         $scope.send = function ()
         {

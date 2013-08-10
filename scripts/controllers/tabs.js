@@ -4,7 +4,7 @@ Controllers.controller("TabsCtrl", ["$scope", function ($scope)
     {
         // Don't set the channel to active if it is the current channel
 
-        if ($scope.channel == message.channel)
+        if ($scope.channel !== undefined && $scope.channel == message.channel)
         {
             return;
         }
@@ -17,6 +17,11 @@ Controllers.controller("TabsCtrl", ["$scope", function ($scope)
 
     $scope.channelEquals = function (first, second)
     {
+        if (first === undefined || second === undefined)
+        {
+            return false;
+        }
+        
         return first.name == second.name;
     };
 }]);

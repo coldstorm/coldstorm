@@ -1,6 +1,8 @@
 Controllers.controller("ChannelCtrl",
-    ["$scope", "$routeParams", "$location", "User", "Channel", "Connection",
-    function ($scope, $routeParams, $location, User, Channel, Connection)
+    ["$scope", "$routeParams", "$location", "User", "Channel", "Query",
+    "Connection",
+    function ($scope, $routeParams, $location, User, Channel, Query,
+    Connection)
     {
         $scope.user = User.get("~");
 
