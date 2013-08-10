@@ -3,7 +3,8 @@
         <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
         <a ng-click="channelTab.leave()">X</a>
     </li>
-    <li ng-repeat="userTab in conversations" class="tab">
-        {{ userTab.nickName }}
+    <li ng-repeat="userTab in queries" class="tab">
+        <a href="#/query/{{ userTab.name }}">{{ userTab.user.nickName }}</a>
+        <a ng-click="userTab.close()">X</a>
     </li>
 </ul>

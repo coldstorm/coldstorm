@@ -1,4 +1,6 @@
-Services.factory("Query", function ($rootScope)
+Services.factory("Query",
+["$rootScope", "User",
+function ($rootScope, User)
 {
     var registry = {};
 
@@ -50,12 +52,13 @@ Services.factory("Query", function ($rootScope)
                     return this;
                 },
                 active: false,
-                leave: function ()
+                close: function ()
                 {
                     delete registry[this.name];
                 },
                 lines: [],
                 name: name,
+                user: User.get(name)
             };
 
             return registry[name];
@@ -70,7 +73,7 @@ Services.factory("Query", function ($rootScope)
                 queries.push(registry[query]);
             }
 
-            return channels;
+            return queries;
         },
 
         get: function (name)
@@ -80,4 +83,4 @@ Services.factory("Query", function ($rootScope)
     };
 
     return queries;
-});
+}]);

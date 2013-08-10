@@ -62,6 +62,11 @@ Controllers.controller("QueryCtrl",
 
         $scope.$watch(function ()
         {
+            $scope.queries = Query.all();
+        });
+
+        $scope.$watch(function ()
+        {
             $scope.channels = Channel.all();
         });
     }]);
