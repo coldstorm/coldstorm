@@ -1,5 +1,5 @@
 var Controllers = angular.module("coldstorm.controllers", []);
-var Directives = angular.module("coldstorm.directives", []);
+var Directives = angular.module("coldstorm.directives", ["luegg.directives"]);
 var Services = angular.module("coldstorm.services", []);
 var Filters = angular.module("coldstorm.filters", []);
 var Coldstorm = angular.module("coldstorm", ["colorpicker.module", "coldstorm.controllers", "coldstorm.directives", "coldstorm.services", "coldstorm.filters"]);
