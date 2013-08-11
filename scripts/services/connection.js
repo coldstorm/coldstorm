@@ -23,7 +23,7 @@ Services.factory("Connection", function ()
 
         for (var messageIndex = 0; messageIndex < messages.length; messageIndex++)
         {
-            var message = messages[messageIndex];
+            var message = decodeURIComponent(escape(messages[messageIndex]));
 
             for (var handlerIndex = 0; handlerIndex < messageHandlers.length; handlerIndex++)
             {
