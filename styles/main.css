@@ -3,6 +3,11 @@
     -moz-box-sizing: border-box;
 }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 html {
     height: 95%;
     margin: 0;
@@ -130,6 +135,10 @@ header {
     word-wrap: break-word;
 }
 
+.message > a {
+    color: #4a7691;
+}
+
 .time {
     color: #373f4e;
 }
@@ -142,15 +151,19 @@ header {
     color: #babbbf;
 }
 
-    .message .spoiler {
-        background-color: #000000;
-        color: #000000;
-    }
+.spoiler {
+    background-color: #000000;
+    color: #000000;
+}
 
-        .message .spoiler:hover {
-            background-color: inherit;
-            color: inherit;
-        }
+.spoiler:hover {
+    background-color: inherit;
+    color: inherit;
+}
+
+.spoiler:hover > a {
+    color: #4a7691;
+}
 
 .systemMessage {
     color: #808080;
@@ -323,15 +336,6 @@ pre {
 #textcontrol {
     color: #808080;
 }
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-    a.color {
-        color: #4a7691;
-    }
 
 #spacer {
     width: 4px;
