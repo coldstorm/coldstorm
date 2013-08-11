@@ -1,4 +1,4 @@
-Filters.filter("line", ["$sanitize", "$filter", function ($sanitize, $filter)
+Filters.filter("line", ["$filter", function ($filter)
 {
     return function (input)
     {
@@ -8,7 +8,8 @@ Filters.filter("line", ["$sanitize", "$filter", function ($sanitize, $filter)
                          replace(/'/g, '&#39;').
                          replace(/"/g, '&quot;');
 
-        line = $filter("linky")(input);
+        line = $filter("linky")(line);
+        line = $filter("spoiler")(line);
 
         return line;
     };
