@@ -1,6 +1,6 @@
 <div class="userlist">
     <ul class="users">
-        <li class="user" ng-repeat="user in users">                
+        <li class="user" ng-repeat="user in users | sortUsers:channel">
             <img class="flag"
                     ng-src="flags/{{ user.flag | lowercase }}.png"
                     title="{{ user.country }}" />
