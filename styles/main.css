@@ -328,7 +328,7 @@ pre {
     color: #babbbf;
 }
 
-.highlight {
+span.highlight {
     color: #ff921e;
     font-weight: bold;
 }
