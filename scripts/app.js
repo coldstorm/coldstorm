@@ -4,6 +4,7 @@ var Services = angular.module("coldstorm.services", []);
 var Filters = angular.module("coldstorm.filters", []);
 var Coldstorm = angular.module("coldstorm", ["colorpicker.module", "coldstorm.controllers", "coldstorm.directives", "coldstorm.services",
     "coldstorm.filters", "ngSanitize"]);
+var VERSION = "not-loaded";
 
 Coldstorm.config(["$routeProvider", function ($routeProvider)
 {
@@ -23,4 +24,20 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
         otherwise({
             redirectTo: "/login"
         });
+}]).run(["$http", "$location", "$rootScope",
+function ($http, $location, $rootScope)
+{
+    if ($location.host().indexOf("github") > 1)
+    {
+        $http.get("https://api.github.com/repos/coldstorm/coldstorm/commits" +
+            "?per_page=1").success(function (data)
+        {
+            VERSION = data[0].sha;
+        });
+    } else
+    {
+        VERSION = "local";
+    }
+
+    $rootScope.version = VERSION;
 }]);
