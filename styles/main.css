@@ -98,7 +98,7 @@ input {
         width: 40%;
     }
 
-div.preview {
+.preview {
     background-color: #24272e;
     border: 1px solid #2a2e36;
     border-radius: 3px;
@@ -209,7 +209,7 @@ header {
         font-weight: bold;
     }
 
-img.flag {
+.flag {
     vertical-align: middle;
     margin-left: 3px;
 }
@@ -328,7 +328,7 @@ pre {
     color: #babbbf;
 }
 
-#highlight {
+.highlight {
     color: #ff921e;
     font-weight: bold;
 }

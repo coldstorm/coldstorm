@@ -10,6 +10,7 @@ Filters.filter("line", ["$filter", function ($filter)
 
         line = $filter("linky")(line);
         line = $filter("spoiler")(line);
+        line = $filter("highlight")(line);
 
         return line;
     };
