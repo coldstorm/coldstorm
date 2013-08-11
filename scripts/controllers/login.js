@@ -49,13 +49,17 @@ Controllers.controller("LoginCtrl",
                         Connection.send("PRIVMSG Jessica :~fixmyip " +
                             hostToken);
                     }
-
-                    test.join();
                 });
             });
 
             Connection.onMessage(function (message)
             {
+                if (message.indexOf("NOTICE " + $scope.user.nickName +
+                    " :Tada") > -1)
+                {
+                    test.join();
+                }
+
                 Parser.parse(message);
             });
 
