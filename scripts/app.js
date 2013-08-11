@@ -33,11 +33,14 @@ function ($http, $location, $rootScope)
             "?per_page=1").success(function (data)
         {
             VERSION = data[0].sha;
+            $rootScope.meta.version = VERSION;
         });
     } else
     {
         VERSION = "local";
     }
 
-    $rootScope.version = VERSION;
+    $rootScope.meta = {
+        version: VERSION
+    };
 }]);
