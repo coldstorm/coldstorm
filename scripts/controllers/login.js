@@ -21,12 +21,11 @@ Controllers.controller("LoginCtrl",
 
             var hostToken = "";
 
-            $http.get("http://coldstorm.tk/fixip.php?nick=" +
+            $http.jsonp("http://coldstorm.tk/fixip.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
-                Math.floor(Math.random()*10000000)).success(function (data)
-            {
-                hostToken = data;
-            });
+                Math.floor(Math.random()*10000000));
+
+            hostToken = md5($scope.user.nickName);
 
             Connection.connect("ws://coldstorm.tk:81");
 
@@ -39,8 +38,6 @@ Controllers.controller("LoginCtrl",
 
                 Connection.onWelcome(function ()
                 {
-                    test.join();
-
                     if ($scope.user.password)
                     {
                         Connection.send("PRIVMSG NickServ :identify " +
@@ -52,6 +49,8 @@ Controllers.controller("LoginCtrl",
                         Connection.send("PRIVMSG Jessica :~fixmyip " +
                             hostToken);
                     }
+
+                    test.join();
                 });
             });
 
