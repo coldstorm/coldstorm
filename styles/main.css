@@ -27,6 +27,12 @@ a[ng-click] {
     cursor: pointer;
 }
 
+footer {
+    color: #373f4e;
+    padding: 0.5em;
+    text-align: center;
+}
+
 main {
     height: 100%;
 }
