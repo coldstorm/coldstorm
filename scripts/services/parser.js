@@ -36,7 +36,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
             return Channel.get(parts[2]);
         }
 
-        function getQuery (parts)
+        function getQuery(parts)
         {
             return Query.get(parts[2]);
         }
@@ -57,10 +57,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
         // Checks if the message is a CTCP message and returns the CTCP command or null
         function getCTCP(parts)
         {
-            if ((parts[1] === "NOTICE" || parts[1] === "PRIVMSG") && parts[3].indexOf("\001") === 0)
+            if ((parts[1] === "NOTICE" || parts[1] === "PRIVMSG") && parts[3].indexOf("\u0001") === 0)
             {
-                parts[3] = parts[3].replace("\001", "");
-                return parts[3];
+                var ctcp = parts[3].replace(/\u0001/g, "");
+                return ctcp;
             }
 
             return null;
@@ -606,6 +606,17 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
             console.log("Received CTCP ACTION");
         });
         registerMessage(actionMessage);
+
+        var versionMessage = new Message(function (parts)
+        {
+            return getCTCP(parts) === "VERSION";
+        }, function (parts)
+        {
+            console.log("Received CTCP VERSION");
+            var user = getUser(parts);
+            Connection.send("NOTICE " + user.nickName + " \u0001VERSION Coldstorm Web Client\u0001");
+        });
+        registerMessage(versionMessage);
 
         $rootScope.$on("channel.join", function (evt, channel)
         {
