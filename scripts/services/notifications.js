@@ -7,7 +7,6 @@
     {
         highlighted = true;
         setTitle(message.channel.name);
-        document.title = "Coldstorm" + " | " + message.channel.name + " (***)";
         notify(message.channel.name, message.user.nickName, message.line);
     });
 
@@ -36,10 +35,10 @@
                 document.title = "Coldstorm";
             } else if (messages == null)
             {
-                document.title = "Coldstorm" + " | " + channel + " (***)";
+                document.title = "(***) " + channel + " | Coldstorm";
             } else
             {
-                document.title = "Coldstorm" + " | " + channel + " (" + messages + ")";
+                document.title = "(" + messages + ") " + channel + " | Coldstorm";
             }
         }, 300);
     }
