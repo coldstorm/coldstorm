@@ -6,7 +6,10 @@ Controllers.controller("LoginCtrl",
     {
         $scope.user = User.get("~");
         $scope.user.nickName = $cookies.nickName;
-        $scope.user.color = $cookies.color;
+        if ($cookies.color)
+        {
+            $scope.user.color = $cookies.color;
+        }
 
         $location.hash("");
 
