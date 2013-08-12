@@ -31,18 +31,50 @@ function ($http, $location, $rootScope)
     {
         $http.get("https://api.github.com/repos/coldstorm/coldstorm/commits" +
             "?per_page=1").success(function (data)
-        {
-            VERSION = data[0].sha;
-            $rootScope.meta.version = VERSION;
-            $rootScope.meta.shortHash = VERSION.substring(0, 7);
-        });
+            {
+                VERSION = data[0].sha;
+                $rootScope.meta.version = VERSION;
+                $rootScope.meta.shortHash = VERSION.substring(0, 7);
+            });
     } else
     {
         VERSION = "local";
     }
 
+    $rootScope.resetTitleNotification = function ()
+    {
+        document.title = "Coldstorm";
+        $rootScope.unread = 0;
+    }
+
+    window.onclick = function ()
+    {
+        $rootScope.blurred = false;
+        $rootScope.resetTitleNotification();
+    };
+
+    window.onkeyup = function ()
+    {
+        $rootScope.blurred = false;
+        $rootScope.resetTitleNotification();
+    };
+
+    window.onfocus = function ()
+    {
+        $rootScope.blurred = false;
+        $rootScope.resetTitleNotification();
+    };
+
+    window.onblur = function ()
+    {
+        $rootScope.blurred = true;
+    };
+
     $rootScope.meta = {
         version: VERSION,
         shortHash: VERSION
     };
+
+    $rootScope.blurred = false;
+    $rootScope.unread = 0;
 }]);
