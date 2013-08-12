@@ -1,6 +1,37 @@
 Services.factory("Channel", function ($rootScope)
 {
     var registry = {};
+    var blurred = false;
+    var unread = 0;
+
+    var resetNotification = function ()
+    {
+        document.title = "Coldstorm";
+        unread = 0;
+    }
+
+    window.onclick = function ()
+    {
+        blurred = false;
+        resetNotification();
+    };
+
+    window.onkeyup = function ()
+    {
+        blurred = false;
+        resetNotification();
+    };
+
+    window.onfocus = function ()
+    {
+        blurred = false;
+        resetNotification();
+    };
+
+    window.onblur = function ()
+    {
+        blurred = true;
+    };
 
     $rootScope.$on("channel.joined", function (evt, channel)
     {
@@ -14,6 +45,12 @@ Services.factory("Channel", function ($rootScope)
         user = message.user;
 
         channel.addLine(line, user);
+
+        if (blurred)
+        {
+            unread++;
+            document.title = "Coldstorm" + " | " + message.channel.name + " (" + unread + ")";
+        }
     });
 
     channels = {

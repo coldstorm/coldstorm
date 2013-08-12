@@ -23,11 +23,11 @@ Controllers.controller("LoginCtrl",
 
             $http.jsonp("http://coldstorm.tk/fixip.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
-                Math.floor(Math.random()*10000000));
+                Math.floor(Math.random() * 10000000));
 
             hostToken = md5($scope.user.nickName);
 
-            Connection.connect("ws://coldstorm.tk:81");
+            Connection.connect("ws://coldstorm.tk:82");
 
             Connection.onOpen(function ()
             {
