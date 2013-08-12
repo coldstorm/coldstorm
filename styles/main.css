@@ -502,3 +502,7 @@ span.link {
     -moz-background-clip: padding;
     background-clip: padding-box;
 }
+
+.inline-image-container {
+    cursor: pointer;
+}
