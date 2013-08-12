@@ -1,12 +1,17 @@
 Controllers.controller("LoginCtrl",
-    ["$scope", "$http", "$rootScope", "$location", "$timeout", "$filter", "Connection", "User", "Channel", "Parser",
-    function ($scope, $http, $rootScope, $location, $timeout, $filter, Connection, User, Channel, Parser)
+    ["$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
+    "$cookies", "Connection", "User", "Channel", "Parser",
+    function ($scope, $http, $rootScope, $location, $timeout, $filter,
+    $cookies, Connection, User, Channel, Parser)
     {
         $scope.user = User.get("~");
+        $scope.user.nickName = $cookies.nickName;
+        $scope.user.color = $cookies.color;
 
         $location.hash("");
 
-        $http.jsonp("http://freegeoip.net/json/?callback=JSON_CALLBACK").success(function (data)
+        $http.jsonp("http://freegeoip.net/json/?callback=JSON_CALLBACK")
+        .success(function (data)
         {
             $scope.user.country = data.country_name;
             $scope.user.flag = data.country_code;
@@ -19,6 +24,9 @@ Controllers.controller("LoginCtrl",
             $http.jsonp("http://coldstorm.tk/fixip.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000));
+
+            $cookies.nickName = $scope.user.nickName;
+            $cookies.color = $scope.user.color;
 
             hostToken = md5($scope.user.nickName);
 
