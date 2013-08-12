@@ -27,6 +27,10 @@ a[ng-click] {
     cursor: pointer;
 }
 
+img {
+    max-width: 100%;
+}
+
 footer {
     color: #373f4e;
     padding: 0.5em;
@@ -634,4 +638,8 @@ div.hidebutton {
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
     background-clip: padding-box;
+}
+
+.inline-image-container {
+    cursor: pointer;
 }
