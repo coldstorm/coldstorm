@@ -45,28 +45,27 @@ function ($http, $location, $rootScope)
         VERSION = "local";
     }
 
-    var resetTitleNotification = function ()
+    var clearNotifications = function ()
     {
-        document.title = "Coldstorm";
         $rootScope.$broadcast("read");
     }
 
     window.onclick = function ()
     {
         $rootScope.blurred = false;
-        resetTitleNotification();
+        clearNotifications();
     };
 
     window.onkeyup = function ()
     {
         $rootScope.blurred = false;
-        resetTitleNotification();
+        clearNotifications();
     };
 
     window.onfocus = function ()
     {
         $rootScope.blurred = false;
-        resetTitleNotification();
+        clearNotifications();
     };
 
     window.onblur = function ()

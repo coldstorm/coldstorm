@@ -16,12 +16,14 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         channel.addLine(line, user);
 
         var myUser = User.get("~");
-        if (message.line.indexOf(myUser.nickName) > -1)
-        {
-            $rootScope.$broadcast("highlighted", message);
-        } else if ($rootScope.blurred)
+
+        if ($rootScope.blurred)
         {
             $rootScope.$broadcast("unread", message);
+            if (message.line.indexOf(myUser.nickName) > -1)
+            {
+                $rootScope.$broadcast("highlighted", message);
+            }
         }
     });
 
