@@ -58,11 +58,13 @@ Controllers.controller("LoginCtrl",
                 if (message.indexOf("NOTICE " + $scope.user.nickName +
                     " :Tada") > -1)
                 {
-                    if (VERISON == "local")
+                    if (VERSION == "local")
                     {
                         var test = Channel.register("#test");
 
                         test.join();
+
+                        $location.path("/channels/#test");
                     } else
                     {
                         var cs = Channel.register("#Coldstorm");
@@ -70,6 +72,8 @@ Controllers.controller("LoginCtrl",
 
                         cs.join();
                         two.join();
+
+                        $location.path("/channels/#Coldstorm");
                     }
                 }
 
@@ -80,7 +84,5 @@ Controllers.controller("LoginCtrl",
             {
                 console.log("Closed");
             });
-
-            $location.path("/channels/#test");
         };
     }]);
