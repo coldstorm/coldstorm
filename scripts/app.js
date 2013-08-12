@@ -41,29 +41,28 @@ function ($http, $location, $rootScope)
         VERSION = "local";
     }
 
-    $rootScope.resetTitleNotification = function ()
+    var resetTitleNotification = function ()
     {
         document.title = "Coldstorm";
-        $rootScope.unread = 0;
-        $rootScope.highlighted = false;
+        $rootScope.$broadcast("read");
     }
 
     window.onclick = function ()
     {
         $rootScope.blurred = false;
-        $rootScope.resetTitleNotification();
+        resetTitleNotification();
     };
 
     window.onkeyup = function ()
     {
         $rootScope.blurred = false;
-        $rootScope.resetTitleNotification();
+        resetTitleNotification();
     };
 
     window.onfocus = function ()
     {
         $rootScope.blurred = false;
-        $rootScope.resetTitleNotification();
+        resetTitleNotification();
     };
 
     window.onblur = function ()
@@ -71,12 +70,10 @@ function ($http, $location, $rootScope)
         $rootScope.blurred = true;
     };
 
+    $rootScope.blurred = false;
+
     $rootScope.meta = {
         version: VERSION,
         shortHash: VERSION
     };
-
-    $rootScope.blurred = false;
-    $rootScope.unread = 0;
-    $rootScope.highlighted = false;
 }]);

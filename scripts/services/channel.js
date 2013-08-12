@@ -18,14 +18,11 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         var myUser = User.get("~");
         if (message.line.indexOf(myUser.nickName) > -1)
         {
-            $rootScope.$broadcast("highlight", message.line);
-            $rootScope.highlighted = true;
-            document.title = "Coldstorm" + " | " + message.channel.name + " (***)";
+            $rootScope.$broadcast("highlighted", message);
             Notifications.notify(message.channel.name, message.user.nickName, message.line);
-        } else if ($rootScope.blurred && $rootScope.highlighted === false)
+        } else if ($rootScope.blurred)
         {
-            $rootScope.unread++;
-            document.title = "Coldstorm" + " | " + message.channel.name + " (" + $rootScope.unread + ")";
+            $rootScope.$broadcast("unread", message);
         }
     });
 
