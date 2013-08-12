@@ -614,7 +614,9 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
         {
             console.log("Received CTCP VERSION");
             var user = getUser(parts);
-            Connection.send("NOTICE " + user.nickName + " \u0001VERSION Coldstorm Web Client\u0001");
+            Connection.send("NOTICE " + user.nickName +
+                " \u0001VERSION Coldstorm Web Client (" +
+                $rootScope.meta.version + ")\u0001");
         });
         registerMessage(versionMessage);
 

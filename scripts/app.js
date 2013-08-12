@@ -34,6 +34,7 @@ function ($http, $location, $rootScope)
         {
             VERSION = data[0].sha;
             $rootScope.meta.version = VERSION;
+            $rootScope.meta.shortHash = VERSION.substring(0, 7);
         });
     } else
     {
@@ -41,6 +42,7 @@ function ($http, $location, $rootScope)
     }
 
     $rootScope.meta = {
-        version: VERSION
+        version: VERSION,
+        shortHash: VERSION
     };
 }]);
