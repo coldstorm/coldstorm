@@ -51,7 +51,7 @@
         {
             if (window.webkitNotifications.checkPermission() == 0)
             {
-                window.webkitNotifications.createNotification("../../favicon.png", "Coldstorm" + " (" + channel + ") ",
+                window.webkitNotifications.createNotification("../../../favicon.png", "Coldstorm" + " (" + channel + ") ",
                     "[" + $filter("date")(new Date(), "HH:mm") + "] " + author + ": " + message).show();
             }
         }
