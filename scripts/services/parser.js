@@ -210,8 +210,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
                     user.country = data[1][0].name;
                 }
             });
-
-            channel.sortusers();
         });
         registerMessage(whoMessage);
 
@@ -264,7 +262,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
                     if (channel)
                     {
                         user.ranks[channel.name] = rank;
-                        channel.sortusers();
                     }
                 } else
                 {
@@ -273,7 +270,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
                     if (channel)
                     {
                         user.ranks[channel.name] = "";
-                        channel.sortusers();
                     }
                 }
             }
@@ -304,7 +300,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
             {
                 channel.addLine(user.nickName + " joined the room.");
                 channel.addUser(user);
-                channel.sortusers();
             }
 
             Connection.send("WHOIS " + user.nickName);
