@@ -7,6 +7,7 @@
     {
         highlighted = true;
         document.title = "Coldstorm" + " | " + message.channel.name + " (***)";
+        notify(message.channel.name, message.user.nickName, message.line);
     });
 
     $rootScope.$on("unread", function (evt, message)
@@ -24,19 +25,20 @@
         unread = 0;
     });
 
-    return {
-        requestNotify: function ()
-        {
-            if (window.webkitNotifications.checkPermission() != 0)
-            {
-                window.webkitNotifications.requestPermission();
-            }
-        },
-
-        notify: function (channel, author, message)
+    var notify = function (channel, author, message)
+    {
+        if (window.webkitNotifications.checkPermission() == 0)
         {
             window.webkitNotifications.createNotification("/favicon.png", "Coldstorm" + " (" + channel + ") ",
                 "[" + $filter("date")(new Date(), "HH:mm") + "] " + author + ": " + message).show();
         }
-    };
+    }
+
+    $rootScope.requestNotifications = function ()
+    {
+        if (window.webkitNotifications.checkPermission() != 0)
+        {
+            window.webkitNotifications.requestPermission();
+        }
+    }
 }])

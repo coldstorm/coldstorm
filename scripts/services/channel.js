@@ -19,7 +19,6 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         if (message.line.indexOf(myUser.nickName) > -1)
         {
             $rootScope.$broadcast("highlighted", message);
-            Notifications.notify(message.channel.name, message.user.nickName, message.line);
         } else if ($rootScope.blurred)
         {
             $rootScope.$broadcast("unread", message);
