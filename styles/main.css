@@ -266,6 +266,7 @@ header {
 
 img.flag {
     vertical-align: middle;
+    margin-left: 3px;
 }
 
 div.inner {
