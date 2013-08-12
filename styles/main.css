@@ -145,7 +145,7 @@ header {
     word-wrap: break-word;
 }
 
-.message > a {
+.message > a, .topic a {
     color: #4a7691;
 }
 

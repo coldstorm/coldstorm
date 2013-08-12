@@ -1,6 +1,7 @@
 <div class="motd">
     <div class="motd" title="Topic set on {{ date }}" ng-show="message && author">
-        {{ message }} 
+        <span class="topic" ng-bind-html-unsafe="message | linky | color">
+        </span>
         (by <user user="author"></user>)
     </div>
 </div>
