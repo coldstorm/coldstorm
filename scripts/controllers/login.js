@@ -1,6 +1,6 @@
 Controllers.controller("LoginCtrl",
-    ["$scope", "$http", "$rootScope", "$location", "$timeout", "Connection", "User", "Channel", "Parser",
-    function ($scope, $http, $rootScope, $location, $timeout, Connection, User, Channel, Parser)
+    ["$scope", "$http", "$rootScope", "$location", "$timeout", "$filter", "Connection", "User", "Channel", "Parser",
+    function ($scope, $http, $rootScope, $location, $timeout, $filter, Connection, User, Channel, Parser)
     {
         $scope.user = User.get("~");
 

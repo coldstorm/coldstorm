@@ -1,4 +1,4 @@
-Services.factory("Channel", ["$rootScope", "User", function ($rootScope, User)
+Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($rootScope, User, Notifications)
 {
     var registry = {};
 
@@ -21,6 +21,7 @@ Services.factory("Channel", ["$rootScope", "User", function ($rootScope, User)
             $rootScope.$broadcast("highlight", message.line);
             $rootScope.highlighted = true;
             document.title = "Coldstorm" + " | " + message.channel.name + " (***)";
+            Notifications.notify(message.channel.name, message.user.nickName, message.line);
         } else if ($rootScope.blurred && $rootScope.highlighted === false)
         {
             $rootScope.unread++;
