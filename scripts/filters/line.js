@@ -11,6 +11,7 @@ Filters.filter("line", ["$filter", function ($filter)
         line = $filter("spoiler")(line);
         line = $filter("highlight")(line);
         line = $filter("inlineImage")(line);
+        line = $filter("color")(line);
 
         return line;
     };

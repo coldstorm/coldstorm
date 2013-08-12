@@ -63,7 +63,7 @@ Services.factory("Connection", function ()
         },
         send: function (message)
         {
-            message = message.replace("\c", "\u0003");
+            message = message.replace(/\\c/gi, "\u0003");
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
             console.log("> " + message);
