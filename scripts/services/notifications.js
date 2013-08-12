@@ -43,20 +43,40 @@
         }, 300);
     }
 
+    var supportsNotifications = false;
+
     var notify = function (channel, author, message)
     {
-        if (window.webkitNotifications.checkPermission() == 0)
+        if (supportsNotifications)
         {
-            window.webkitNotifications.createNotification("../favicon.png", "Coldstorm" + " (" + channel + ") ",
-                "[" + $filter("date")(new Date(), "HH:mm") + "] " + author + ": " + message).show();
+            if (window.webkitNotifications.checkPermission() == 0)
+            {
+                window.webkitNotifications.createNotification("../../favicon.png", "Coldstorm" + " (" + channel + ") ",
+                    "[" + $filter("date")(new Date(), "HH:mm") + "] " + author + ": " + message).show();
+            }
+        }
+    }
+
+    var checkNotifications = function ()
+    {
+        if (window.webkitNotifications)
+        {
+            supportsNotifications = true;
+        } else
+        {
+            supportsNotifications = false;
         }
     }
 
     $rootScope.requestNotifications = function ()
     {
-        if (window.webkitNotifications.checkPermission() != 0)
+        checkNotifications();
+        if (supportsNotifications)
         {
-            window.webkitNotifications.requestPermission();
+            if (window.webkitNotifications.checkPermission() != 0)
+            {
+                window.webkitNotifications.requestPermission();
+            }
         }
     }
 }])
