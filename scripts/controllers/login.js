@@ -14,11 +14,6 @@ Controllers.controller("LoginCtrl",
 
         $scope.login = function ()
         {
-            //var cs = Channel.register("#Coldstorm");
-            //var two = Channel.register("#2");
-
-            var test = Channel.register("#test");
-
             var hostToken = "";
 
             $http.jsonp("http://coldstorm.tk/fixip.php?nick=" +
@@ -27,7 +22,13 @@ Controllers.controller("LoginCtrl",
 
             hostToken = md5($scope.user.nickName);
 
-            Connection.connect("ws://coldstorm.tk:82");
+            if (VERSION == "local")
+            {
+                Connection.connect("ws://coldstorm.tk:82");
+            } else
+            {
+                Connection.connect("ws://coldstorm.tk:81");
+            }
 
             Connection.onOpen(function ()
             {
@@ -57,7 +58,19 @@ Controllers.controller("LoginCtrl",
                 if (message.indexOf("NOTICE " + $scope.user.nickName +
                     " :Tada") > -1)
                 {
-                    test.join();
+                    if (VERISON == "local")
+                    {
+                        var test = Channel.register("#test");
+
+                        test.join();
+                    } else
+                    {
+                        var cs = Channel.register("#Coldstorm");
+                        var two = Channel.register("#2");
+
+                        cs.join();
+                        two.join();
+                    }
                 }
 
                 Parser.parse(message);
