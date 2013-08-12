@@ -1,4 +1,4 @@
-Services.factory("Channel", function ($rootScope)
+Services.factory("Channel", ["$rootScope", "User", function ($rootScope, User)
 {
     var registry = {};
 
@@ -15,7 +15,13 @@ Services.factory("Channel", function ($rootScope)
 
         channel.addLine(line, user);
 
-        if ($rootScope.blurred)
+        var myUser = User.get("~");
+        if (message.line.indexOf(myUser.nickName) > -1)
+        {
+            $rootScope.$broadcast("highlight", message.line);
+            $rootScope.highlighted = true;
+            document.title = "Coldstorm" + " | " + message.channel.name + " (***)";
+        } else if ($rootScope.blurred && $rootScope.highlighted === false)
         {
             $rootScope.unread++;
             document.title = "Coldstorm" + " | " + message.channel.name + " (" + $rootScope.unread + ")";
@@ -109,4 +115,4 @@ Services.factory("Channel", function ($rootScope)
     };
 
     return channels;
-});
+}]);

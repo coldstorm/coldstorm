@@ -45,6 +45,7 @@ function ($http, $location, $rootScope)
     {
         document.title = "Coldstorm";
         $rootScope.unread = 0;
+        $rootScope.highlighted = false;
     }
 
     window.onclick = function ()
@@ -77,4 +78,5 @@ function ($http, $location, $rootScope)
 
     $rootScope.blurred = false;
     $rootScope.unread = 0;
+    $rootScope.highlighted = false;
 }]);
