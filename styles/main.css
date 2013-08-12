@@ -42,6 +42,12 @@ main {
 }
 
 input {
+    background-color: #24272e;
+    border: 1px #2a2e36 solid;
+    border-radius: 3px;
+    color: #babbbf;
+    font-size: 10px;
+    padding: 3px;
     display: block;
     outline: 0;
     -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
@@ -95,6 +101,46 @@ input {
     }
 
     .login button {
+        background-color: #24272e;
+        border: 1px solid #2a2e36;
+        border-radius: 3px;
+        color: #babbbf;
+        font-size: 1.5em;
+        margin-bottom: 1em;
+        margin-left: 30%;
+        margin-top: 2em;
+        padding: 3px;
+        text-align: center;
+        width: 40%;
+    }
+
+.settings {
+    background-color: #202226;
+    border: 1px solid #24272e;
+    border-radius: 3px;
+    margin-right: 35%;
+    margin-left: 35%;
+    margin-top: 10%;
+}
+
+    .settings h1 {
+        color: #babbbf;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .settings label {
+        color: #babbbf;
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+
+    .settings input[type=checkbox] {
+        float: left;
+        display: block;
+    }
+
+    .settings button {
         background-color: #24272e;
         border: 1px solid #2a2e36;
         border-radius: 3px;
@@ -179,7 +225,6 @@ header {
     color: #808080;
 }
 
-
 .chat-input {
     height: 21px;
     width: calc(90% - 4px);
@@ -219,9 +264,8 @@ header {
         font-weight: bold;
     }
 
-.flag {
+img.flag {
     vertical-align: middle;
-    margin-left: 3px;
 }
 
 div.inner {
@@ -230,50 +274,6 @@ div.inner {
     background-color: #24272e;
     border-width: 1px;
     border-radius: 3px;
-}
-
-#group {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
-#userbox {
-    position: absolute;
-    right: 3px;
-    top: 43px;
-    width: 187px;
-    /*height: 552px;*/
-    bottom: 3px;
-    overflow: auto;
-    word-wrap: none;
-}
-
-#editbox {
-    position: absolute;
-    left: 3px;
-    bottom: 3px;
-    height: 20px;
-    /*width: 600px;*/
-    right: 195px;
-}
-
-textarea {
-    border-style: solid;
-    border-color: #2a2e36;
-    background-color: #24272e;
-    border-width: 1px;
-    border-radius: 3px;
-}
-
-input {
-    background-color: #24272e;
-    border: 1px #2a2e36 solid;
-    border-radius: 3px;
-    color: #babbbf;
-    font-size: 10px;
-    padding: 3px;
-    width: 100%;
 }
 
 .tabs {
@@ -334,26 +334,9 @@ input {
     word-wrap: break-word;
 }
 
-pre {
-    color: #babbbf;
-}
-
 span.highlight {
     color: #ff921e;
     font-weight: bold;
-}
-
-#textcontrol {
-    color: #808080;
-}
-
-#spacer {
-    width: 4px;
-    margin: 3px;
-}
-
-p {
-    margin: 2px;
 }
 
 span.link {
@@ -365,7 +348,7 @@ span.link {
     /*background-image: url('/images/empty.gif');*/
 }
 
-#c0 {
+.c0 {
     color: #A0A0A0;
 }
 
@@ -493,126 +476,6 @@ span.link {
     color: #959595;
 }
 
-#greentext {
-    color: #789922;
-}
-
-#popup {
-    position: absolute;
-    left: 50%;
-    width: 350px;
-    margin-left: -175px;
-    height: 200px;
-    top: -2000px;
-    margin-top: -100px;
-    border-style: solid;
-    border-color: #24272e;
-    background-color: #202226;
-    border-width: 1px;
-    border-radius: 3px;
-}
-
-#dismissbutton {
-    position: absolute;
-    left: 0;
-    top: 170px;
-    width: 100%;
-}
-
-p {
-    vertical-align: text-center;
-}
-
-    p.flag {
-        margin-top: 3px;
-        margin-bottom: 3px;
-    }
-
-
-img.flag {
-    vertical-align: middle;
-}
-
-#spoiler {
-    background-color: #000000;
-    color: #000000;
-}
-
-    #spoiler:hover {
-        color: inherit;
-    }
-
-#youtube {
-    position: absolute;
-    width: 800px;
-    height: 600px;
-    left: 50%;
-    top: -2000px;
-    ;
-    margin-top: -300px;
-    margin-left: -400px;
-    border-style: solid;
-    border-color: #24272e;
-    background-color: #202226;
-    border-width: 1px;
-    border-radius: 3px;
-}
-
-div.closebutton {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    right: 12px;
-    top: 12px;
-    border-style: solid;
-    border-color: #24272e;
-    background-color: #202226;
-    border-width: 1px;
-    border-radius: 3px;
-    font-size: 18px;
-    color: #babbbf;
-    vertical-align: middle;
-    vertical-align: text-center;
-    text-align: center;
-    z-index: 20;
-}
-
-div.widebutton {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    right: 12px;
-    top: 12px;
-    border-style: solid;
-    border-color: #24272e;
-    background-color: #202226;
-    border-width: 1px;
-    border-radius: 3px;
-    font-size: 18px;
-    color: #babbbf;
-    vertical-align: middle;
-    vertical-align: text-center;
-    text-align: center;
-}
-
-div.hidebutton {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    right: 12px;
-    top: 12px;
-    border-style: solid;
-    border-color: #24272e;
-    background-color: #202226;
-    border-width: 1px;
-    border-radius: 3px;
-    font-size: 18px;
-    color: #babbbf;
-    vertical-align: middle;
-    vertical-align: text-center;
-    text-align: center;
-}
-
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -638,8 +501,4 @@ div.hidebutton {
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
     background-clip: padding-box;
-}
-
-.inline-image-container {
-    cursor: pointer;
 }

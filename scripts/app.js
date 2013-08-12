@@ -21,6 +21,10 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
             templateUrl: "views/query.html",
             controller: "QueryCtrl"
         }).
+        when("/settings", {
+            templateUrl: "views/settings.html",
+            controller: "SettingsCtrl"
+        }).
         otherwise({
             redirectTo: "/login"
         });
