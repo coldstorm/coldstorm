@@ -24,7 +24,7 @@ Controllers.controller("LoginCtrl",
         {
             var hostToken = "";
 
-            $http.jsonp("http://coldstorm.tk/fixip.php?nick=" +
+            $http.jsonp("http://kaslai.us/coldstorm/fixip.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000));
 
