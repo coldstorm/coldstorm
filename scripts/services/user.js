@@ -18,9 +18,19 @@ Services.provider("User", function ()
                 ranks: [],
                 addRank: function (channel, rank)
                 {
-                    if (this.ranks[channel.name].indexOf(rank) == -1 && "+%@".indexOf(rank) != -1)
+                    if (this.ranks.indexOf(channel.name) > 0)
                     {
-                        this.ranks[channel.name] += rank;
+                        if (this.ranks[channel.name].indexOf(rank) == -1 &&
+                            "+%@".indexOf(rank) != -1)
+                        {
+                            this.ranks[channel.name] += rank;
+                        }
+                    } else
+                    {
+                        if ("+%@".indexOf(rank) != -1)
+                        {
+                            this.ranks[channel.name] = rank;
+                        }
                     }
 
                     var tempRanks = [];
