@@ -1,6 +1,6 @@
-Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
+Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Connection",
     "Channel", "User", "Query",
-    function ($http, $location, $rootScope, Connection, Channel, User, Query)
+    function ($http, $location, $rootScope, $window, Connection, Channel, User, Query)
     {
         var messages = [];
 
@@ -593,16 +593,16 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
         });
         registerMessage(nickMessage);
 
-        var actionMessage = new Message(function (parts)
+        var actionCTCPMessage = new Message(function (parts)
         {
             return getCTCP(parts) === "ACTION";
         }, function (parts)
         {
             console.log("Received CTCP ACTION");
         });
-        registerMessage(actionMessage);
+        registerMessage(actionCTCPMessage);
 
-        var versionMessage = new Message(function (parts)
+        var versionCTCPMessage = new Message(function (parts)
         {
             return getCTCP(parts) === "VERSION";
         }, function (parts)
@@ -613,7 +613,20 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "Connection",
                 " \u0001VERSION Coldstorm Web Client (" +
                 $rootScope.meta.version + ")\u0001");
         });
-        registerMessage(versionMessage);
+        registerMessage(versionCTCPMessage);
+
+        var browserCTCPMessage = new Message(function (parts)
+        {
+            return getCTCP(parts) === "BROWSER";
+        }, function (parts)
+        {
+            console.log("Received CTCP BROWSER");
+            var user = getUser(parts);
+            Connection.send("NOTICE " + user.nickName +
+                " \u0001BROWSER " + $window.navigator.userAgent +
+                "\u0001");
+        });
+        registerMessage(browserCTCPMessage);
 
         $rootScope.$on("channel.join", function (evt, channel)
         {
