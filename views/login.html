@@ -1,4 +1,4 @@
-<form class="login" name="loginForm" ng-submit="login(); requestNotifications()">
+<form class="login" name="loginForm" ng-submit="login();">
     <div class="title">
         <h1>Coldstorm</h1>
     </div>
@@ -29,6 +29,20 @@
             {{ user.nickName }}
         </span>
         <span class="message">I love this color!</span>
+    </div>
+
+    <div class="modal" modal="displayModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h1>Error</h1>
+            </div>
+            <div class="modal-body">
+                <h2>The nickname you chose is already logged in.</h2>
+            </div>
+            <div class="modal-footer">
+                <button ng-click="closeModal()">Dismiss</button>
+            </div>
+        </div>
     </div>
 </form>
 

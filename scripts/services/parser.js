@@ -68,7 +68,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
         var welcomeHandlers = [];
 
-        var welcomeMessage = new Message(function (parts)
+        var rpl_welcomeMessage = new Message(function (parts)
         {
             return parts[1] === "001";
         }, function (parts)
@@ -78,7 +78,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 welcomeHandlers[i]();
             }
         });
-        registerMessage(welcomeMessage);
+        registerMessage(rpl_welcomeMessage);
 
         Connection.onWelcome = function (handler)
         {
@@ -94,14 +94,14 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(noticeMessage);
 
-        var motdMessage = new Message(function (parts)
+        var rpl_motdMessage = new Message(function (parts)
         {
             return parts[1] === "372";
         }, function (parts)
         {
             return;
         });
-        registerMessage(motdMessage);
+        registerMessage(rpl_motdMessage);
 
         var pingMessage = new Message(function (parts)
         {
@@ -147,7 +147,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(privMessage);
 
-        var namesMessage = new Message(function (parts)
+        var rpl_namreplyMessage = new Message(function (parts)
         {
             return parts[1] === "353";
         }, function (parts)
@@ -172,9 +172,9 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
             Connection.send("WHO " + channel.name);
         });
-        registerMessage(namesMessage);
+        registerMessage(rpl_namreplyMessage);
 
-        var whoMessage = new Message(function (parts)
+        var rpl_whoreplyMessage = new Message(function (parts)
         {
             return parts[1] === "352";
         }, function (parts)
@@ -211,9 +211,9 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 }
             });
         });
-        registerMessage(whoMessage);
+        registerMessage(rpl_whoreplyMessage);
 
-        var whoisuserMessage = new Message(function (parts)
+        var rpl_whoisuserMessage = new Message(function (parts)
         {
             return parts[1] === "311";
         }, function (parts)
@@ -242,9 +242,9 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 }
             });
         });
-        registerMessage(whoisuserMessage);
+        registerMessage(rpl_whoisuserMessage);
 
-        var whoischannelsMessage = new Message(function (parts)
+        var rpl_whoischannelsMessage = new Message(function (parts)
         {
             return parts[1] === "319";
         }, function (parts)
@@ -274,7 +274,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 }
             }
         });
-        registerMessage(whoischannelsMessage);
+        registerMessage(rpl_whoischannelsMessage);
 
         var joinMessage = new Message(function (parts)
         {
@@ -355,7 +355,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(quitMessage);
 
-        var topicMessage = new Message(function (parts)
+        var rpl_topicMessage = new Message(function (parts)
         {
             return parts[1] === "332";
         }, function (parts)
@@ -368,9 +368,9 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 $rootScope.$apply(function () { channel.topic = parts.slice(1).join(" ") });
             }
         });
-        registerMessage(topicMessage);
+        registerMessage(rpl_topicMessage);
 
-        var topicinfoMessage = new Message(function (parts)
+        var rpl_topicwhotimeMessage = new Message(function (parts)
         {
             return parts[1] === "333";
         }, function (parts)
@@ -393,7 +393,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 channel.topicdate = date.toLocaleString();
             });
         });
-        registerMessage(topicinfoMessage);
+        registerMessage(rpl_topicwhotimeMessage);
 
         var topicchangeMessage = new Message(function (parts)
         {
@@ -592,6 +592,16 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             })
         });
         registerMessage(nickMessage);
+
+        var err_nicknameinuseMessage = new Message(function (parts)
+        {
+            return parts[1] === "433";
+        }, function (parts)
+        {
+            console.log("err_nicknameinuse fired");
+            $rootScope.$broadcast("err_nicknameinuse");
+        });
+        registerMessage(err_nicknameinuseMessage);
 
         var actionCTCPMessage = new Message(function (parts)
         {

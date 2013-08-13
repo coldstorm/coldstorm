@@ -4,6 +4,12 @@ Controllers.controller("LoginCtrl",
     function ($scope, $http, $rootScope, $location, $timeout, $filter,
     $cookies, Connection, User, Channel, Parser)
     {
+        $scope.displayModal = false;
+        $scope.modalOpts =
+            {
+                backdropFade: true,
+                dialogFade: true
+            };
         $scope.user = User.get("~");
         $scope.user.nickName = $cookies.nickName;
         if ($cookies.color)
@@ -18,6 +24,22 @@ Controllers.controller("LoginCtrl",
         {
             $scope.user.country = data.country_name;
             $scope.user.flag = data.country_code;
+        });
+
+        $scope.openModal = function ()
+        {
+            $scope.displayModal = true;
+        }
+
+        $scope.closeModal = function ()
+        {
+            $scope.displayModal = false;
+        }
+
+        $rootScope.$on("err_nicknameinuse", function (evt)
+        {
+            console.log("err_nicknameinuse received");
+            $scope.openModal();
         });
 
         $scope.login = function ()
@@ -61,6 +83,8 @@ Controllers.controller("LoginCtrl",
                         Connection.send("PRIVMSG Jessica :~fixmyip " +
                             hostToken);
                     }
+
+                    $rootScope.requestNotifications();
                 });
             });
 
