@@ -19,6 +19,15 @@
         }
     });
 
+    $rootScope.$on("query.message", function (evt, message)
+    {
+        if (highlighted == false)
+        {
+            setTitle(message.user.nickName, "PM");
+        }
+        notify("PM", message.user.nickName, message.line);
+    });
+
     $rootScope.$on("read", function (evt)
     {
         setTitle();
@@ -26,33 +35,33 @@
         unread = 0;
     });
 
-    var setTitle = function (channel, messages)
+    var setTitle = function (notifier, event)
     {
         $timeout(function ()
         {
-            if (channel == null)
+            if (notifier == null)
             {
                 document.title = "Coldstorm";
-            } else if (messages == null)
+            } else if (event == null)
             {
-                document.title = "(***) " + channel + " | Coldstorm";
+                document.title = "(***) " + notifier + " | Coldstorm";
             } else
             {
-                document.title = "(" + messages + ") " + channel + " | Coldstorm";
+                document.title = "(" + event + ") " + notifier + " | Coldstorm";
             }
         }, 300);
     }
 
     var supportsNotifications = false;
 
-    var notify = function (channel, author, message)
+    var notify = function (location, notifier, message)
     {
         if (supportsNotifications)
         {
             if (window.webkitNotifications.checkPermission() == 0)
             {
-                window.webkitNotifications.createNotification("//coldstorm.github.io/coldstorm/favicon.png", "Coldstorm" + " (" + channel + ") ",
-                    "[" + $filter("date")(new Date(), "HH:mm") + "] " + author + ": " + message).show();
+                window.webkitNotifications.createNotification("//coldstorm.github.io/coldstorm/favicon.png", "Coldstorm" + " (" + location + ") ",
+                    "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message).show();
             }
         }
     }
