@@ -179,6 +179,10 @@ header {
     height: 35px;
 }
 
+.line {
+    margin: 2px;
+}
+
 .lines {
     background-color: #24272e;
     border: 1px solid #2a2e36;
