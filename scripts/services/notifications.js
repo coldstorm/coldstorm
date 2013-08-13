@@ -53,26 +53,46 @@
     }
 
     var supportsNotifications = false;
+    var canNotify = false;
 
     var notify = function (location, notifier, message)
     {
         if (supportsNotifications)
         {
-            if (window.webkitNotifications.checkPermission() == 0)
+            if (canNotify)
             {
-                window.webkitNotifications.createNotification("//coldstorm.github.io/coldstorm/favicon.png", "Coldstorm" + " (" + location + ") ",
-                    "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message).show();
+                var title = "Coldstorm" + " (" + location + ") ";
+                var tag = "chat_" + location;
+                var body = "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message;
+                var notification = new Notification(title,
+                    {
+                        tag: tag,
+                        icon: "../../favicon.png",
+                        body: body
+                    });
             }
         }
     }
 
     var checkNotifications = function ()
     {
-        if (window.webkitNotifications)
+        try
         {
+            var welcome_notification = new Notification("Welcome to Coldstorm!", 
+                {
+                    tag: "welcome",
+                    icon: "../../favicon.png",
+                });
+
+            if (welcome_notification.permission === "granted")
+            {
+                canNotify = true;
+            }
             supportsNotifications = true;
-        } else
+        }
+        catch (err)
         {
+            console.log("This browser does not support notifications");
             supportsNotifications = false;
         }
     }
@@ -80,12 +100,15 @@
     $rootScope.requestNotifications = function ()
     {
         checkNotifications();
-        if (supportsNotifications)
+        if (canNotify === false)
         {
-            if (window.webkitNotifications.checkPermission() != 0)
+            Notification.requestPermission(function (perm)
             {
-                window.webkitNotifications.requestPermission();
-            }
+                if (perm === "granted")
+                {
+                    canNotify = true;
+                }
+            });
         }
     }
 }])
