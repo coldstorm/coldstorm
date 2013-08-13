@@ -31,7 +31,7 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
 }]).run(["$http", "$location", "$rootScope",
 function ($http, $location, $rootScope)
 {
-    if ($location.host().indexOf("github") > 1)
+    if ($location.host().indexOf("localhost") === -1)
     {
         $http.get("https://api.github.com/repos/coldstorm/coldstorm/commits" +
             "?per_page=1").success(function (data)
