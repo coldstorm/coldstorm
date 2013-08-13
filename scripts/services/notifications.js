@@ -67,7 +67,7 @@
                 var notification = new Notification(title,
                     {
                         tag: tag,
-                        icon: "../../favicon.png",
+                        icon: "//coldstorm.github.io/coldstorm/favicon.png",
                         body: body
                     });
             }
@@ -81,7 +81,7 @@
             var welcome_notification = new Notification("Welcome to Coldstorm!", 
                 {
                     tag: "welcome",
-                    icon: "../../favicon.png",
+                    icon: "//coldstorm.github.io/coldstorm/favicon.png",
                 });
 
             if (welcome_notification.permission === "granted")
