@@ -286,35 +286,25 @@ div.inner {
 }
 
 .tab {
-    background-color: #24272e;
+    background-color: #202226;
     border: 1px solid #2a2e36;
     border-top: 1px solid #2a2e36;
     border-left: 1px solid #2a2e36;
     border-right: 1px solid #2a2e36;
-    border-bottom: 0px;
+    border-bottom: none;
     color: #8c9096;
+    height: 17px;
     display: inline-block;
     margin-right: 2px;
+    margin-top: 3px;
     padding-left: 4px;
     padding-right: 4px;
-}
-
-.tab {
-    background-color: #202226;
-    border-top: 1px solid #2a2e36;
-    border-left: 1px solid #2a2e36;
-    border-right: 1px solid #2a2e36;
-    border-bottom: none;
-    color: #626569;
-    height: 17px;
-    margin-top: 3px;
 }
 
     .tab.active {
         background-color: #24272e;
         color: #8c9096;
         height: 18px;
-        margin-top: 0;
     }
 
     .tab.highlight {
