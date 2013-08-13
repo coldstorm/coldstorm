@@ -239,6 +239,7 @@ header {
     margin-left: 4px;
     width: 10%;
     word-wrap: break-word;
+    overflow: auto;
 }
 
 .users {
