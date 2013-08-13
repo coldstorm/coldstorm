@@ -188,7 +188,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
             if (rank != "" && ["+", "%", "@"].indexOf(rank) != -1)
             {
-                $rootScope.$apply(function () { user.ranks[channel.name] = rank });
+                user.addRank(channel, rank);
             }
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
@@ -261,7 +261,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
                     if (channel)
                     {
-                        user.ranks[channel.name] = rank;
+                        user.addRank(channel, rank);
                     }
                 } else
                 {
@@ -269,7 +269,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
                     if (channel)
                     {
-                        user.ranks[channel.name] = "";
+                        $rootScope.$apply(function () { user.ranks[channel.name] = ""; });
                     }
                 }
             }

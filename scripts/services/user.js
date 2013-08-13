@@ -1,14 +1,11 @@
-Services.provider("User", function ()
+Services.factory("User", ["$rootScope", function ($rootScope)
 {
     var currentUser = "";
 
     var registry = {};
 
-    this.$get = function ()
-    {
-        var provider = {};
-
-        provider.register = function (name, color, country, flag)
+    return {
+        register: function (name, color, country, flag)
         {
             registry[name] = {
                 color: color != null ? color : "#BABBBF",
@@ -69,7 +66,11 @@ Services.provider("User", function ()
                         return 0;
                     });
 
-                    this.ranks[channel.name] = tempRanks.join("");
+                    var user = this;
+                    $rootScope.$apply(function ()
+                    {
+                        user.ranks[channel.name] = tempRanks.join("");
+                    });
                 },
 
                 removeRank: function (channel, rank)
@@ -87,20 +88,20 @@ Services.provider("User", function ()
             }
 
             return registry[name];
-        };
+        },
 
-        provider.get = function (name)
+        get: function (name)
         {
             if (name in registry)
             {
                 return registry[name];
             } else
             {
-                return provider.register(name);
+                return this.register(name);
             }
-        };
+        },
 
-        provider.move = function (oldName, newName)
+        move: function (oldName, newName)
         {
             if (oldName in registry)
             {
@@ -108,8 +109,6 @@ Services.provider("User", function ()
 
                 delete registry[oldName];
             }
-        };
-
-        return provider;
-    };
-});
+        }
+    }
+}]);
