@@ -263,8 +263,9 @@ header {
 }
 
 .chat-input {
-    height: 21px;
+    height: 22px;
     width: calc(90% - 4px);
+    font-size: 11px;
 }
 
 .userlist {
