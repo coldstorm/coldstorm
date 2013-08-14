@@ -62,10 +62,10 @@ Controllers.controller("LoginCtrl",
 
                 if (VERSION == "local")
                 {
-                    Connection.connect("ws://coldstorm.tk:82");
+                    Connection.connect("ws://frogbox.es:82");
                 } else
                 {
-                    Connection.connect("ws://coldstorm.tk:81");
+                    Connection.connect("ws://frogbox.es:81");
                 }
 
                 Connection.onOpen(function ()
