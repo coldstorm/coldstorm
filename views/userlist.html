@@ -2,7 +2,7 @@
     <ul class="users">
         <li class="user" ng-repeat="user in users | sortUsers:channel">
             <img class="flag"
-                    ng-src="flags/{{ user.flag | lowercase }}.png"
+                    ng-src="res/flags/{{ user.flag | lowercase }}.png"
                     title="{{ user.country }}" />
             <user user="user" channel="channel" options="showOptions"></user>
             <useroptions user="user" options="showOptions"></useroptions>
