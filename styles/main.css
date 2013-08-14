@@ -125,19 +125,19 @@ input {
 
     .settings h1 {
         color: #babbbf;
-        margin-bottom: 0;
+        margin-bottom: 5px;
         text-align: center;
     }
 
-    .settings label {
+    .settings span {
         color: #babbbf;
         font-size: 1.5em;
         font-weight: bold;
+        margin-left: 10px;
     }
 
     .settings input[type=checkbox] {
-        float: left;
-        display: block;
+        visibility: hidden;
     }
 
     .settings button {
@@ -153,6 +153,39 @@ input {
         text-align: center;
         width: 40%;
     }
+
+    .settings .checkbox {
+        width: 40px;
+        height: 10px;
+        background: #555;
+        margin-right: 10px;
+        margin-top: 5px;
+        position: relative;
+        border-radius: 3px;
+        float: right;
+    }
+
+        .settings .checkbox label {
+            display: block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            -o-transition: all .5s ease;
+            -ms-transition: all .5s ease;
+            transition: all .5s ease;
+            cursor: pointer;
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            background: #ccc;
+        }
+
+        .settings .checkbox input[type=checkbox]:checked + label {
+            left: 27px;
+            background: #26ca28;
+        }
 
 .preview {
     background-color: #24272e;
