@@ -221,6 +221,7 @@ header {
     border: 1px solid #2a2e36;
     border-radius: 3px;
     border-top-left-radius: 0;
+    height: 90%;
     height: calc(100% - 21px - 35px - 4px);
     margin-bottom: 4px;
     overflow: auto;
@@ -264,6 +265,7 @@ header {
 
 .chat-input {
     height: 22px;
+    width: 85%;
     width: calc(90% - 4px);
     font-size: 11px;
 }
@@ -273,6 +275,7 @@ header {
     border: 1px solid #2a2e36;
     border-radius: 3px;
     float: right;
+    height: 90%;
     height: calc(100% - 35px);
     margin-left: 4px;
     width: 10%;
@@ -318,6 +321,7 @@ div.inner {
 
 .tabs {
     height: 20px;
+    width: 85%;
     width: calc(90% - 4px);
     margin: 0;
     padding: 0;
