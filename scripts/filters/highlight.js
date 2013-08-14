@@ -4,6 +4,6 @@ Filters.filter("highlight", ["User", function (User)
     {
         var user = User.get("~");
         var re = new RegExp( "([^\\w\\d]|^)(" + user.nickName + ")(\\s?" + user.nickName + ")*([^\\w\\d]|$)", "ig" );
-	return input.replace( re, '$1<span class="highlight">$2</span>$3' );
+	return input.replace( re, '$1<span class="highlight">$2$3</span>$4' );
     };
 }]);
