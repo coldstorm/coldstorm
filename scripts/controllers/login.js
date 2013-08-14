@@ -38,7 +38,6 @@ Controllers.controller("LoginCtrl",
 
         $rootScope.$on("err_nicknameinuse", function (evt)
         {
-            console.log("err_nicknameinuse received");
             $scope.openModal();
         });
 

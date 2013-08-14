@@ -598,7 +598,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             return parts[1] === "433";
         }, function (parts)
         {
-            console.log("err_nicknameinuse fired");
             $rootScope.$broadcast("err_nicknameinuse");
         });
         registerMessage(err_nicknameinuseMessage);
@@ -651,7 +650,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         return {
             parse: function (line)
             {
-                console.log("< " + line);
+                //console.log("< " + line);
 
                 var parts = clean(line.split(" "));
 

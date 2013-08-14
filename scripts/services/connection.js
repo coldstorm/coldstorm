@@ -66,7 +66,7 @@ Services.factory("Connection", function ()
             message = message.replace(/\\c/gi, "\u0003");
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
-            console.log("> " + message);
+            //console.log("> " + message);
         }
     };
 });
