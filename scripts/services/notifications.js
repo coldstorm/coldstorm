@@ -8,6 +8,7 @@
         highlighted = true;
         setTitle(message.channel.name);
         notify(message.channel.name, message.user.nickName, message.line);
+        playPing();
     });
 
     $rootScope.$on("unread", function (evt, message)
@@ -112,3 +113,8 @@
         }
     }
 }])
+
+var playPing = function ()
+{
+    $("#ping").get(0).play();
+}
