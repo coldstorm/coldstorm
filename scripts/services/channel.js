@@ -16,11 +16,17 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         channel.addLine(line, user);
 
         var myUser = User.get("~");
+        var re = new RegExp("(\ " + myUser.nickName +
+            "\ )|(^" + myUser.nickName +
+            "\ +)|(^\ ?" + myUser.nickName +
+            "\ ?$)|(\ " + myUser.nickName +
+            "\ ?$)", "ig");
+        var matches = message.line.match(re);
 
         if ($rootScope.blurred)
         {
             $rootScope.$broadcast("unread", message);
-            if (message.line.indexOf(myUser.nickName) > -1)
+            if (matches != null)
             {
                 $rootScope.$broadcast("highlighted", message);
             }
