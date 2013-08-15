@@ -27,6 +27,7 @@
             setTitle(message.user.nickName, "PM");
         }
         notify("PM", message.user.nickName, message.line);
+        playPing();
     });
 
     $rootScope.$on("read", function (evt)

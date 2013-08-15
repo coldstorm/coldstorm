@@ -12,7 +12,20 @@ Controllers.controller("TabsCtrl", ["$scope", function ($scope)
         $scope.$apply(function ()
         {
             message.channel.active = true;
-        })
+        });
+    });
+
+    $scope.$on("query.message", function (evt, message)
+    {
+        if ($scope.query !== undefined && $scope.query == message.query)
+        {
+            return;
+        }
+
+        $scope.$apply(function ()
+        {
+            message.query.active = true;
+        });
     });
 
     $scope.channelEquals = function (first, second)

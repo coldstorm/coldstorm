@@ -3,8 +3,8 @@
         <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
         <a ng-click="channelTab.leave()">X</a>
     </li>
-    <li ng-repeat="userTab in queries" class="tab" ng-class="{ active:queryEquals(query, userTab), highlight: userTab.active }">
-        <a href="#/query/{{ userTab.name }}">{{ userTab.user.nickName }}</a>
-        <a ng-click="userTab.close()">X</a>
+    <li ng-repeat="queryTab in queries" class="tab" ng-class="{ active:queryEquals(query, queryTab), highlight:queryTab.active }">
+        <a href="#/query/{{ queryTab.name }}">{{ queryTab.user.nickName }}</a>
+        <a ng-click="queryTab.close()">X</a>
     </li>
 </ul>
