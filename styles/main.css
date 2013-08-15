@@ -129,6 +129,13 @@ input {
         text-align: center;
     }
 
+    .settings h4 {
+        color: #babbbf;
+        text-align: center;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
     .settings span {
         color: #babbbf;
         font-size: 1.5em;

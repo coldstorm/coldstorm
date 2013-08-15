@@ -3,6 +3,23 @@
         <h1>Settings</h1>
     </div>
 
-    <button type="button">Save</button>
+    <div id="option1">
+        <span>Sound notifications</span>
+        <div class="checkbox">
+            <input type="checkbox" id="cb1" ng-model="soundNotifications" />
+            <label for="cb1"></label>
+        </div>
+    </div>
+
+    <div id="option2">
+        <span>Desktop notifications</span>
+        <div class="checkbox">
+            <input type="checkbox" id="cb2" ng-model="desktopNotifications" />
+            <label for="cb2"></label>
+        </div>
+    </div>
+
+    <h4 ng-show="saved">Saved. You may close this tab now.</h4>
+    <button type="submit">Save</button>
     <br style="clear: both" />
 </form>
