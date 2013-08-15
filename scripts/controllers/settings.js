@@ -1,12 +1,13 @@
 ﻿Controllers.controller("SettingsCtrl", ["$scope", "$cookies", "$filter", "$timeout", function ($scope, $cookies, $filter, $timeout)
 {
-    $scope.settings = $.parseJSON($cookies.settings);
+    $scope.settings = ($cookies.settings);
     $scope.soundNotifications = false;
     $scope.desktopNotifications = false;
     $scope.saved = false
 
     if ($scope.settings)
     {
+        $scope.settings = $.parseJSON($scope.settings);
         $scope.soundNotifications = $scope.settings.soundNotifications;
         $scope.desktopNotifications = $scope.settings.desktopNotifications;
     }
