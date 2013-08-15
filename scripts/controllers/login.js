@@ -87,8 +87,6 @@ Controllers.controller("LoginCtrl",
                             Connection.send("PRIVMSG Jessica :~fixmyip " +
                                 hostToken);
                         }
-
-                        $rootScope.requestNotifications();
                     });
                 });
 
