@@ -20,12 +20,40 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
         function clean(parts)
         {
-            for (var i = 0; i < parts.length; i++)
+            if (parts[0].indexOf(":") === 0)
             {
-                if (parts[i][0] === ":")
-                {
-                    parts[i] = parts[i].substring(1);
-                }
+                parts[0] = parts[0].substring(1);
+            }
+
+            if (parts.length > 4 && parts[3].indexOf(":") === 0)
+            {
+                parts[3] = parts[3].substring(1);
+            }
+
+            //message specific removals
+            if (parts[1] === "JOIN" && parts[2].indexOf(":") === 0)
+            {
+                parts[2] = parts[2].substring(1);
+            }
+
+            if (parts[1] === "PRIVMSG" && parts[3].indexOf(":") === 0)
+            {
+                parts[3] = parts[3].substring(1);
+            }
+
+            if (parts[1] === "QUIT" && parts[2].indexOf(":") === 0)
+            {
+                parts[2] = parts[2].substring(1);
+            }
+
+            if (parts[1] === "332" && parts[4].indexOf(":") === 0)
+            {
+                parts[4] = parts[4].substring(1);
+            }
+
+            if (parts[1] === "353" && parts[5].indexOf(":") === 0)
+            {
+                parts[5] = parts[5].substring(1);
             }
 
             return parts;
@@ -653,7 +681,6 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 //console.log("< " + line);
 
                 var parts = clean(line.split(" "));
-
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)
                 {
                     var message = messages[mIndex];
