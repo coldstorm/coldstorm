@@ -18,50 +18,59 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             messages.push(message);
         }
 
-        function clean(parts)
+        function clean(line)
         {
-            if (parts[0].indexOf(":") === 0)
+            //taken from https://github.com/martynsmith/node-irc/blob/master/lib/irc.js
+            var ircline = {};
+            var match;
+
+            //regexes
+            var prefix_re = /^:([^ ]+) +/;
+            var cmd_re = /^([^ ]+) */;
+            var arg_re = /(.*?)(?:^:|\s+:)(.*)/;
+
+            //match prefix
+            if (match = line.match(prefix_re))
             {
-                parts[0] = parts[0].substring(1);
+                ircline.prefix = match[1];
+                line = line.replace(prefix_re, "");
             }
 
-            if (parts.length > 4 && parts[3].indexOf(":") === 0)
+            //match cmd
+            match = line.match(cmd_re);
+            ircline.cmd = match[1];
+            line = line.replace(/^[^ ]+ +/, "");
+
+            //match args
+            ircline.args = [];
+            var middle, trailing;
+
+            if (line.search(/^:|\s+:/) != -1)
             {
-                parts[3] = parts[3].substring(1);
+                match = line.match(arg_re);
+                middle = match[1].trimRight();
+                trailing = match[2];
+            } else
+            {
+                middle = line;
             }
 
-            //message specific removals
-            if (parts[1] === "JOIN" && parts[2].indexOf(":") === 0)
+            if (middle.length)
             {
-                parts[2] = parts[2].substring(1);
+                ircline.args = middle.split(/ +/);
             }
 
-            if (parts[1] === "PRIVMSG" && parts[3].indexOf(":") === 0)
+            if (typeof (trailing) != "undefined" && trailing.length)
             {
-                parts[3] = parts[3].substring(1);
+                ircline.args.push(trailing);
             }
 
-            if (parts[1] === "QUIT" && parts[2].indexOf(":") === 0)
+            for (var i = 0; i < ircline.args.length; i++)
             {
-                parts[2] = parts[2].substring(1);
+                ircline.args[i].trim();
             }
 
-            if (parts[1] === "332" && parts[4].indexOf(":") === 0)
-            {
-                parts[4] = parts[4].substring(1);
-            }
-
-            if (parts[1] === "353" && parts[5].indexOf(":") === 0)
-            {
-                parts[5] = parts[5].substring(1);
-            }
-
-            return parts;
-        }
-
-        function getChannel(parts)
-        {
-            return Channel.get(parts[2]);
+            return ircline;
         }
 
         function getQuery(parts)
@@ -69,10 +78,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             return Query.get(parts[2]);
         }
 
-        function getUser(parts)
+        function getUser(prefix)
         {
             var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-            var matches = parts[0].match(regexp);
+            var matches = prefix.match(regexp);
 
             if (matches !== null)
             {
@@ -83,11 +92,11 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         }
 
         // Checks if the message is a CTCP message and returns the CTCP command or null
-        function getCTCP(parts)
+        function getCTCP(ircline)
         {
-            if ((parts[1] === "NOTICE" || parts[1] === "PRIVMSG") && parts[3].indexOf("\u0001") === 0)
+            if ((ircline.cmd === "NOTICE" || ircline.cmd === "PRIVMSG") && ircline.args[1].indexOf("\u0001") === 0)
             {
-                var ctcp = parts[3].replace(/\u0001/g, "");
+                var ctcp = ircline.args[1].replace(/\u0001/g, "");
                 return ctcp;
             }
 
@@ -96,10 +105,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
         var welcomeHandlers = [];
 
-        var rpl_welcomeMessage = new Message(function (parts)
+        var rpl_welcomeMessage = new Message(function (ircline)
         {
-            return parts[1] === "001";
-        }, function (parts)
+            return ircline.cmd === "001";
+        }, function (ircline)
         {
             for (var i = 0; i < welcomeHandlers.length; i++)
             {
@@ -113,43 +122,42 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             welcomeHandlers.push(handler);
         };
 
-        var noticeMessage = new Message(function (parts)
+        var noticeMessage = new Message(function (ircline)
         {
-            return parts[1] === "NOTICE";
-        }, function (parts)
+            return ircline.cmd === "NOTICE";
+        }, function (ircline)
         {
             return;
         });
         registerMessage(noticeMessage);
 
-        var rpl_motdMessage = new Message(function (parts)
+        var rpl_motdMessage = new Message(function (ircline)
         {
-            return parts[1] === "372";
-        }, function (parts)
+            return ircline.cmd === "372";
+        }, function (ircline)
         {
             return;
         });
         registerMessage(rpl_motdMessage);
 
-        var pingMessage = new Message(function (parts)
+        var pingMessage = new Message(function (ircline)
         {
-            return parts[0] === "PING";
-        }, function (parts)
+            return ircline.cmd === "PING";
+        }, function (ircline)
         {
-            Connection.send("PONG " + parts[1]);
+            Connection.send("PONG " + ircline.args[0]);
         });
         registerMessage(pingMessage);
 
-        var privMessage = new Message(function (parts)
+        var privMessage = new Message(function (ircline)
         {
-            return (parts[1] === "PRIVMSG" &&
-                    getChannel(parts) !== null &&
-                    getCTCP(parts) === null);
-        }, function (parts)
+            return (ircline.cmd === "PRIVMSG" &&
+                    getCTCP(ircline) === null);
+        }, function (ircline)
         {
-            var channel = getChannel(parts);
-            var user = getUser(parts);
-            var line = parts.slice(3).join(" ");
+            var channel = Channel.get(ircline.args[0]);
+            var user = getUser(ircline.prefix);
+            var line = ircline.args.slice(1).join(" ");
 
             if (channel !== undefined)
             {
@@ -175,25 +183,23 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(privMessage);
 
-        var rpl_namreplyMessage = new Message(function (parts)
+        var rpl_namreplyMessage = new Message(function (ircline)
         {
-            return parts[1] === "353";
-        }, function (parts)
+            return ircline.cmd === "353";
+        }, function (ircline)
         {
-            var channel = Channel.get(parts[4]);
-            parts = parts.slice(5).filter(function (n)
-            {
-                return n;
-            });
+            var channel = Channel.get(ircline.args[2]);
+            var users = ircline.args[3].split(" ");
+            users = users.filter(function (n) { return n });
 
-            for (var i = 0; i < parts.length; i++)
+            for (var i = 0; i < users.length; i++)
             {
-                if (["+", "%", "@"].indexOf(parts[i][0]) != -1)
+                if (["+", "%", "@"].indexOf(users[i][0]) != -1)
                 {
-                    var user = User.get(parts[i].substring(1));
+                    var user = User.get(users[i].substring(1));
                 } else
                 {
-                    var user = User.get(parts[i]);
+                    var user = User.get(users[i]);
                 }
                 channel.addUser(user);
             }
@@ -202,17 +208,16 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(rpl_namreplyMessage);
 
-        var rpl_whoreplyMessage = new Message(function (parts)
+        var rpl_whoreplyMessage = new Message(function (ircline)
         {
-            return parts[1] === "352";
-        }, function (parts)
+            return ircline.cmd === "352";
+        }, function (ircline)
         {
-            parts = parts.slice(3).filter(function (n) { return n });
-            var channel = Channel.get(parts[0]);
-            var user = User.get(parts[4]);
+            var channel = Channel.get(ircline.args[1]);
+            var user = User.get(ircline.args[5]);
 
-            var username = parts[1];
-            var rank = parts[5].charAt(parts[5].length - 1);
+            var username = ircline.args[2];
+            var rank = ircline.args[6].charAt(ircline.args[6].length - 1);
 
             if (rank != "" && ["+", "%", "@"].indexOf(rank) != -1)
             {
@@ -241,14 +246,13 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(rpl_whoreplyMessage);
 
-        var rpl_whoisuserMessage = new Message(function (parts)
+        var rpl_whoisuserMessage = new Message(function (ircline)
         {
-            return parts[1] === "311";
-        }, function (parts)
+            return ircline.cmd === "311";
+        }, function (ircline)
         {
-            parts = parts.slice(3).filter(function (n) { return n });
-            var user = User.get(parts[0]);
-            var username = parts[1];
+            var user = User.get(ircline.args[1]);
+            var username = ircline.args[2];
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
             var matches = username.match(colorflag_regexp);
@@ -272,20 +276,19 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(rpl_whoisuserMessage);
 
-        var rpl_whoischannelsMessage = new Message(function (parts)
+        var rpl_whoischannelsMessage = new Message(function (ircline)
         {
-            return parts[1] === "319";
-        }, function (parts)
+            return ircline.cmd === "319";
+        }, function (ircline)
         {
-            parts = parts.slice(3).filter(function (n) { return n });
-            var user = User.get(parts[0]);
+            var user = User.get(ircline.args[1]);
 
-            for (var i = 1; i < parts.length; i++)
+            for (var i = 2; i < ircline.args.length; i++)
             {
-                if (["+", "%", "@"].indexOf(parts[i][0]) != -1)
+                if (["+", "%", "@"].indexOf(ircline.args[i][0]) != -1)
                 {
-                    var rank = parts[i][0];
-                    var channel = Channel.get(parts[i].substring(1));
+                    var rank = ircline.args[i][0];
+                    var channel = Channel.get(ircline.args[i].substring(1));
 
                     if (channel)
                     {
@@ -293,7 +296,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                     }
                 } else
                 {
-                    var channel = Channel.get(parts[i]);
+                    var channel = Channel.get(ircline.args[i]);
 
                     if (channel)
                     {
@@ -304,23 +307,23 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(rpl_whoischannelsMessage);
 
-        var joinMessage = new Message(function (parts)
+        var joinMessage = new Message(function (ircline)
         {
-            return parts[1] === "JOIN";
-        }, function (parts)
+            return ircline.cmd === "JOIN";
+        }, function (ircline)
         {
-            var user = getUser(parts);
-            var channel = Channel.get(parts[2]);
+            var user = getUser(ircline.prefix);
+            var channel = Channel.get(ircline.args[0]);
 
             if (user.nickName === User.get("~").nickName)
             {
                 var switchToChannel = channel === undefined;
 
-                channel = channel || Channel.register(parts[2]);
+                channel = channel || Channel.register(ircline.args[0]);
 
                 if (switchToChannel)
                 {
-                    $location.path("/channels/" + parts[2]);
+                    $location.path("/channels/" + ircline.args[0]);
                 }
 
                 $rootScope.$broadcast("channel.joined", channel);
@@ -334,14 +337,14 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(joinMessage);
 
-        var partMessage = new Message(function (parts)
+        var partMessage = new Message(function (ircline)
         {
-            return parts[1] === "PART";
-        }, function (parts)
+            return ircline.cmd === "PART";
+        }, function (ircline)
         {
-            var user = getUser(parts);
-            var channel = Channel.get(parts[2]);
-            var reason = parts.slice(3).join(" ");
+            var user = getUser(ircline.prefix);
+            var channel = Channel.get(ircline.args[0]);
+            var reason = ircline.args[1];
 
             if (user.nickName !== User.get("~").nickName)
             {
@@ -357,13 +360,13 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(partMessage);
 
-        var quitMessage = new Message(function (parts)
+        var quitMessage = new Message(function (ircline)
         {
-            return parts[1] === "QUIT";
-        }, function (parts)
+            return ircline.cmd === "QUIT";
+        }, function (ircline)
         {
-            var user = getUser(parts);
-            var reason = parts.slice(2).join(" ");
+            var user = getUser(ircline.prefix);
+            var reason = ircline.args[0];
 
             var channels = Channel.all();
             for (var i = 0; i < channels.length; i++)
@@ -383,31 +386,29 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(quitMessage);
 
-        var rpl_topicMessage = new Message(function (parts)
+        var rpl_topicMessage = new Message(function (ircline)
         {
-            return parts[1] === "332";
-        }, function (parts)
+            return ircline.cmd === "332";
+        }, function (ircline)
         {
-            parts = parts.slice(3).filter(function (n) { return n });
-            var channel = Channel.get(parts[0]);
+            var channel = Channel.get(ircline.args[1]);
 
             if (channel != null)
             {
-                $rootScope.$apply(function () { channel.topic = parts.slice(1).join(" ") });
+                $rootScope.$apply(function () { channel.topic = ircline.args[2] });
             }
         });
         registerMessage(rpl_topicMessage);
 
-        var rpl_topicwhotimeMessage = new Message(function (parts)
+        var rpl_topicwhotimeMessage = new Message(function (ircline)
         {
-            return parts[1] === "333";
-        }, function (parts)
+            return ircline.cmd === "333";
+        }, function (ircline)
         {
-            parts = parts.slice(3).filter(function (n) { return n });
-            var channel = Channel.get(parts[0]);
+            var channel = Channel.get(ircline.args[1]);
             var user;
             var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-            var matches = parts[1].match(regexp);
+            var matches = ircline.args[2].match(regexp);
 
             if (matches !== null)
             {
@@ -417,20 +418,20 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             $rootScope.$apply(function ()
             {
                 channel.topicauthor = user;
-                var date = new Date(parts[2] * 1000);
+                var date = new Date(ircline.args[3] * 1000);
                 channel.topicdate = date.toLocaleString();
             });
         });
         registerMessage(rpl_topicwhotimeMessage);
 
-        var topicchangeMessage = new Message(function (parts)
+        var topicchangeMessage = new Message(function (ircline)
         {
-            return parts[1] === "TOPIC";
-        }, function (parts)
+            return ircline.cmd === "TOPIC";
+        }, function (ircline)
         {
-            var author = getUser(parts);
-            var channel = Channel.get(parts[2]);
-            var topic = parts.slice(3).join(" ");
+            var author = getUser(ircline.prefix);
+            var channel = Channel.get(ircline.args[0]);
+            var topic = ircline.args[1];
             var date = new Date(Date.now());
 
             $rootScope.$apply(function ()
@@ -443,15 +444,15 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(topicchangeMessage);
 
-        var kickMessage = new Message(function (parts)
+        var kickMessage = new Message(function (ircline)
         {
-            return parts[1] === "KICK";
-        }, function (parts)
+            return ircline.cmd === "KICK";
+        }, function (ircline)
         {
-            var kicker = getUser(parts);
-            var channel = Channel.get(parts[2]);
-            var target = User.get(parts[3]);
-            var reason = parts.slice(4).join(" ");
+            var kicker = getUser(ircline.prefix);
+            var channel = Channel.get(ircline.args[0]);
+            var target = User.get(ircline.args[1]);
+            var reason = ircline.args[2];
 
             if (target.nickName === User.get("~").nickName)
             {
@@ -477,15 +478,15 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(kickMessage);
 
-        var modeMessage = new Message(function (parts)
+        var modeMessage = new Message(function (ircline)
         {
-            return parts[1] === "MODE";
-        }, function (parts)
+            return ircline.cmd === "MODE";
+        }, function (ircline)
         {
-            var setter = getUser(parts);
-            var target = parts[2];
-            var modes = parts[3];
-            var parameters = parts.slice(4);
+            var setter = getUser(ircline.prefix);
+            var target = ircline.args[0];
+            var modes = ircline.args[1];
+            var parameters = ircline.args.slice(2);
 
             if (target === User.get("~").nickName)
             {
@@ -584,13 +585,13 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(modeMessage);
 
-        var nickMessage = new Message(function (parts)
+        var nickMessage = new Message(function (ircline)
         {
-            return parts[1] === "NICK";
-        }, function (parts)
+            return ircline.cmd === "NICK";
+        }, function (ircline)
         {
-            var user = getUser(parts);
-            var newNickName = parts[2];
+            var user = getUser(ircline.prefix);
+            var newNickName = ircline.args[0];
 
             //console.log(Channel.all());
 
@@ -604,11 +605,11 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
 
                 if (user.nickName === User.get("~").nickName)
                 {
-                    channel.addLine("You were previously " + user.nickName + ".");
+                    channel.addLine("You are now known as " + newNickName + ".");
                 } else
                 {
-                    channel.addLine(newNickName + " was previously " +
-                                    user.nickName + ".");
+                    channel.addLine(user.nickName + " is now known as " +
+                                    newNickName + ".");
                 }
             }
 
@@ -621,44 +622,44 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         });
         registerMessage(nickMessage);
 
-        var err_nicknameinuseMessage = new Message(function (parts)
+        var err_nicknameinuseMessage = new Message(function (ircline)
         {
-            return parts[1] === "433";
-        }, function (parts)
+            return ircline.cmd === "433";
+        }, function (ircline)
         {
             $rootScope.$broadcast("err_nicknameinuse");
         });
         registerMessage(err_nicknameinuseMessage);
 
-        var actionCTCPMessage = new Message(function (parts)
+        var actionCTCPMessage = new Message(function (ircline)
         {
-            return getCTCP(parts) === "ACTION";
-        }, function (parts)
+            return getCTCP(ircline) === "ACTION";
+        }, function (ircline)
         {
             //console.log("Received CTCP ACTION");
         });
         registerMessage(actionCTCPMessage);
 
-        var versionCTCPMessage = new Message(function (parts)
+        var versionCTCPMessage = new Message(function (ircline)
         {
-            return getCTCP(parts) === "VERSION";
-        }, function (parts)
+            return getCTCP(ircline) === "VERSION";
+        }, function (ircline)
         {
             //console.log("Received CTCP VERSION");
-            var user = getUser(parts);
+            var user = getUser(ircline.prefix);
             Connection.send("NOTICE " + user.nickName +
                 " \u0001VERSION Coldstorm Web Client (" +
                 $rootScope.meta.version + ")\u0001");
         });
         registerMessage(versionCTCPMessage);
 
-        var browserCTCPMessage = new Message(function (parts)
+        var browserCTCPMessage = new Message(function (ircline)
         {
-            return getCTCP(parts) === "BROWSER";
-        }, function (parts)
+            return getCTCP(ircline) === "BROWSER";
+        }, function (ircline)
         {
             //console.log("Received CTCP BROWSER");
-            var user = getUser(parts);
+            var user = getUser(ircline.prefix);
             Connection.send("NOTICE " + user.nickName +
                 " \u0001BROWSER " + $window.navigator.userAgent +
                 "\u0001");
@@ -678,16 +679,16 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         return {
             parse: function (line)
             {
-                //console.log("< " + line);
+                console.log("< " + line);
 
-                var parts = clean(line.split(" "));
+                var ircline = clean(line);
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)
                 {
                     var message = messages[mIndex];
 
-                    if (message.check(parts))
+                    if (message.check(ircline))
                     {
-                        message.process(parts);
+                        message.process(ircline);
                     }
                 }
             },
