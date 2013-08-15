@@ -679,7 +679,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         return {
             parse: function (line)
             {
-                console.log("< " + line);
+                //console.log("< " + line);
 
                 var ircline = clean(line);
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)

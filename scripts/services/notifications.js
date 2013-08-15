@@ -93,7 +93,7 @@
         }
         catch (err)
         {
-            console.log("This browser does not support notifications");
+            //console.log("This browser does not support notifications");
             supportsNotifications = false;
         }
     }

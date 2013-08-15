@@ -121,7 +121,8 @@ Controllers.controller("LoginCtrl",
 
                 Connection.onClose(function ()
                 {
-                    console.log("Closed");
+                    //console.log("Closed");
+                    $location.path("/login");
                 });
             }
         };
