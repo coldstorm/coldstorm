@@ -4,12 +4,12 @@
     {
         var motd = input;
 
-        motd = $filter("linky")(line);
+        motd = $filter("linky")(motd);
 
-        motd = line.replace("<a href", '<a target="_blank" href');
+        motd = motd.replace("<a href", '<a target="_blank" href');
 
-        motd = $filter("color")(line);
+        motd = $filter("color")(motd);
 
-        return line;
+        return motd;
     };
 }]);
