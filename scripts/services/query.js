@@ -11,6 +11,19 @@ function ($rootScope, User)
         user = message.user;
 
         query.addLine(line, user);
+
+        var myUser = User.get("~");
+        var re = new RegExp("([^\\w\\d]|^)(" + myUser.nickName + ")(\\s?" + myUser.nickName + ")*([^\\w\\d]|$)", "ig");
+        var matches = message.line.match(re);
+
+        if ($rootScope.blurred)
+        {
+            $rootScope.$broadcast("unread_pm", message);
+            if (matches != null)
+            {
+                $rootScope.$broadcast("highlighted_pm", message);
+            }
+        }
     });
 
     var queries = {

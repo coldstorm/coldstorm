@@ -11,6 +11,14 @@
         playPing();
     });
 
+    $rootScope.$on("highlighted_pm", function (evt, message)
+    {
+        highlighted = true;
+        setTitle(message.user.nickName, "PM");
+        notify("PM", message.user.nickName, message.line);
+        playPing();
+    });
+
     $rootScope.$on("unread", function (evt, message)
     {
         unread++;
@@ -20,14 +28,14 @@
         }
     });
 
-    $rootScope.$on("query.message", function (evt, message)
+    $rootScope.$on("unread_pm", function (evt, message)
     {
+        unread++;
         if (highlighted == false)
         {
             setTitle(message.user.nickName, "PM");
+            notify("PM", message.user.nickName, message.line);
         }
-        notify("PM", message.user.nickName, message.line);
-        playPing();
     });
 
     $rootScope.$on("read", function (evt)
