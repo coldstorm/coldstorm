@@ -1,4 +1,4 @@
-﻿Services.factory("Notifications", ["$filter", "$rootScope","$timeout", function ($filter, $rootScope, $timeout)
+﻿Services.factory("Notifications", ["$filter", "$rootScope","$timeout", "Settings", function ($filter, $rootScope, $timeout, Settings)
 {
     var highlighted = false;
     var unread = 0;
@@ -67,19 +67,22 @@
 
     var notify = function (location, notifier, message)
     {
-        if (supportsNotifications)
+        if (Settings.get("desktopNotifications"))
         {
-            if (canNotify)
+            if (supportsNotifications)
             {
-                var title = "Coldstorm" + " (" + location + ") ";
-                var tag = "chat_" + location;
-                var body = "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message;
-                var notification = new Notification(title,
-                    {
-                        tag: tag,
-                        icon: "//coldstorm.github.io/coldstorm/favicon.png",
-                        body: body
-                    });
+                if (canNotify)
+                {
+                    var title = "Coldstorm" + " (" + location + ") ";
+                    var tag = "chat_" + location;
+                    var body = "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message;
+                    var notification = new Notification(title,
+                        {
+                            tag: tag,
+                            icon: "//coldstorm.github.io/coldstorm/favicon.png",
+                            body: body
+                        });
+                }
             }
         }
     }
@@ -123,7 +126,10 @@
     }
 }])
 
-var playPing = function ()
+var playPing = function (Settings)
 {
-    $("#ping").get(0).play();
+    if (Settings.get("soundNotifications"))
+    {
+        $("#ping").get(0).play();
+    }
 }

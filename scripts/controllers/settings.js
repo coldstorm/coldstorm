@@ -1,23 +1,13 @@
-﻿Controllers.controller("SettingsCtrl", ["$scope", "$cookies", "$filter", "$timeout", function ($scope, $cookies, $filter, $timeout)
+﻿Controllers.controller("SettingsCtrl", ["$scope", "$cookies", "$timeout", "Settings", function ($scope, $cookies, $timeout, Settings)
 {
-    $scope.settings = ($cookies.settings);
-    $scope.soundNotifications = false;
-    $scope.desktopNotifications = false;
-    $scope.saved = false
-
-    if ($scope.settings)
-    {
-        $scope.settings = $.parseJSON($scope.settings);
-        $scope.soundNotifications = $scope.settings.soundNotifications;
-        $scope.desktopNotifications = $scope.settings.desktopNotifications;
-    }
+    $scope.saved = false;
+    $scope.soundNotifications = Settings.get("soundNotifications");
+    $scope.desktopNotifications = Settings.get("desktopNotifications");
 
     $scope.saveSettings = function ()
     {
-        var settings = {};
-        settings.soundNotifications = $scope.soundNotifications;
-        settings.desktopNotifications = $scope.desktopNotifications;
-        $cookies.settings = $filter("json")(settings);
+        Settings.set("desktopNotifications", $scope.desktopNotifications);
+        Settings.set("soundNotifications", $scope.soundNotifications);
         $scope.saved = true;
 
         $timeout(function () { $scope.saved = false; }, 1500);
