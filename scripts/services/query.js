@@ -54,6 +54,8 @@ function ($rootScope, User)
                 active: false,
                 close: function ()
                 {
+                    $rootScope.$broadcast("query.close", this);
+
                     delete registry[this.name];
                 },
                 lines: [],

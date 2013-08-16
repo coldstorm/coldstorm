@@ -53,7 +53,7 @@ Controllers.controller("QueryCtrl",
             {
                 var channels = $scope.channels;
 
-                if (channels.length > 1)
+                if (channels.length >= 1)
                 {
                     $location.path("/channels/" + channels[0].name);
                 }
