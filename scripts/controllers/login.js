@@ -4,6 +4,7 @@ Controllers.controller("LoginCtrl",
     function ($scope, $http, $rootScope, $location, $timeout, $filter,
     $cookies, Connection, User, Channel, Parser)
     {
+        Connection.close();
         $scope.displayModal = false;
         $scope.modalOpts =
             {
@@ -38,6 +39,8 @@ Controllers.controller("LoginCtrl",
 
         $rootScope.$on("err_nicknameinuse", function (evt)
         {
+            Connection.close();
+            $scope.connecting = false;
             $scope.openModal();
         });
 

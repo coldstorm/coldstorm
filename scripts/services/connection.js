@@ -42,12 +42,19 @@ Services.factory("Connection", function ()
 
             handler();
         }
+        openHandlers.length = 0;
+        messageHandlers.length = 0;
+        closeHandlers.length = 0;
     });
 
     return {
         connect: function (uri)
         {
             connection.open(uri);
+        },
+        close: function ()
+        {
+            connection.close();
         },
         onOpen: function (handler)
         {
