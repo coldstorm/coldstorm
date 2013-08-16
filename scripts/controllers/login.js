@@ -114,6 +114,8 @@ Controllers.controller("LoginCtrl",
                         }
                     }
 
+                    $scope.connecting = false;
+
                     Parser.parse(message);
                 });
 
