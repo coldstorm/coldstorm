@@ -507,10 +507,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                     switch (modes[i])
                     {
                         case '+':
-                            action = "sets";
+                            action = "set";
                             break;
                         case '-':
-                            action = "removes";
+                            action = "removed";
                             break;
                         case 'i':
                             currMode = "invite only";
@@ -533,10 +533,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                         case 'v':
                             currMode = "voice";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "sets")
+                            if (action === "set")
                             {
                                 userTarget.addRank(target, '+');
-                            } else if (action === "removes")
+                            } else if (action === "removed")
                             {
                                 userTarget.removeRank(target, '+');
                             }
@@ -545,10 +545,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                         case 'h':
                             currMode = "halfop";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "sets")
+                            if (action === "set")
                             {
                                 userTarget.addRank(target, '%');
-                            } else if (action === "removes")
+                            } else if (action === "removed")
                             {
                                 userTarget.removeRank(target, '%');
                             }
@@ -557,10 +557,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                         case 'o':
                             currMode = "op";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "sets")
+                            if (action === "set")
                             {
                                 userTarget.addRank(target, '@');
-                            } else if (action === "removes")
+                            } else if (action === "removed")
                             {
                                 userTarget.removeRank(target, '@');
                             }
@@ -575,10 +575,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                         target.addLine(setter.nickName + " " + action + " mode \"" + currMode + "\".");
                     } else if ("vho".indexOf(modes[i]) != -1)
                     {
-                        if (action === "sets")
+                        if (action === "set")
                         {
-                            target.addLine(setter.nickName + " gives " + currMode + " to " + userTarget.nickName + ".");
-                        } else if (action === "removes")
+                            target.addLine(setter.nickName + " gave " + currMode + " to " + userTarget.nickName + ".");
+                        } else if (action === "removed")
                         {
                             target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
                         }
