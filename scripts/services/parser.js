@@ -606,6 +606,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
                 if (user.nickName === User.get("~").nickName)
                 {
                     channel.addLine("You are now known as " + newNickName + ".");
+                    User.get("~").nickName = newNickName;
                 } else
                 {
                     channel.addLine(user.nickName + " is now known as " +
