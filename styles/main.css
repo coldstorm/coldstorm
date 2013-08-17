@@ -266,6 +266,10 @@ header {
     color: #4a7691;
 }
 
+.italics {
+    font-style: italic;
+}
+
 .systemMessage {
     color: #808080;
 }

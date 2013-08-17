@@ -8,6 +8,7 @@ Filters.filter("line", ["$filter", function ($filter)
 
         line = line.replace("<a href", '<a target="_blank" href');
 
+        line = $filter("ctcpAction")(line);
         line = $filter("spoiler")(line);
         line = $filter("highlight")(line);
         line = $filter("inlineImage")(line);

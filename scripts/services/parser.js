@@ -97,7 +97,10 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             if ((ircline.cmd === "NOTICE" || ircline.cmd === "PRIVMSG") && ircline.args[1].indexOf("\u0001") === 0)
             {
                 var ctcp = ircline.args[1].replace(/\u0001/g, "");
-                return ctcp;
+
+                var action = ctcp.split(" ");
+
+                return action[0];
             }
 
             return null;
@@ -637,7 +640,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
             return getCTCP(ircline) === "ACTION";
         }, function (ircline)
         {
-            //console.log("Received CTCP ACTION");
+            privMessage.process(ircline);
         });
         registerMessage(actionCTCPMessage);
 
@@ -680,7 +683,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         return {
             parse: function (line)
             {
-                //console.log("< " + line);
+                // console.log("< " + line);
 
                 var ircline = clean(line);
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)
