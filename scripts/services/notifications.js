@@ -1,4 +1,6 @@
-﻿Services.factory("Notifications", ["$filter", "$rootScope","$timeout", "Settings", function ($filter, $rootScope, $timeout, Settings)
+Services.factory("Notifications",
+["$filter", "$rootScope","$timeout", "Settings",
+function ($filter, $rootScope, $timeout, Settings)
 {
     var highlighted = false;
     var unread = 0;
@@ -82,6 +84,11 @@
                             icon: "//coldstorm.github.io/coldstorm/favicon.png",
                             body: body
                         });
+
+                    $timeout(function ()
+                    {
+                        notification.cancel();
+                    }, 5000);
                 }
             }
         }
@@ -102,10 +109,10 @@
                 canNotify = true;
             }
             supportsNotifications = true;
+            $timeout(function () { welcome_notification.cancel(); }, 25);
         }
         catch (err)
         {
-            //console.log("This browser does not support notifications");
             supportsNotifications = false;
         }
     }
@@ -129,6 +136,7 @@
     {
         if ($rootScope.settings.soundNotifications)
         {
+            $("#ping").get(0).load();
             $("#ping").get(0).play();
         }
     }
