@@ -374,6 +374,14 @@ div.inner {
     word-wrap: break-word;
 }
 
+.icons {
+    color: #babbbf;
+    float: right;
+    margin-bottom: 2px;
+    margin-right: 2px;
+    height: 16px;
+}
+
 span.highlight {
     color: #ff921e;
     font-weight: bold;
