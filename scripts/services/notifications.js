@@ -67,7 +67,7 @@
 
     var notify = function (location, notifier, message)
     {
-        if (Settings.get("desktopNotifications"))
+        if ($rootScope.settings.desktopNotifications)
         {
             if (supportsNotifications)
             {
@@ -128,7 +128,7 @@
 
 var playPing = function (Settings)
 {
-    if (Settings.get("soundNotifications"))
+    if ($rootScope.settings.soundNotifications)
     {
         $("#ping").get(0).play();
     }
