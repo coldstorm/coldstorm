@@ -124,12 +124,13 @@
             });
         }
     }
+
+    var playPing = function ()
+    {
+        if ($rootScope.settings.soundNotifications)
+        {
+            $("#ping").get(0).play();
+        }
+    }
 }])
 
-var playPing = function (Settings)
-{
-    if ($rootScope.settings.soundNotifications)
-    {
-        $("#ping").get(0).play();
-    }
-}
