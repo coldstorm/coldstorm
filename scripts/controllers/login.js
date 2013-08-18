@@ -48,6 +48,8 @@ Controllers.controller("LoginCtrl",
 
         $scope.login = function ()
         {
+            User.register($scope.user.nickName);
+            User.alias("~", $scope.user.nickName);
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;

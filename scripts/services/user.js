@@ -109,6 +109,11 @@ Services.factory("User", ["$rootScope", function ($rootScope)
 
                 delete registry[oldName];
             }
+        },
+
+        alias: function (first, second)
+        {
+            registry[first] = registry[second];
         }
     }
 }]);
