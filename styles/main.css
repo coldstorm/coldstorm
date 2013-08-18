@@ -114,13 +114,14 @@ input {
         width: 40%;
     }
 
+.modal-settings {
+    top: 20%;
+}
+
 .settings {
     background-color: #202226;
     border: 1px solid #24272e;
     border-radius: 3px;
-    margin-right: 35%;
-    margin-left: 35%;
-    margin-top: 10%;
 }
 
     .settings h1 {
