@@ -5,7 +5,7 @@
         replace: true,
         restrict: "E",
         scope: { user: "=user" },
-        templateUrl: "views/motdauthor.html",
+        templateUrl: "views/motd-author.html",
         transclude: true
     }
 });

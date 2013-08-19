@@ -5,7 +5,7 @@
         replace: true,
         restrict: "E",
         scope: { user: "=user", channel: "=channel" },
-        templateUrl: "views/lineauthor.html",
+        templateUrl: "views/line-author.html",
         transclude: true
     }
 });

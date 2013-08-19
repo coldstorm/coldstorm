@@ -1,7 +1,7 @@
 <div scroll-glue class="lines">
     <div class="line" ng-repeat="line in lines | reverse | limitTo:500 | reverse">
         <span class="time">[{{ line.time | date:"HH:mm" }}]</span>
-        <lineauthor user="line.author" channel="channel"></lineauthor>
+        <line-author user="line.author" channel="channel"></line-author>
         <span class="message" ng-class="{ systemMessage: line.systemMessage }"
             ng-bind-html-unsafe="line.message | line"></span>
     </div>
