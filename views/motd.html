@@ -2,6 +2,6 @@
     <div class="motd" title="Topic set on {{ date }}" ng-show="message && author">
         <span class="topic" ng-bind-html-unsafe="message | motd">
         </span>
-        (by <user user="author"></user>)
+        (by <motd-author user="author"></motd-author>)
     </div>
 </div>
