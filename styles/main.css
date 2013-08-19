@@ -319,8 +319,10 @@ header {
     }
 
 img.flag {
+    float: left;
     vertical-align: middle;
     margin-left: 3px;
+    margin-right: 3px;
 }
 
 div.inner {

@@ -15,4 +15,6 @@
     {
         $scope.rank = '';
     }
+
+    $scope.showOptions = false;
 }]);
