@@ -1,4 +1,6 @@
-﻿Services.factory("Notifications", ["$filter", "$rootScope","$timeout", function ($filter, $rootScope, $timeout)
+Services.factory("Notifications",
+["$filter", "$rootScope","$timeout", "Settings",
+function ($filter, $rootScope, $timeout, Settings)
 {
     var highlighted = false;
     var unread = 0;
@@ -67,19 +69,27 @@
 
     var notify = function (location, notifier, message)
     {
-        if (supportsNotifications)
+        if ($rootScope.settings.desktopNotifications)
         {
-            if (canNotify)
+            if (supportsNotifications)
             {
-                var title = "Coldstorm" + " (" + location + ") ";
-                var tag = "chat_" + location;
-                var body = "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message;
-                var notification = new Notification(title,
+                if (canNotify)
+                {
+                    var title = "Coldstorm" + " (" + location + ") ";
+                    var tag = "chat_" + location;
+                    var body = "[" + $filter("date")(new Date(), "HH:mm") + "] " + notifier + ": " + message;
+                    var notification = new Notification(title,
+                        {
+                            tag: tag,
+                            icon: "//coldstorm.github.io/coldstorm/favicon.png",
+                            body: body
+                        });
+
+                    $timeout(function ()
                     {
-                        tag: tag,
-                        icon: "//coldstorm.github.io/coldstorm/favicon.png",
-                        body: body
-                    });
+                        notification.cancel();
+                    }, 5000);
+                }
             }
         }
     }
@@ -99,10 +109,10 @@
                 canNotify = true;
             }
             supportsNotifications = true;
+            $timeout(function () { welcome_notification.cancel(); }, 25);
         }
         catch (err)
         {
-            //console.log("This browser does not support notifications");
             supportsNotifications = false;
         }
     }
@@ -121,9 +131,14 @@
             });
         }
     }
+
+    var playPing = function ()
+    {
+        if ($rootScope.settings.soundNotifications)
+        {
+            $("#ping").get(0).load();
+            $("#ping").get(0).play();
+        }
+    }
 }])
 
-var playPing = function ()
-{
-    $("#ping").get(0).play();
-}
