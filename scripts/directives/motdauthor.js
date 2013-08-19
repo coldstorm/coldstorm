@@ -1,4 +1,4 @@
-﻿Directives.directive("motdauthor", function ()
+﻿Directives.directive("motdAuthor", function ()
 {
     return {
         controller: "MotdAuthorCtrl",

@@ -1,4 +1,4 @@
-﻿Directives.directive("lineauthor", function ()
+﻿Directives.directive("lineAuthor", function ()
 {
     return {
         controller: "LineAuthorCtrl",
