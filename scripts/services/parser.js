@@ -129,12 +129,33 @@ Services.factory("Parser",
 
         var noticeMessage = new Message(function (ircline)
         {
-            $log.log(ircline.cmd === "NOTICE", getCTCP(ircline));
-            return ircline.cmd === "NOTICE" &&
-                getCTCP(ircline) === null && ircline.prefix !== "Frogbox.es";
+            // Only check notices
+            if (ircline.cmd !== "NOTICE")
+            {
+                return false;
+            }
+
+            // Ignore CTCP responses
+            if (getCTCP(ircline) !== null)
+            {
+                return false;
+            }
+
+            // Ignore NOTICE from the server
+            if (ircline.prefix === "Frogbox.es")
+            {
+                return false;
+            }
+
+            // Ignore anything from Jessica
+            if (ircline.prefix.indexOf("Jessica") === 0)
+            {
+                return false;
+            }
+
+            return true;
         }, function (ircline)
         {
-            $log.log("Passing NOTICE to PRIVMSG", ircline);
             privMessage.process(ircline);
         });
         registerMessage(noticeMessage);
