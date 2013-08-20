@@ -52,7 +52,14 @@ Controllers.controller("LoginCtrl",
         $scope.connecting = false;
         $scope.connected = false;
         $scope.hostToken = "";
-        $scope.port = 81;
+
+        if (VERSION === "local")
+        {
+            $scope.port = 81;
+        } else
+        {
+            $scope.port = 82;
+        }
         $scope.error = "";
 
         $scope.login = function ()
