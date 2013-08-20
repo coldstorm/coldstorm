@@ -5,13 +5,6 @@ Controllers.controller("LoginCtrl",
     $cookies, Connection, User, Channel, Parser)
     {
         var mustKill = false;
-        Connection.close();
-        $scope.displayModal = false;
-        $scope.modalOpts =
-            {
-                backdropFade: true,
-                dialogFade: true
-            };
         $scope.user = User.get("~");
         $scope.user.nickName = $cookies.nickName;
         if ($cookies.color)
@@ -28,16 +21,6 @@ Controllers.controller("LoginCtrl",
             $scope.user.flag = data.country_code;
         });
 
-        $scope.openModal = function ()
-        {
-            $scope.displayModal = true;
-        }
-
-        $scope.closeModal = function ()
-        {
-            $scope.displayModal = false;
-        }
-
         $rootScope.$on("err_nicknameinuse", function (evt)
         {
             if ($scope.user.password)
@@ -52,13 +35,25 @@ Controllers.controller("LoginCtrl",
             Connection.close();
             $scope.connecting = false;
             $scope.connected = false;
-            $scope.openModal();
+
+            $rootScope.$apply(function ()
+            {
+                $scope.error = "Nickname is in use";
+            });
+        });
+
+        $rootScope.$on("channel.joined", function (evt, channel)
+        {
+            $scope.connecting = false;
+            $scope.connected = false;
+            $scope.error = "";
         });
 
         $scope.connecting = false;
         $scope.connected = false;
         $scope.hostToken = "";
         $scope.port = 81;
+        $scope.error = "";
 
         $scope.login = function ()
         {
@@ -160,9 +155,6 @@ Controllers.controller("LoginCtrl",
                                 $scope.hostToken);
                         }
                     }
-
-                    $scope.connecting = false;
-                    $scope.connected = true;
 
                     Parser.parse(message);
                 });

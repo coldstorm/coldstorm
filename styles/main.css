@@ -79,12 +79,19 @@ input {
     width: 20%;
 }
 
-.login .connecting-notice {
-    color: white;
-    font-size: 1.2em;
-    margin-top: 2em;
-    text-align: center;
-}
+    .login .notice {
+        font-size: 1.2em;
+        margin-top: 2em;
+        text-align: center;
+    }
+
+        .login .notice.info {
+            color: white;
+        }
+
+        .login .notice.error {
+            color: red;
+        }
 
     .login h1 {
         color: #babbbf;
