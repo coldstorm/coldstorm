@@ -129,10 +129,13 @@ Services.factory("Parser",
 
         var noticeMessage = new Message(function (ircline)
         {
-            return ircline.cmd === "NOTICE";
+            $log.log(ircline.cmd === "NOTICE", getCTCP(ircline));
+            return ircline.cmd === "NOTICE" &&
+                getCTCP(ircline) === null && ircline.prefix !== "Frogbox.es";
         }, function (ircline)
         {
-            return;
+            $log.log("Passing NOTICE to PRIVMSG", ircline);
+            privMessage.process(ircline);
         });
         registerMessage(noticeMessage);
 
