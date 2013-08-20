@@ -15,6 +15,7 @@ Filters.filter("line", ["$filter", function ($filter)
         line = $filter("color")(line);
         line = $filter("bold")(line);
         line = $filter("underline")(line);
+        line = $filter("italics")(line);
 
         return line;
     };
