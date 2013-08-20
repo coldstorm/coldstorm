@@ -1,17 +1,27 @@
-﻿Controllers.controller("UserCtrl", ["$scope", function ($scope)
+Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
 {
-    if ($scope.user != null &&
-        $scope.user.ranks[$scope.channel.name] != null)
+    $scope.$watch(function ()
     {
-        $scope.rank = $scope.user.ranks[$scope.channel.name][0];
-        if ($scope.rank === '%')
+        return $scope.user.ranks[$scope.channel.name];
+    }, function ()
+    {
+        $log.log($scope.user, $scope.channel, $scope.user.ranks,
+            $scope.user.ranks[$scope.channel.name]);
+
+        if ($scope.user != null &&
+            $scope.user.ranks[$scope.channel.name] != null)
         {
-            $scope.rank = '#';
+            $scope.rank = $scope.user.ranks[$scope.channel.name][0];
+
+            if ($scope.rank === '%')
+            {
+                $scope.rank = '#';
+            }
+        } else
+        {
+            $scope.rank = '';
         }
-    } else
-    {
-        $scope.rank = '';
-    }
+    });
 
     $scope.showOptions = false;
 }]);

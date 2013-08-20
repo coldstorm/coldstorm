@@ -12,10 +12,10 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 country: country != null ? country : "Outlaw",
                 flag: flag != null ? flag : "QQ",
                 nickName: name,
-                ranks: [],
+                ranks: {},
                 addRank: function (channel, rank)
                 {
-                    if (this.ranks.indexOf(channel.name) > 0)
+                    if (channel.name in this.ranks)
                     {
                         if (this.ranks[channel.name].indexOf(rank) == -1 &&
                             "+%@".indexOf(rank) != -1)
