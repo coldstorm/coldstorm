@@ -417,6 +417,14 @@ span.link {
     /*background-image: url('/images/empty.gif');*/
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
 .c0 {
     color: #A0A0A0;
 }

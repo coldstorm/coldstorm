@@ -13,6 +13,8 @@ Filters.filter("line", ["$filter", function ($filter)
         line = $filter("highlight")(line);
         line = $filter("inlineImage")(line);
         line = $filter("color")(line);
+        line = $filter("bold")(line);
+        line = $filter("underline")(line);
 
         return line;
     };
