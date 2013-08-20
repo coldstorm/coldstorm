@@ -1,4 +1,4 @@
-Services.factory("Connection", function ()
+Services.factory("Connection", ["$log", function ($log)
 {
     var connection = new Websock();
 
@@ -73,7 +73,8 @@ Services.factory("Connection", function ()
             message = message.replace(/\\c/gi, "\u0003");
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
-            //console.log("> " + message);
+
+            $log.log("> " + message);
         }
     };
-});
+}]);

@@ -1,6 +1,8 @@
-Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Connection",
+Services.factory("Parser",
+    ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
     "Channel", "User", "Query",
-    function ($http, $location, $rootScope, $window, Connection, Channel, User, Query)
+    function ($http, $location, $rootScope, $window, $log, Connection,
+    Channel, User, Query)
     {
         var messages = [];
 
@@ -682,7 +684,7 @@ Services.factory("Parser", ["$http", "$location", "$rootScope", "$window", "Conn
         return {
             parse: function (line)
             {
-                // console.log("< " + line);
+                $log.log("< " + line);
 
                 var ircline = clean(line);
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)

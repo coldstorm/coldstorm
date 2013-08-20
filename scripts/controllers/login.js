@@ -4,6 +4,7 @@ Controllers.controller("LoginCtrl",
     function ($scope, $http, $rootScope, $location, $timeout, $filter,
     $cookies, Connection, User, Channel, Parser)
     {
+        var mustKill = false;
         Connection.close();
         $scope.displayModal = false;
         $scope.modalOpts =
@@ -39,6 +40,15 @@ Controllers.controller("LoginCtrl",
 
         $rootScope.$on("err_nicknameinuse", function (evt)
         {
+            if ($scope.user.password)
+            {
+               Connection.send("NICK " + $scope.user.nickName + "_");
+
+                mustKill = true;
+
+                return;
+            }
+
             Connection.close();
             $scope.connecting = false;
             $scope.openModal();
@@ -81,6 +91,13 @@ Controllers.controller("LoginCtrl",
 
                     Connection.onWelcome(function ()
                     {
+                        if (mustKill)
+                        {
+                            Connection.send("PRIVMSG NickServ :GHOST " +
+                                $scope.user.nickName + " " +
+                                $scope.user.password);
+                        }
+
                         if ($scope.user.password)
                         {
                             Connection.send("PRIVMSG NickServ :identify " +
@@ -98,7 +115,7 @@ Controllers.controller("LoginCtrl",
                 Connection.onMessage(function (message)
                 {
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
-                        " :Tada") > -1)
+                        " :Tada") > -1 && $scope.connecting == true)
                     {
                         if (VERSION == "local")
                         {
@@ -116,6 +133,23 @@ Controllers.controller("LoginCtrl",
                             two.join();
 
                             $location.path("/channels/#Coldstorm");
+                        }
+                    }
+
+                    if (message.indexOf("NOTICE " +$scope.user.nickName +
+                        "_ :Ghost with your nick has been killed.") > -1 &&
+                        mustKill)
+                    {
+                        Connection.send("NICK " + $scope.user.nickName);
+                        Connection.send("PRIVMSG NickServ :IDENTIFY " +
+                            $scope.user.password);
+
+                        mustKill = false;
+
+                        if (hostToken)
+                        {
+                            Connection.send("PRIVMSG Jessica :~fixmyip " +
+                                hostToken);
                         }
                     }
 
