@@ -22,6 +22,4 @@ Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
             $scope.rank = '';
         }
     });
-
-    $scope.showOptions = false;
 }]);

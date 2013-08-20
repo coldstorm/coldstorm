@@ -1,4 +1,4 @@
 <div>
-    <span class="user" ng-click="showOptions = !showOptions" ng-show="user" style="color: {{ user.color }}">{{ rank }}{{ user.nickName }}</span>
-    <useroptions user="user" options="showOptions"></useroptions>
+    <span class="user" ng-click="selectedUser = user" ng-show="user" style="color: {{ user.color }}">{{ rank }}{{ user.nickName }}</span>
+    <useroptions user="selectedUser"></useroptions>
 </div>

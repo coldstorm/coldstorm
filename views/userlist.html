@@ -5,7 +5,7 @@
                     ng-src="res/flags/{{ user.flag | lowercase }}.png"
                     title="{{ user.country }}"
                     onerror="this.onerror=null; this.src='res/flags/qq.png';" />
-            <user user="user" channel="channel" options="showOptions"></user>
+            <user user="user" channel="channel" selectedUser="selectedUser"></user>
         </li>
     </ul>
 </div>

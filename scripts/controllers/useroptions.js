@@ -1,5 +1,5 @@
-Controllers.controller("UserOptionsCtrl", ["$scope", "$location",
-function ($scope, $location)
+Controllers.controller("UserOptionsCtrl", ["$scope", "$rootScope", "$location",
+function ($scope, $rootScope, $location)
 {
     $scope.query = function (user)
     {

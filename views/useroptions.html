@@ -1,8 +1,8 @@
-<div ng-show="showOptions">
+<div ng-show="user">
     <span class="option"
-        ng-click="query(user); showOptions = !showOptions">query</span>
+        ng-click="query(user); user = null">query</span>
     <span class="option"
-        ng-click="kick(user); showOptions = !showOptions">kick</span>
+        ng-click="kick(user); user = null">kick</span>
     <span class="option"
-        ng-click="ban(user); showOptions = !showOptions">ban</span>
+        ng-click="ban(user); user = null">ban</span>
 </div>

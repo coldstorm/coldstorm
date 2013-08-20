@@ -4,7 +4,7 @@ Directives.directive("useroptions", function ()
         controller: "UserOptionsCtrl",
         replace: true,
         restrict: "E",
-        scope: { user: "=user", showOptions: "=options" },
+        scope: { user: "=user" },
         templateUrl: "views/useroptions.html",
         transclude: true
     };
