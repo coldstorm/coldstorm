@@ -42,7 +42,7 @@ Controllers.controller("LoginCtrl",
         {
             if ($scope.user.password)
             {
-               Connection.send("NICK " + $scope.user.nickName + "_");
+                Connection.send("NICK " + $scope.user.nickName + "_");
 
                 mustKill = true;
 
@@ -51,127 +51,141 @@ Controllers.controller("LoginCtrl",
 
             Connection.close();
             $scope.connecting = false;
+            $scope.connected = false;
             $scope.openModal();
         });
 
         $scope.connecting = false;
+        $scope.connected = false;
+        $scope.hostToken = "";
+        $scope.port = 81;
 
         $scope.login = function ()
         {
-            var port = 81;
             User.register($scope.user.nickName);
             User.alias("~", $scope.user.nickName);
+
+            $http.jsonp("http://kaslai.us/coldstorm/fixip.php?nick=" +
+                encodeURI($scope.user.nickName) + "&random=" +
+                Math.floor(Math.random() * 10000000));
+
+            $cookies.nickName = $scope.user.nickName;
+            $cookies.color = $scope.user.color;
+
+            $scope.hostToken = md5($scope.user.nickName);
+            $scope.connect();
+
+            while ($scope.connected === false)
+            {
+                if ($scope.retry() === false)
+                {
+                    break;
+                }
+            }
+        };
+
+        $scope.connect = function ()
+        {
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-                var hostToken = "";
+                Connection.connect("ws://frogbox.es:" + $scope.port);
+                Connection.onOpen(function ()
+                {
+                    Connection.send("NICK " + $scope.user.nickName);
+                    Connection.send("USER " +
+                        $scope.user.color.substring(1).toUpperCase() +
+                        $scope.user.flag + " - - :New coldstormer");
 
-                $http.jsonp("http://kaslai.us/coldstorm/fixip.php?nick=" +
-                    encodeURI($scope.user.nickName) + "&random=" +
-                    Math.floor(Math.random() * 10000000));
+                    Connection.onWelcome(function ()
+                    {
+                        if (mustKill)
+                        {
+                            Connection.send("PRIVMSG NickServ :GHOST " +
+                                $scope.user.nickName + " " +
+                                $scope.user.password);
+                        }
 
-                $cookies.nickName = $scope.user.nickName;
-                $cookies.color = $scope.user.color;
+                        if ($scope.user.password)
+                        {
+                            Connection.send("PRIVMSG NickServ :identify " +
+                                $scope.user.password);
+                        }
 
-                hostToken = md5($scope.user.nickName);
-                
-                Connection.connect("ws://frogbox.es:" + port);
-                var setup = function(){
-                    Connection.onOpen(function ()
+                        if ($scope.hostToken)
+                        {
+                            Connection.send("PRIVMSG Jessica :~fixmyip " +
+                                $scope.hostToken);
+                        }
+                    });
+                });
+
+                Connection.onMessage(function (message)
+                {
+                    if (message.indexOf("NOTICE " + $scope.user.nickName +
+                        " :Tada") > -1)
+                    {
+                        if (VERSION == "local")
+                        {
+                            var test = Channel.register("#test");
+
+                            test.join();
+
+                            $location.path("/channels/#test");
+                        } else
+                        {
+                            var cs = Channel.register("#Coldstorm");
+                            var two = Channel.register("#2");
+
+                            cs.join();
+                            two.join();
+
+                            $location.path("/channels/#Coldstorm");
+                        }
+                    }
+
+                    if (message.indexOf("NOTICE " + $scope.user.nickName +
+                        "_ :Ghost with your nick has been killed.") > -1 &&
+                        mustKill)
                     {
                         Connection.send("NICK " + $scope.user.nickName);
-                        Connection.send("USER " +
-                            $scope.user.color.substring(1).toUpperCase() +
-                            $scope.user.flag + " - - :New coldstormer");
-                        port = -1;
+                        Connection.send("PRIVMSG NickServ :IDENTIFY " +
+                            $scope.user.password);
 
-                        Connection.onWelcome(function ()
+                        mustKill = false;
+
+                        if ($scope.hostToken)
                         {
-                            if (mustKill)
-                            {
-                                Connection.send("PRIVMSG NickServ :GHOST " +
-                                    $scope.user.nickName + " " +
-                                    $scope.user.password);
-                            }
+                            Connection.send("PRIVMSG Jessica :~fixmyip " +
+                                $scope.hostToken);
+                        }
+                    }
 
-                            if ($scope.user.password)
-                            {
-                                Connection.send("PRIVMSG NickServ :identify " +
-                                    $scope.user.password);
-                            }
+                    $scope.connecting = false;
+                    $scope.connected = true;
 
-                            if (hostToken)
-                            {
-                                Connection.send("PRIVMSG Jessica :~fixmyip " +
-                                    hostToken);
-                            }
-                        });
-                    });
+                    Parser.parse(message);
+                });
 
-                    Connection.onMessage(function (message)
+                Connection.onClose(function ()
+                {
+                    if ($scope.connected)
                     {
-                        if (message.indexOf("NOTICE " + $scope.user.nickName +
-                            " :Tada") > -1)
-                        {
-                            if (VERSION == "local")
-                            {
-                                var test = Channel.register("#test");
-
-                                test.join();
-
-                                $location.path("/channels/#test");
-                            } else
-                            {
-                                var cs = Channel.register("#Coldstorm");
-                                var two = Channel.register("#2");
-
-                                cs.join();
-                                two.join();
-
-                                $location.path("/channels/#Coldstorm");
-                            }
-                        }
-
-                        if (message.indexOf("NOTICE " +$scope.user.nickName +
-                            "_ :Ghost with your nick has been killed.") > -1 &&
-                            mustKill)
-                        {
-                            Connection.send("NICK " + $scope.user.nickName);
-                            Connection.send("PRIVMSG NickServ :IDENTIFY " +
-                                $scope.user.password);
-
-                            mustKill = false;
-
-                            if (hostToken)
-                            {
-                                Connection.send("PRIVMSG Jessica :~fixmyip " +
-                                    hostToken);
-                            }
-                        }
-
-                        $scope.connecting = false;
-
-                        Parser.parse(message);
-                    });
-
-                    Connection.onClose(function ()
-                    {
-                        if( port < 85 && port > 0 ){
-                            
-                            window.setTimeout( function(){
-                                port++;                                
-                                Connection.connect("ws://frogbox.es:" + port); 
-                                setup(); 
-                                }, 1000 );
-                            
-                        }
-                        else{
-                            $location.path("/login");
-                        }
-                    });
-                    
-                };
-                setup();
+                        $location.path("/login");
+                        $scope.connected = false;
+                    }
+                });
             }
         };
+
+        $scope.retry = function ()
+        {
+            while ($scope.port < 85)
+            {
+                $scope.port++;
+                $scope.connect();
+                return true;
+            }
+            return false;
+        }
     }]);
