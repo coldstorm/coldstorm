@@ -115,7 +115,7 @@ Controllers.controller("LoginCtrl",
                 Connection.onMessage(function (message)
                 {
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
-                        " :Tada") > -1 && $scope.connecting == true)
+                        " :Tada") > -1)
                     {
                         if (VERSION == "local")
                         {
