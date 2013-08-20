@@ -5,6 +5,8 @@ Services.factory("Connection", ["$log", function ($log)
     var openHandlers = [];
     var messageHandlers = [];
     var closeHandlers = [];
+    var errorHandlers = [];
+    
 
     connection.on("open", function ()
     {
@@ -45,7 +47,20 @@ Services.factory("Connection", ["$log", function ($log)
         openHandlers.length = 0;
         messageHandlers.length = 0;
         closeHandlers.length = 0;
+	errorHandlers.length = 0;
     });
+    
+    connection.on("error", function ()
+    {
+        for (var handlerIndex = 0; handlerIndex < errorHandlers.length; handlerIndex++)
+        {
+            var handler = errorHandlers[handlerIndex];
+
+            handler();
+        }
+	
+    });
+    
 
     return {
         connect: function (uri)
@@ -67,6 +82,10 @@ Services.factory("Connection", ["$log", function ($log)
         onClose: function (handler)
         {
             closeHandlers.push(handler);
+        },
+	onError: function (handler)
+        {
+            errorHandlers.push(handler);
         },
         send: function (message)
         {
