@@ -1,8 +1,8 @@
 Controllers.controller("ChannelCtrl",
-    ["$scope", "$routeParams", "$location", "User", "Channel", "Query",
-    "Connection",
-    function ($scope, $routeParams, $location, User, Channel, Query,
-    Connection)
+    ["$scope", "$rootScope", "$routeParams", "$location", "User", "Channel", "Query",
+    "Connection", "Input",
+    function ($scope, $rootScope, $routeParams, $location, User, Channel, Query,
+    Connection, Input)
     {
         $scope.user = User.get("~");
 
@@ -30,31 +30,6 @@ Controllers.controller("ChannelCtrl",
         }
 
         $scope.channel = Channel.get(channelName);
-
-        $scope.send = function ()
-        {
-            var line = $scope.input.text;
-
-            if (line.length < 1)
-            {
-                return;
-            }
-
-            // Clear the line
-
-            $scope.input.text = "";
-
-            if (line[0] === "/")
-            {
-                Connection.send(line.substring(1))
-
-                return;
-            }
-            
-            $scope.channel.addLine(line, $scope.user);
-
-            Connection.send("PRIVMSG " + $scope.channel.name + " :" + line);
-        };
 
         $scope.$watch("channel.active", function ()
         {

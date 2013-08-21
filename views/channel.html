@@ -11,7 +11,7 @@
     <main>
         <userlist users="channel.users" channel="channel"></userlist>
         <lines lines="channel.lines" channel="channel"></lines>
-        <form ng-submit="send()">
+        <form ng-submit="process(input, channel)">
             <input type="text" class="chat-input" ng-model="input.text" />
         </form>
     </main>
