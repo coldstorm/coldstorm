@@ -1,4 +1,4 @@
-﻿Directives.directive("chatInput", function ()
+Directives.directive("chatInput", function ()
 {
     return {
         controller: "ChatInputCtrl",

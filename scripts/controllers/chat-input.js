@@ -1,4 +1,4 @@
-﻿Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", function ($scope, $rootScope)
+Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", function ($scope, $rootScope)
 {
     $scope.submit = function ()
     {
