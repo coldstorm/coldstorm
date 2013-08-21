@@ -1,6 +1,6 @@
 <form class="chat-input" ng-submit="submit()">
-    <input type="text" class="chat-input" ng-model="input.text" />
-    <a><i class="icon-bold"></i></a>
-    <a><i class="icon-underline"></i></a>
-    <a><i class="icon-italic"></i></a>
+    <input id="chat-input" type="text" class="chat-input" ng-model="input.text" />
+    <a ng-click="bold()"><i class="icon-bold"></i></a>
+    <a ng-click="underline()"><i class="icon-underline"></i></a>
+    <a ng-click="italicize()"><i class="icon-italic"></i></a>
 </form>
