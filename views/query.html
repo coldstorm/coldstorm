@@ -6,8 +6,6 @@
     <main>
         <userlist users="" channel=""></userlist>
         <lines lines="query.lines"></lines>
-        <form ng-submit="process(input, query)">
-            <input type="text" class="chat-input" ng-model="input.text" />
-        </form>
+        <chat-input input="input" tab="query"></chat-input>
     </main>
 </div>
