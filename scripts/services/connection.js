@@ -6,7 +6,7 @@ Services.factory("Connection", ["$log", function ($log)
     var messageHandlers = [];
     var closeHandlers = [];
     var errorHandlers = [];
-    
+
 
     connection.on("open", function ()
     {
@@ -47,9 +47,9 @@ Services.factory("Connection", ["$log", function ($log)
         openHandlers.length = 0;
         messageHandlers.length = 0;
         closeHandlers.length = 0;
-	errorHandlers.length = 0;
+        errorHandlers.length = 0;
     });
-    
+
     connection.on("error", function ()
     {
         for (var handlerIndex = 0; handlerIndex < errorHandlers.length; handlerIndex++)
@@ -58,9 +58,9 @@ Services.factory("Connection", ["$log", function ($log)
 
             handler();
         }
-	
+
     });
-    
+
 
     return {
         connect: function (uri)
@@ -83,13 +83,16 @@ Services.factory("Connection", ["$log", function ($log)
         {
             closeHandlers.push(handler);
         },
-	onError: function (handler)
+        onError: function (handler)
         {
             errorHandlers.push(handler);
         },
         send: function (message)
         {
             message = message.replace(/\\c/gi, "\u0003");
+            message = message.replace(/\\b/gi, "\u0002");
+            message = message.replace(/\\u/gi, "\u001F");
+            message = message.replace(/\\i/gi, "\u001D");
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
 

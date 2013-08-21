@@ -14,27 +14,6 @@ Controllers.controller("ServerCtrl",
             //return;
         }
 
-        $scope.send = function ()
-        {
-            var line = $scope.input.text;
-
-            if (line.length < 1)
-            {
-                return;
-            }
-
-            // Clear the line
-
-            $scope.input.text = "";
-
-            if (line[0] === "/")
-            {
-                Connection.send(line.substring(1))
-            }
-
-            return;
-        };
-
         $scope.$watch(function ()
         {
             $scope.queries = Query.all();
