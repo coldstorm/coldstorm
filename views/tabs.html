@@ -1,4 +1,7 @@
 <ul class="tabs">
+    <li class="tab" ng-class="{ active:server }">
+        <a href="#/server">Server</a>
+    </li>
     <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel), highlight:channelTab.active }">
         <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
         <a ng-click="channelTab.leave()">X</a>

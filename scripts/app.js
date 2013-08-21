@@ -13,6 +13,10 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
             templateUrl: "views/login.html",
             controller: "LoginCtrl"
         }).
+        when("/server", {
+            templateUrl: "views/server.html",
+            controller: "ServerCtrl"
+        }).
         when("/channels/:channelName", {
             templateUrl: "views/channel.html",
             controller: "ChannelCtrl"
