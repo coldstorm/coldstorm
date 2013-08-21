@@ -1,4 +1,4 @@
-﻿Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootScope, Connection, User)
+Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootScope, Connection, User)
 {
     $rootScope.process = function (input, target)
     {
