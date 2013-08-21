@@ -3,7 +3,21 @@ Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootS
     $rootScope.process = function (input, target)
     {
         var line = input.text;
+
+        //Clear the input
+        input.text = "";
+
+        if (line.length < 1)
+        {
+            return;
+        }
+
         //Parse commands
+        if (line[0] === "/")
+        {
+            Connection.send(line.substring(1));
+            return;
+        }
 
         //Parse formatting
 
@@ -15,9 +29,6 @@ Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootS
         {
             Connection.send("PRIVMSG " + target.user.nickName + " :" + line);
         }
-
-        //Clear the input
-        input.text = "";
 
         //Add the line to the current tab
         target.addLine(line, User.get("~"));
