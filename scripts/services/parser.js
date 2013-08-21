@@ -1,8 +1,8 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query",
+    "Channel", "User", "Query", "Server",
     function ($http, $location, $rootScope, $window, $log, Connection,
-    Channel, User, Query)
+    Channel, User, Query, Server)
     {
         var messages = [];
 
@@ -141,12 +141,6 @@ Services.factory("Parser",
                 return false;
             }
 
-            // Ignore NOTICE from the server
-            if (ircline.prefix === "Frogbox.es")
-            {
-                return false;
-            }
-
             // Ignore anything from Jessica
             if (ircline.prefix.indexOf("Jessica") === 0)
             {
@@ -156,6 +150,22 @@ Services.factory("Parser",
             return true;
         }, function (ircline)
         {
+            var line = ircline.args.slice(1).join(" ");
+
+            if (ircline.prefix == "Frogbox.es")
+            {
+                Server.addLine(line);
+                return;
+            }
+
+            var user = getUser(ircline.prefix);
+
+            if (user.nickName.substr(user.nickName.length - 4) === "Serv")
+            {
+                Server.addLine(line, user);
+                return;
+            }
+
             privMessage.process(ircline);
         });
         registerMessage(noticeMessage);
