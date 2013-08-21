@@ -158,13 +158,14 @@ Services.factory("Parser",
                 return;
             }
 
-            var user = getUser(ircline.prefix);
-
-            if (user.nickName.substr(user.nickName.length - 4) === "Serv")
+            if (ircline.prefix.indexOf("services@frogbox.es") > -1)
             {
-                Server.addLine(line, user);
+                var service = getUser(ircline.prefix)
+                Server.addLine(line, service);
                 return;
             }
+
+            var user = getUser(ircline.prefix);
 
             privMessage.process(ircline);
         });
