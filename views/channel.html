@@ -11,8 +11,11 @@
     <main>
         <userlist users="channel.users" channel="channel"></userlist>
         <lines lines="channel.lines" channel="channel"></lines>
-        <form ng-submit="process(input, channel)">
+        <form class="chat-input" ng-submit="process(input, channel)">
             <input type="text" class="chat-input" ng-model="input.text" />
+            <a><i class="icon-bold"></i></a>
+            <a><i class="icon-underline"></i></a>
+            <a><i class="icon-italic"></i></a>
         </form>
     </main>
     <div class="modal modal-settings" modal="showSettings"

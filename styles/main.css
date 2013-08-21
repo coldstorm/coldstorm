@@ -290,10 +290,32 @@ header {
 }
 
 .chat-input {
+    background-color: #24272e;
+    border: 1px #2a2e36 solid;
+    border-radius: 3px;
+    display: inline-block;
     height: 22px;
     width: 85%;
     width: calc(90% - 4px);
     font-size: 11px;
+}
+
+.chat-input input {
+    border: none;
+    width: calc(100% - 3 * 17px);
+    height: 20px;
+}
+
+.chat-input i {
+    color: #2E323B;
+    margin: 2px;
+    border: none;
+    background: none;
+}
+
+.chat-input i:hover {
+    transition: color linear 0.2s;
+    color: white;
 }
 
 .userlist {
