@@ -6,7 +6,7 @@
     <main>
         <userlist></userlist>
         <lines lines="server.lines"></lines>
-        <form ng-submit="send()">
+        <form ng-submit="process(input, server)">
             <input type="text" class="chat-input" ng-model="input.text" />
         </form>
     </main>
