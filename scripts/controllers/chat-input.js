@@ -1,59 +1,40 @@
 Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", function ($scope, $rootScope, $window, $document)
 {
+    $scope.selectionStart = -1;
+    $scope.selectionEnd = -1;
+
     var getSelectedText = function ()
     {
         var elem = document.getElementById("chat-input");
         $scope.selectionStart = elem.selectionStart;
         $scope.selectionEnd = elem.selectionEnd;
+
+        if ($scope.selectionStart === $scope.selectionEnd)
+        {
+            $scope.selectionStart = -1;
+            $scope.selectionEnd = -1;
+        }
     };
 
-    $scope.selectionStart;
-    $scope.selectionEnd;
+    var insert = function (orig, location, value)
+    {
+        return orig.substring(0, location) + value + orig.substring(location, orig.length);
+    };
 
     $scope.submit = function ()
     {
         $rootScope.process($scope.input, $scope.tab);
     };
 
-    $scope.bold = function ()
+    $scope.format = function (style)
     {
         if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
         {
             var startIndex = $scope.selectionStart;
             var endIndex = $scope.selectionEnd + 2;
 
-            $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\b" + $scope.input.text.substring(startIndex, $scope.input.text.length);
-            $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\b" + $scope.input.text.substring(endIndex, $scope.input.text.length);
-
-            $scope.selectionStart += 2;
-            $scope.selectionEnd += 2;
-        }
-    };
-
-    $scope.underline = function ()
-    {
-        if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
-        {
-            var startIndex = $scope.selectionStart;
-            var endIndex = $scope.selectionEnd + 2;
-
-            $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\u" + $scope.input.text.substring(startIndex, $scope.input.text.length);
-            $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\u" + $scope.input.text.substring(endIndex, $scope.input.text.length);
-
-            $scope.selectionStart += 2;
-            $scope.selectionEnd += 2;
-        }
-    };
-
-    $scope.italicize = function ()
-    {
-        if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
-        {
-            var startIndex = $scope.selectionStart;
-            var endIndex = $scope.selectionEnd + 2;
-
-            $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\i" + $scope.input.text.substring(startIndex, $scope.input.text.length);
-            $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\i" + $scope.input.text.substring(endIndex, $scope.input.text.length);
+            $scope.input.text = insert($scope.input.text, startIndex, style);
+            $scope.input.text = insert($scope.input.text, endIndex, style);
 
             $scope.selectionStart += 2;
             $scope.selectionEnd += 2;
@@ -62,8 +43,6 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
 
     $("body").mousedown(function ()
     {
-        $scope.selectionStart = -1;
-        $scope.selectionEnd = -1;
         getSelectedText();
     });
 }]);
