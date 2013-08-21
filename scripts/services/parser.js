@@ -50,7 +50,7 @@ Services.factory("Parser",
             if (line.search(/^:|\s+:/) != -1)
             {
                 match = line.match(arg_re);
-                middle = match[1].trimRight();
+                middle = match[1].replace(/\s+$/, "");
                 trailing = match[2];
             } else
             {
