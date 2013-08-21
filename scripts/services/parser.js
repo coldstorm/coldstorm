@@ -1,8 +1,8 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query",
+    "Channel", "User", "Query", "Server",
     function ($http, $location, $rootScope, $window, $log, Connection,
-    Channel, User, Query)
+    Channel, User, Query, Server)
     {
         var messages = [];
 
@@ -129,10 +129,45 @@ Services.factory("Parser",
 
         var noticeMessage = new Message(function (ircline)
         {
-            return ircline.cmd === "NOTICE";
+            // Only check notices
+            if (ircline.cmd !== "NOTICE")
+            {
+                return false;
+            }
+
+            // Ignore CTCP responses
+            if (getCTCP(ircline) !== null)
+            {
+                return false;
+            }
+
+            // Ignore anything from Jessica
+            if (ircline.prefix.indexOf("Jessica") === 0)
+            {
+                return false;
+            }
+
+            return true;
         }, function (ircline)
         {
-            return;
+            var line = ircline.args.slice(1).join(" ");
+
+            if (ircline.prefix == "Frogbox.es")
+            {
+                Server.addLine(line);
+                return;
+            }
+
+            if (ircline.prefix.indexOf("services@frogbox.es") > -1)
+            {
+                var service = getUser(ircline.prefix)
+                Server.addLine(line, service);
+                return;
+            }
+
+            var user = getUser(ircline.prefix);
+
+            privMessage.process(ircline);
         });
         registerMessage(noticeMessage);
 

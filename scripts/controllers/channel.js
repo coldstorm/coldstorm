@@ -50,7 +50,7 @@ Controllers.controller("ChannelCtrl",
 
                 return;
             }
-            
+
             $scope.channel.addLine(line, $scope.user);
 
             Connection.send("PRIVMSG " + $scope.channel.name + " :" + line);
