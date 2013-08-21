@@ -1,20 +1,14 @@
 Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", function ($scope, $rootScope, $window, $document)
 {
-    var getSelectionText = function ()
+    var getSelectedText = function ()
     {
-        var text = "";
-        if ($window.getSelection)
-        {
-            var elem = document.getElementById("chat-input");
-            text = elem.value.substring(elem.selectionStart, elem.selectionEnd)
-        } else
-        {
-            text = document.selection.createRange().text;
-        }
-        return text;
+        var elem = document.getElementById("chat-input");
+        $scope.selectionStart = elem.selectionStart;
+        $scope.selectionEnd = elem.selectionEnd;
     };
 
-    $scope.selection = "";
+    $scope.selectionStart;
+    $scope.selectionEnd;
 
     $scope.submit = function ()
     {
@@ -23,43 +17,53 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
 
     $scope.bold = function ()
     {
-        if ($scope.selection)
+        if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
         {
-            var startIndex = $scope.input.text.indexOf($scope.selection);
-            var endIndex = startIndex + $scope.selection.length + 2;
+            var startIndex = $scope.selectionStart;
+            var endIndex = $scope.selectionEnd + 2;
 
             $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\b" + $scope.input.text.substring(startIndex, $scope.input.text.length);
             $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\b" + $scope.input.text.substring(endIndex, $scope.input.text.length);
+
+            $scope.selectionStart += 2;
+            $scope.selectionEnd += 2;
         }
     };
 
     $scope.underline = function ()
     {
-        if ($scope.selection)
+        if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
         {
-            var startIndex = $scope.input.text.indexOf($scope.selection);
-            var endIndex = startIndex + $scope.selection.length + 2;
+            var startIndex = $scope.selectionStart;
+            var endIndex = $scope.selectionEnd + 2;
 
             $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\u" + $scope.input.text.substring(startIndex, $scope.input.text.length);
             $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\u" + $scope.input.text.substring(endIndex, $scope.input.text.length);
+
+            $scope.selectionStart += 2;
+            $scope.selectionEnd += 2;
         }
     };
 
     $scope.italicize = function ()
     {
-        if ($scope.selection)
+        if ($scope.selectionStart > -1 && $scope.selectionEnd > -1)
         {
-            var startIndex = $scope.input.text.indexOf($scope.selection);
-            var endIndex = startIndex + $scope.selection.length + 2;
+            var startIndex = $scope.selectionStart;
+            var endIndex = $scope.selectionEnd + 2;
 
             $scope.input.text = $scope.input.text.substring(0, startIndex) + "\\i" + $scope.input.text.substring(startIndex, $scope.input.text.length);
             $scope.input.text = $scope.input.text.substring(0, endIndex) + "\\i" + $scope.input.text.substring(endIndex, $scope.input.text.length);
+
+            $scope.selectionStart += 2;
+            $scope.selectionEnd += 2;
         }
     };
 
     $("body").mousedown(function ()
     {
-        $scope.selection = "";
-        $scope.selection = getSelectionText();
+        $scope.selectionStart = -1;
+        $scope.selectionEnd = -1;
+        getSelectedText();
     });
 }]);
