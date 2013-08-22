@@ -55,15 +55,15 @@ input {
 }
 
     input:focus {
-        border: 1px solid #babbbf;
-        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #babbbf;
+        border: 1px solid #808080;
+        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.07), 0 0 4px #808080;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.07), 0 0 4px #808080;
     }
 
         input:focus:invalid {
-            border: 1px solid #b94a48;
-            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #b94a48;
+            border: 1px solid #b34d4d;
+            -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.07), 0 0 4px #b34d4d;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.07), 0 0 4px #b34d4d;
         }
 
 .container {
@@ -86,11 +86,11 @@ input {
     }
 
         .login .notice.info {
-            color: white;
+            color: #d5d5d8;
         }
 
         .login .notice.error {
-            color: red;
+            color: #f05e56;
         }
 
     .login h1 {
@@ -102,7 +102,7 @@ input {
     .login label {
         display: block;
         color: #babbbf;
-        font-size: 1.5em;
+        font-size: 1.4em;
         font-weight: bold;
         padding-bottom: 0.4em;
         padding-top: 1.5em;
@@ -119,7 +119,7 @@ input {
         border: 1px solid #2a2e36;
         border-radius: 3px;
         color: #babbbf;
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 1em;
         margin-left: 30%;
         margin-top: 2em;
@@ -153,7 +153,7 @@ input {
 
     .settings span {
         color: #babbbf;
-        font-size: 1.5em;
+        font-size: 1.4em;
         font-weight: bold;
         margin-left: 10px;
     }
@@ -167,7 +167,7 @@ input {
         border: 1px solid #2a2e36;
         border-radius: 3px;
         color: #babbbf;
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-bottom: 1em;
         margin-left: 30%;
         margin-top: 1em;
@@ -661,7 +661,7 @@ span.link {
         border: 1px solid #2a2e36;
         border-radius: 3px;
         color: #babbbf;
-        font-size: 1.5em;
+        font-size: 1.4em;
         margin-left: 35%;
         margin-right: 35%;
         padding: 3px;
