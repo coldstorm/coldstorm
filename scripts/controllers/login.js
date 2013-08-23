@@ -55,10 +55,10 @@ Controllers.controller("LoginCtrl",
 
         if (VERSION === "local")
         {
-            $scope.port = 81;
+            $scope.port = 82;
         } else
         {
-            $scope.port = 82;
+            $scope.port = 81;
         }
         $scope.error = "";
 
@@ -67,9 +67,13 @@ Controllers.controller("LoginCtrl",
             User.register($scope.user.nickName);
             User.alias("~", $scope.user.nickName);
 
-            $http.jsonp("http://kaslai.us/coldstorm/fixip.php?nick=" +
+            $http.jsonp("http://kaslai.us/coldstorm/fixip2.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
-                Math.floor(Math.random() * 10000000));
+                Math.floor(Math.random() * 10000000) +
+		"&callback=JSON_CALLBACK").success(function (data)
+			{
+			    $scope.hostToken = data.tag;
+			});
 
             $cookies.nickName = $scope.user.nickName;
             $cookies.color = $scope.user.color;
@@ -91,7 +95,9 @@ Controllers.controller("LoginCtrl",
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-                Connection.connect("ws://frogbox.es:" + $scope.port);
+		    console.log("hai");
+		    $scope.port = 5000;
+                Connection.connect("http://localhost:" + $scope.port);
                 Connection.onOpen(function ()
                 {
                     Connection.send("NICK " + $scope.user.nickName);
@@ -179,12 +185,12 @@ Controllers.controller("LoginCtrl",
 
         $scope.retry = function ()
         {
-            while ($scope.port < 85)
-            {
-                $scope.port++;
+            ////while ($scope.port <= 5000)
+            //{
+                $scope.port = 5000;
                 $scope.connect();
                 return true;
-            }
+            //}
             return false;
         }
     }]);
