@@ -78,7 +78,6 @@ Controllers.controller("LoginCtrl",
             $cookies.nickName = $scope.user.nickName;
             $cookies.color = $scope.user.color;
 
-            $scope.hostToken = md5($scope.user.nickName);
             $scope.connect();
 
             while ($scope.connected === false)
@@ -97,7 +96,7 @@ Controllers.controller("LoginCtrl",
                 $scope.connecting = true;
 		    console.log("hai");
 		    $scope.port = 5000;
-                Connection.connect("http://localhost:" + $scope.port);
+                Connection.connect("ws://frogbox.es:" + $scope.port);
                 Connection.onOpen(function ()
                 {
                     Connection.send("NICK " + $scope.user.nickName);
@@ -185,12 +184,12 @@ Controllers.controller("LoginCtrl",
 
         $scope.retry = function ()
         {
-            ////while ($scope.port <= 5000)
-            //{
-                $scope.port = 5000;
+            while ($scope.port < 85)
+            {
+                $scope.port++;
                 $scope.connect();
                 return true;
-            //}
+            }
             return false;
         }
     }]);
