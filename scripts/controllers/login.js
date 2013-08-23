@@ -94,8 +94,7 @@ Controllers.controller("LoginCtrl",
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-		    console.log("hai");
-		    $scope.port = 5000;
+		    
                 Connection.connect("ws://frogbox.es:" + $scope.port);
                 Connection.onOpen(function ()
                 {
