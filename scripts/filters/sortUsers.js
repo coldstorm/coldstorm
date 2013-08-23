@@ -7,9 +7,19 @@ Filters.filter("sortUsers", [function () {
             {
                 var ranks = ["", "+", "%", "@"];
 
-                if (a.ranks[channel.name] != b.ranks[channel.name])
+                if (a.ranks[channel.name] === undefined)
                 {
-                    if (ranks.indexOf(a.ranks[channel.name]) > ranks.indexOf(b.ranks[channel.name]))
+                    a.ranks[channel.name] = "";
+                }
+
+                if (b.ranks[channel.name] === undefined)
+                {
+                    b.ranks[channel.name] = "";
+                }
+
+                if (a.ranks[channel.name].charAt(0) != b.ranks[channel.name].charAt(0))
+                {
+                    if (ranks.indexOf(a.ranks[channel.name].charAt(0)) > ranks.indexOf(b.ranks[channel.name].charAt(0)))
                     {
                         return -1;
                     }
