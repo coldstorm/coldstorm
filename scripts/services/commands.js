@@ -28,6 +28,17 @@
     }
 
     // Channel management
+    var kickHandler = new cmdHandler(function (cmd)
+    {
+        return cmd.name === "KICK" && cmd.args.length >= 1;
+    }, function (cmd, target)
+    {
+        if (target.name)
+        {
+            Connection.send(cmd.name + " " + target.name + " " + cmd.args[0] + " :" + cmd.args.slice(1).join(" "));
+        }
+    });
+    registerHandler(kickHandler);
 
     // Ranks
 
