@@ -35,7 +35,16 @@
     {
         if (target.name)
         {
-            Connection.send(cmd.name + " " + target.name + " " + cmd.args[0] + " :" + cmd.args.slice(1).join(" "));
+            var channel = target;
+            var nickname = cmd.args[0];
+            var reason = cmd.args.slice(1).join(" ");
+            if (reason)
+            {
+                Connection.send("KICK " + channel.name + " " + nickname + " :" + reason);
+            } else
+            {
+                Connection.send("KICK " + channel.name + " " + nickname);
+            }
         }
     });
     registerHandler(kickHandler);
