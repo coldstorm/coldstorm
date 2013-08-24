@@ -290,20 +290,18 @@ header {
 }
 
 .chat-input {
-    background-color: #24272e;
-    border: 1px #2a2e36 solid;
     border-radius: 3px;
     display: inline-block;
     height: 22px;
     width: 85%;
     width: calc(90% - 4px);
     font-size: 11px;
+    position: relative;
 }
 
 .chat-input input {
-    border: none;
-    width: calc(100% - 3 * 17px);
-    height: 20px;
+    width: 100%;
+    padding-right: 45px;
 }
 
 .chat-input i {
@@ -311,6 +309,21 @@ header {
     margin: 2px;
     border: none;
     background: none;
+    position: absolute;
+    top: 4px;
+    right: 3px;
+}
+
+.chat-input i.icon-bold {
+    right: 30px;
+}
+
+.chat-input i.icon-underline {
+    right: 15px;
+}
+
+.chat-input i.icon-italic {
+    right: 3px;
 }
 
 .chat-input i:hover {
