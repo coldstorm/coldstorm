@@ -49,6 +49,21 @@
     });
     registerHandler(kickHandler);
 
+    var banHandler = new cmdHandler(function (cmd)
+    {
+        return cmd.name === "BAN" && cmd.args.length >= 1;
+    }, function (cmd, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var mask = cmd.args[0];
+
+            Connection.send("MODE " + channel.name + " +b " + mask);
+        }
+    });
+    registerHandler(banHandler);
+
     // Ranks
 
     // UI
