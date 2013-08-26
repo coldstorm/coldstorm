@@ -1,4 +1,4 @@
-﻿Services.factory("Commands", ["Connection", function (Connection)
+﻿Services.factory("Commands", ["Connection", "User", function (Connection, User)
 {
     var handlers = [];
 
@@ -75,6 +75,23 @@
         target.clear();
     });
     registerHandler(clearHandler);
+
+    // MISC
+    var actionHandler = new cmdHandler(function (cmd)
+    {
+        return cmd.name === "ME";
+    }, function (cmd, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var line = cmd.args.join(" ");
+
+            Connection.send("PRIVMSG " + channel.name + " \u0001ACTION " + line + "\u0001");
+            target.addLine("\u0001ACTION " + line + "\u0001", User.get("~"));
+        }
+    });
+    registerHandler(actionHandler);
 
     return {
         parse: function (line, target)
