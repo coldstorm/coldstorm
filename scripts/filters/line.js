@@ -12,6 +12,7 @@ Filters.filter("line", ["$filter", function ($filter)
         line = $filter("spoiler")(line);
         line = $filter("highlight")(line);
         line = $filter("inlineImage")(line);
+        line = $filter("reset")(line);
         line = $filter("color")(line);
         line = $filter("bold")(line);
         line = $filter("underline")(line);
