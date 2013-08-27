@@ -1,15 +1,15 @@
 Controllers.controller("LoginCtrl",
     ["$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
-    "$cookies", "Connection", "User", "Channel", "Parser",
+    "Connection", "User", "Channel", "Parser",
     function ($scope, $http, $rootScope, $location, $timeout, $filter,
-    $cookies, Connection, User, Channel, Parser)
+    Connection, User, Channel, Parser)
     {
         var mustKill = false;
         $scope.user = User.get("~");
-        $scope.user.nickName = $cookies.nickName;
-        if ($cookies.color)
+        $scope.user.nickName = $.cookie("nickName");
+        if ($.cookie("color"))
         {
-            $scope.user.color = $cookies.color;
+            $scope.user.color = $.cookie("color");
         }
 
         $location.hash("");
@@ -70,13 +70,13 @@ Controllers.controller("LoginCtrl",
             $http.jsonp("http://kaslai.us/coldstorm/fixip2.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000) +
-		"&callback=JSON_CALLBACK").success(function (data)
-			{
-			    $scope.hostToken = data.tag;
-			});
+		        "&callback=JSON_CALLBACK").success(function (data)
+		        {
+		            $scope.hostToken = data.tag;
+		        });
 
-            $cookies.nickName = $scope.user.nickName;
-            $cookies.color = $scope.user.color;
+            $.cookie("nickName", $scope.user.nickName, { expires: new Date(2017, 00, 01) });
+            $.cookie("color", $scope.user.color, { expires: new Date(2017, 00, 01) });
 
             $scope.connect();
 
@@ -94,7 +94,7 @@ Controllers.controller("LoginCtrl",
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-		    
+
                 Connection.connect("ws://frogbox.es:" + $scope.port);
                 Connection.onOpen(function ()
                 {

@@ -1,15 +1,15 @@
 Services.factory("Settings",
-["$cookies", "$timeout", "$filter", "$rootScope",
-function ($cookies, $timeout, $filter, $rootScope)
+["$timeout", "$filter", "$rootScope",
+function ($timeout, $filter, $rootScope)
 {
     var settingsFactory = {
         save: function ()
         {
-            $cookies.settings = $filter("json")($rootScope.settings);
+            $.cookie("settings", $filter("json")($rootScope.settings), { expires: new Date(2017, 00, 01) });
         }
     };
 
-    $rootScope.settings = $.parseJSON($cookies.settings || "{}");
+    $rootScope.settings = $.parseJSON($.cookie("settings") || "{}");
 
     $rootScope.$watch(function ($scope)
     {
