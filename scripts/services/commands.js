@@ -9,6 +9,7 @@
         command = new Object();
         command.name = parts[0].toUpperCase();
         command.args = parts.slice(1);
+        command.handled = false;
 
         return command;
     }
@@ -105,7 +106,13 @@
                 if (handler.check(command))
                 {
                     handler.process(command, target);
+                    command.handled = true;
                 }
+            }
+
+            if (command.handled === false)
+            {
+                Connection.send(line.substring(1));
             }
         }
     };
