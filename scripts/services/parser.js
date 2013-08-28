@@ -278,7 +278,7 @@ Services.factory("Parser",
 
             $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
             {
-                if (data[1][0].name)
+                if (data[1])
                 {
                     user.country = data[1][0].name;
                 }
@@ -308,7 +308,7 @@ Services.factory("Parser",
 
             $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
             {
-                if (data[1][0].name)
+                if (data[1])
                 {
                     user.country = data[1][0].name;
                 }
