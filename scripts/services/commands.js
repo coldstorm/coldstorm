@@ -1,31 +1,37 @@
-﻿Services.factory("Commands", ["Connection", "User", function (Connection, User)
+Services.factory("Commands", ["Connection", "User", function (Connection, User)
 {
-    var handlers = [];
+    var commands = [];
 
-    function Command(line)
+    function Command(name, aliases, args, callback, help)
     {
-        var parts = line.split(" ");
-
         command = new Object();
-        command.name = parts[0].toUpperCase();
-        command.args = parts.slice(1);
-        command.handled = false;
+        command.name = name;
+        command.aliases = aliases;
+        command.args = args;
+        command.callback = callback;
+        command.help = help;
 
         return command;
     }
 
-    function cmdHandler(check, process)
+    function checkCommand(input, command)
     {
-        handler = new Object();
-        handler.check = check;
-        handler.process = process;
+        var parts = input.split(" ");
 
-        return handler;
+        if ((parts[0] === command.name ||
+            command.aliases.indexOf(parts[0]) > -1) &&
+            parts.slice(1).length >= command.args)
+        {
+            command.callback(parts[0], parts.slice(1));
+            return true;
+        }
+
+        return false;
     }
-
-    function registerHandler(cmdHandler)
+    
+    function registerCommand(command)
     {
-        handlers.push(cmdHandler);
+        commands.push(command);
     }
 
     // Channel management
@@ -97,23 +103,15 @@
     return {
         parse: function (line, target)
         {
-            var command = new Command(line.substring(1));
-
-            for (var i = 0; i < handlers.length; i++)
+            for (var i = 0; i < commands.length; i++)
             {
-                var handler = handlers[i];
-
-                if (handler.check(command))
+                if (checkCommand(line, commands[i]))
                 {
-                    handler.process(command, target);
-                    command.handled = true;
+                    return;
                 }
             }
 
-            if (command.handled === false)
-            {
-                Connection.send(line.substring(1));
-            }
+            Connection.send(line.substring(1));
         }
     };
 }]);
