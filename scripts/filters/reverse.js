@@ -2,6 +2,9 @@
 {
     return function (items)
     {
-        return items.slice().reverse();
+        if (items)
+        {
+            return items.slice().reverse();
+        }
     }
 });
