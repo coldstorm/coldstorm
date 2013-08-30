@@ -14,7 +14,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
         return command;
     }
 
-    function checkCommand(input, command)
+    function checkCommand(input, target, command)
     {
         var parts = input.split(" ");
 
@@ -22,7 +22,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             command.aliases.indexOf(parts[0]) > -1) &&
             parts.slice(1).length >= command.args)
         {
-            command.callback(parts[0], parts.slice(1));
+            command.callback(parts[0], parts.slice(1), target);
             return true;
         }
 
@@ -35,16 +35,13 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     }
 
     // Channel management
-    var kickHandler = new cmdHandler(function (cmd)
-    {
-        return cmd.name === "KICK" && cmd.args.length >= 1;
-    }, function (cmd, target)
+    var kickCallback = function (cmd, args, target)
     {
         if (target.name)
         {
             var channel = target;
-            var nickname = cmd.args[0];
-            var reason = cmd.args.slice(1).join(" ");
+            var nickname = args[0];
+            var reason = args.slice(1).join(" ");
             if (reason)
             {
                 Connection.send("KICK " + channel.name + " " + nickname + " :" + reason);
@@ -53,59 +50,55 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
                 Connection.send("KICK " + channel.name + " " + nickname);
             }
         }
-    });
-    registerHandler(kickHandler);
+    };
+    var kickCommand = new Command("KICK", ["K"], 1, kickCallback, "/KICK <target> [reason]");
+    registerCommand(kickCommand);
 
-    var banHandler = new cmdHandler(function (cmd)
-    {
-        return cmd.name === "BAN" && cmd.args.length >= 1;
-    }, function (cmd, target)
+    var banCallback = function (cmd, args, target)
     {
         if (target.name)
         {
             var channel = target;
-            var mask = cmd.args[0];
+            var mask = args[0];
 
             Connection.send("MODE " + channel.name + " +b " + mask);
         }
-    });
-    registerHandler(banHandler);
+    };
+    var banCommand = new Command("BAN", [], 1, banCallback, "/BAN <mask>");
+    registerCommand(banCommand);
 
     // Ranks
 
     // UI
-    var clearHandler = new cmdHandler(function (cmd)
-    {
-        return cmd.name === "CLEAR";
-    }, function (cmd, target)
+    var clearCallback = function (cmd, args, target)
     {
         target.clear();
-    });
-    registerHandler(clearHandler);
+    };
+    var clearCommand = new Command("CLEAR", [], 0, clearCallback, "/CLEAR");
+    registerCommand(clearCommand);
 
     // MISC
-    var actionHandler = new cmdHandler(function (cmd)
-    {
-        return cmd.name === "ME";
-    }, function (cmd, target)
+    var actionCallback = function (cmd, args, target)
     {
         if (target.name)
         {
             var channel = target;
-            var line = cmd.args.join(" ");
+            var line = args.join(" ");
 
             Connection.send("PRIVMSG " + channel.name + " \u0001ACTION " + line + "\u0001");
             target.addLine("\u0001ACTION " + line + "\u0001", User.get("~"));
         }
-    });
-    registerHandler(actionHandler);
+    };
+    var actionCommand = new Command("ACTION", ["ME"], 1, actionCallback, "/ACTION <action");
+    registerCommand(actionCommand);
 
     return {
         parse: function (line, target)
         {
+            line = line.substring(1);
             for (var i = 0; i < commands.length; i++)
             {
-                if (checkCommand(line, commands[i]))
+                if (checkCommand(line, target, commands[i]))
                 {
                     return;
                 }
