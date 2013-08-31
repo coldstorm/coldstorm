@@ -5,7 +5,7 @@
 
 ::-webkit-scrollbar {
     width: 10px;
-    background-color: none;
+    background-color: inherit;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -13,17 +13,22 @@
     border-radius: 5px;
 }
 
+::-webkit-scrollbar-thumb:hover {
+    background-color: #545A67;
+}
+
 ::-webkit-scrollbar-track {
-    background-color: none;
+    background-color: transparent;
 }
 
 
 ::-webkit-scrollbar-button {
-    background-color: none;
+    height: 0;
+    width: 0;
 }
 
 ::-webkit-scrollbar-track-piece {
-    background-color: none;
+    background-color: transparent;
 }
 
 a {
@@ -32,6 +37,7 @@ a {
 }
 
 html {
+    background-color: #1a1c1f;
     height: 95%;
     margin: 0;
     padding: 0;
