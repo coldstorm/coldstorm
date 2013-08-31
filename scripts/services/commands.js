@@ -123,7 +123,91 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     var topicCommand = new Command("TOPIC", ["MOTD"], 1, topicCallback, "/TOPIC <topic>",
         "Sets the topic of the current channel.");
     registerCommand(topicCommand);
+
     // Ranks
+    var voiceCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " +v " + nick);
+        }
+    };
+    var voiceCommand = new Command("VOICE", ["+V"], 1, voiceCallback, "/VOICE <user>",
+        "Gives voice to the given user.");
+    registerCommand(voiceCommand);
+
+    var devoiceCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " -v " + nick);
+        }
+    };
+    var devoiceCommand = new Command("DEVOICE", ["-V"], 1, devoiceCallback, "/DEVOICE <user>",
+        "Removes voice from the given user.");
+    registerCommand(devoiceCommand);
+
+    var halfopCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " +h " + nick);
+        }
+    };
+    var halfopCommand = new Command("HALFOP", ["+H"], 1, halfopCallback, "/HALFOP <user>",
+        "Gives halfop to the given user.");
+    registerCommand(halfopCommand);
+
+    var dehalfopCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " -h " + nick);
+        }
+    };
+    var dehalfopCommand = new Command("DEHALFOP", ["-H"], 1, dehalfopCallback, "/DEHALFOP <user>",
+        "Removes halfop from the given user.");
+    registerCommand(dehalfopCommand);
+
+    var opCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " +o " + nick);
+        }
+    };
+    var opCommand = new Command("OP", ["+O"], 1, opCallback, "/OP <user>",
+        "Gives op to the given user.");
+    registerCommand(opCommand);
+
+    var deopCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " -o " + nick);
+        }
+    };
+    var deopCommand = new Command("DEOP", ["-O"], 1, deopCallback, "/DEOP <user>",
+        "Removes op from the given user.");
+    registerCommand(deopCommand);
 
     // UI
     var clearCallback = function (cmd, args, target)
