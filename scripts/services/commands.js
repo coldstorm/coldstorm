@@ -18,6 +18,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     function checkCommand(input, target, command)
     {
         var parts = input.split(" ");
+        parts[0] = parts[0].toUpperCase();
 
         if ((parts[0] === command.name ||
             command.aliases.indexOf(parts[0]) > -1) &&
@@ -39,10 +40,10 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     {
         if (command.aliases.length > 0)
         {
-            return ("[Aliases: " + command.aliases.join(",") + "] \\b" + command.usage);
+            return ("\\c32[Aliases: " + command.aliases.join(",") + "] \\b" + command.usage);
         } else
         {
-            return ("\\b" + command.usage);
+            return ("\\c32\\b" + command.usage);
         }
     }
 
@@ -126,7 +127,24 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
         target.addLine("\\uHelp");
         if (args.length > 0)
         {
-            //show specific command help
+            var matches = commands.filter(function (element)
+            {
+                return (element.name == args[0].toUpperCase());
+            });
+
+            if (matches.length < 1)
+            {
+                target.addLine("Command couldn't be found.");
+            } else
+            {
+                for (var i = 0; i < matches.length; i++)
+                {
+                    var command = matches[i];
+                    target.addLine(generateHelp(command));
+                    target.addLine(" - " + command.description);
+                }
+            }
+
         } else
         {
             for (var i = 0; i < commands.length; i++)
