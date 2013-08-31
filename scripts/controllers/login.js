@@ -33,8 +33,7 @@ Controllers.controller("LoginCtrl",
             }
 
             Connection.close();
-            $scope.connecting = false;
-            $scope.connected = false;
+            $scope.reset();
 
             $rootScope.$apply(function ()
             {
@@ -49,21 +48,27 @@ Controllers.controller("LoginCtrl",
             $scope.error = "";
         });
 
-        $scope.connecting = false;
-        $scope.connected = false;
-        $scope.hostToken = "";
+        $scope.reset = function ()
+        {
+            $scope.connecting = false;
+            $scope.connected = false;
+            $scope.hostToken = "";
 
-        if (VERSION === "local")
-        {
-            $scope.port = 82;
-        } else
-        {
-            $scope.port = 81;
+            if (VERSION === "local")
+            {
+                $scope.port = 81;
+            } else
+            {
+                $scope.port = 82;
+            }
+            $scope.error = "";
         }
-        $scope.error = "";
+
+        $scope.reset();
 
         $scope.login = function ()
         {
+            $scope.reset();
             User.register($scope.user.nickName);
             User.alias("~", $scope.user.nickName);
 
@@ -175,7 +180,7 @@ Controllers.controller("LoginCtrl",
                     if ($scope.connected)
                     {
                         $location.path("/login");
-                        $scope.connected = false;
+                        $scope.reset();
                     }
                 });
             }
