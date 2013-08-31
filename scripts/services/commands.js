@@ -95,6 +95,23 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     var unbanCommand = new Command("UNBAN", ["UB"], 1, unbanCallback, "/UNBAN <mask>",
         "Removes the given mask from the current channel's banlist.");
     registerCommand(unbanCommand);
+
+    var banlistCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            if (args.length < 1)
+            {
+                Connection.send("MODE " + target.name + " b");
+            } else
+            {
+                Connection.send("MODE " + args[0] + " b");
+            }
+        }
+    };
+    var banlistCommand = new Command("BANLIST", [], 0, banlistCallback, "/BANLIST [channel]",
+        "Retrieves the banlist of the current or given channel.");
+    registerCommand(banlistCommand);
     // Ranks
 
     // UI
@@ -179,7 +196,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
                 }
             }
 
-            Connection.send(line.substring(1));
+            Connection.send(line);
         }
     };
 }]);

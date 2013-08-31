@@ -625,6 +625,26 @@ Services.factory("Parser",
         });
         registerMessage(modeMessage);
 
+        var rpl_banlistMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "367";
+        }, function (ircline)
+        {
+            var channel = Channel.get(ircline.args[1]);
+            var mask = ircline.args[2];
+            var setter = ircline.args[3];
+            var time = ircline.args[4];
+
+            if (channel)
+            {
+                channel.addLine("Ban on " + mask + " set on " + time + " by " + setter);
+            } else
+            {
+                Server.addLine(ircline.args[1] + " ban on " + mask + " set on " + time + " by " + setter);
+            }
+        });
+        registerMessage(rpl_banlistMessage);
+
         var nickMessage = new Message(function (ircline)
         {
             return ircline.cmd === "NICK";
