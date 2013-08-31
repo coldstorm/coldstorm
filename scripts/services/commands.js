@@ -209,6 +209,20 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
         "Removes op from the given user.");
     registerCommand(deopCommand);
 
+    var stripCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var nick = args[0];
+
+            Connection.send("MODE " + channel.name + " -vho " + nick + " " + nick + " " + nick);
+        }
+    };
+    var stripCommand = new Command("STRIP", [], 1, stripCallback, "/STRIP <user>",
+        "Strips the user of all his ranks.");
+    registerCommand(stripCommand);
+
     // UI
     var clearCallback = function (cmd, args, target)
     {
