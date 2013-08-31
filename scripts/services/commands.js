@@ -107,6 +107,14 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     registerCommand(clearCommand);
 
     // MISC
+    var msgCallback = function (cmd, args, target)
+    {
+        Connection.send("PRIVMSG " + args[0] + " :" + args.slice(1).join(" "));
+    }
+    var msgCommand = new Command("MSG", ["QUERY"], 2, msgCallback, "/MSG <target> <message>",
+        "Sends a private message to the target.");
+    registerCommand(msgCommand);
+
     var actionCallback = function (cmd, args, target)
     {
         if (target.name)
