@@ -1,4 +1,4 @@
-Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootScope, Connection, User)
+Services.factory("Input", ["$rootScope", "Connection", "User", "Commands",  function ($rootScope, Connection, User, Commands)
 {
     $rootScope.process = function (input, target)
     {
@@ -15,11 +15,10 @@ Services.factory("Input", ["$rootScope", "Connection", "User",  function ($rootS
         //Parse commands
         if (line[0] === "/")
         {
-            Connection.send(line.substring(1));
+            //Connection.send(line.substring(1));
+            Commands.parse(line, target);
             return;
         }
-
-        //Parse formatting
 
         //Send the line
         if (target.name) //it's a channel

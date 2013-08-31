@@ -71,6 +71,10 @@ function ($rootScope, User)
 
                     delete registry[this.name];
                 },
+                clear: function ()
+                {
+                    this.lines.length = 0;
+                },
                 lines: [],
                 name: name,
                 user: User.get(name)

@@ -86,6 +86,10 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
                     delete registry[this.name];
                 },
+                clear: function ()
+                {
+                    this.lines.length = 0;
+                },
                 lines: [],
                 name: name,
                 topic: "",
