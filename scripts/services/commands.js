@@ -2,14 +2,15 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
 {
     var commands = [];
 
-    function Command(name, aliases, args, callback, help)
+    function Command(name, aliases, args, callback, usage, description)
     {
         command = new Object();
         command.name = name;
         command.aliases = aliases;
         command.args = args;
         command.callback = callback;
-        command.help = help;
+        command.usage = usage;
+        command.description = description;
 
         return command;
     }
@@ -33,6 +34,17 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     {
         commands.push(command);
     }
+    
+    function generateHelp(command)
+    {
+        if (command.aliases.length > 0)
+        {
+            return ("[Aliases: " + command.aliases.join(",") + "] \\b" + command.usage);
+        } else
+        {
+            return ("\\b" + command.usage);
+        }
+    }
 
     // Channel management
     var kickCallback = function (cmd, args, target)
@@ -51,7 +63,8 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             }
         }
     };
-    var kickCommand = new Command("KICK", ["K"], 1, kickCallback, "/KICK <target> [reason]");
+    var kickCommand = new Command("KICK", ["K"], 1, kickCallback, "/KICK <target> [reason]",
+        "Kicks the target from the current channel with an optional reason.");
     registerCommand(kickCommand);
 
     var banCallback = function (cmd, args, target)
@@ -64,9 +77,23 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             Connection.send("MODE " + channel.name + " +b " + mask);
         }
     };
-    var banCommand = new Command("BAN", [], 1, banCallback, "/BAN <mask>");
+    var banCommand = new Command("BAN", [], 1, banCallback, "/BAN <mask>",
+        "Adds the given mask to the current channel's banlist.");
     registerCommand(banCommand);
+    
+    var unbanCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var mask = args[0];
 
+            Connection.send("MODE " + channel.name + " -b " + mask);
+        }
+    };
+    var unbanCommand = new Command("UNBAN", ["UB"], 1, unbanCallback, "/UNBAN <mask>",
+        "Removes the given mask from the current channel's banlist.");
+    registerCommand(unbanCommand);
     // Ranks
 
     // UI
@@ -74,7 +101,8 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     {
         target.clear();
     };
-    var clearCommand = new Command("CLEAR", [], 0, clearCallback, "/CLEAR");
+    var clearCommand = new Command("CLEAR", [], 0, clearCallback, "/CLEAR",
+        "Clears the lines from the current tab.");
     registerCommand(clearCommand);
 
     // MISC
@@ -89,8 +117,29 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             target.addLine("\u0001ACTION " + line + "\u0001", User.get("~"));
         }
     };
-    var actionCommand = new Command("ACTION", ["ME"], 1, actionCallback, "/ACTION <action");
+    var actionCommand = new Command("ACTION", ["ME"], 1, actionCallback, "/ACTION <action>",
+        "<placeholder>");
     registerCommand(actionCommand);
+
+    var helpCallback = function (cmd, args, target)
+    {
+        target.addLine("\\uHelp");
+        if (args.length > 0)
+        {
+            //show specific command help
+        } else
+        {
+            for (var i = 0; i < commands.length; i++)
+            {
+                var command = commands[i];
+                target.addLine(generateHelp(command));
+                target.addLine(" - " + command.description);
+            }
+        }
+    };
+    var helpCommand = new Command("HELP", ["?"], 0, helpCallback, "/HELP [command]",
+        "Provides a list of commands or help about a given command.");
+    registerCommand(helpCommand);
 
     return {
         parse: function (line, target)
