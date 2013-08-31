@@ -64,7 +64,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             }
         }
     };
-    var kickCommand = new Command("KICK", ["K"], 1, kickCallback, "/KICK <target> [reason]",
+    var kickCommand = new Command("KICK", [], 1, kickCallback, "/KICK <target> [reason]",
         "Kicks the target from the current channel with an optional reason.");
     registerCommand(kickCommand);
 
@@ -92,7 +92,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
             Connection.send("MODE " + channel.name + " -b " + mask);
         }
     };
-    var unbanCommand = new Command("UNBAN", ["UB"], 1, unbanCallback, "/UNBAN <mask>",
+    var unbanCommand = new Command("UNBAN", [], 1, unbanCallback, "/UNBAN <mask>",
         "Removes the given mask from the current channel's banlist.");
     registerCommand(unbanCommand);
 
