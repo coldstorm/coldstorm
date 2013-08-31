@@ -112,6 +112,17 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     var banlistCommand = new Command("BANLIST", [], 0, banlistCallback, "/BANLIST [channel]",
         "Retrieves the banlist of the current or given channel.");
     registerCommand(banlistCommand);
+
+    var topicCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            Connection.send("TOPIC " + target.name + " :" + args.join(" "));
+        }
+    }
+    var topicCommand = new Command("TOPIC", ["MOTD"], 1, topicCallback, "/TOPIC <topic>",
+        "Sets the topic of the current channel.");
+    registerCommand(topicCommand);
     // Ranks
 
     // UI
