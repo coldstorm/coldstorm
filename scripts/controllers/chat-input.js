@@ -3,6 +3,12 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
     $scope.selectionStart = -1;
     $scope.selectionEnd = -1;
 
+    $scope.toComplete = "";
+    $scope.caret = -1;
+    $scope.completeIndex = -1;
+    $scope.matches = [];
+    $scope.matchIndex = 0;
+
     var getSelectedText = function ()
     {
         var elem = document.getElementById("chat-input");
@@ -41,8 +47,54 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
         }
     };
 
+    $scope.autocomplete = function ()
+    {
+        if ($scope.tab.name)
+        {
+            elem = document.getElementById("chat-input");
+
+            if ($scope.matches.length > 0)
+            {
+                elem.value = elem.value.substring(0, $scope.completeIndex) + $scope.matches[$scope.matchIndex].nickName + elem.value.substring($scope.completeIndex + 1);
+            }
+        }
+    };
+
     $("body").mousedown(function ()
     {
         getSelectedText();
+    });
+
+    $("#chat-input").keydown(function (event)
+    {
+        if (event.which == 9)
+        {
+            event.preventDefault();
+            $scope.autocomplete();
+            $scope.matchIndex++;
+
+            if ($scope.matchIndex >= $scope.matches.length)
+            {
+                $scope.matchIndex = 0;
+            }
+        }
+    });
+
+    $("#chat-input").keyup(function (event)
+    {
+        if (event.which != 9)
+        {
+            var val = $(this).val();
+            $scope.caret = this.selectionStart;
+            $scope.completeIndex = val.lastIndexOf(" ", $scope.caret) + 1;
+            $scope.toComplete = val.substring(val.lastIndexOf(" ", $scope.caret) + 1, $scope.caret);
+            $scope.completion = $scope.toComplete;
+            $scope.matchIndex = 0;
+            var users = $scope.tab.users;
+            $scope.matches = users.filter(function (element)
+            {
+                return (element.nickName.toUpperCase().indexOf($scope.toComplete.toUpperCase()) === 0);
+            });
+        }
     });
 }]);
