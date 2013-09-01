@@ -1,4 +1,4 @@
-﻿describe("Coldstorm directives", function ()
+describe("Coldstorm directives", function ()
 {
 
 });

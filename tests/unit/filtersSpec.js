@@ -1,4 +1,4 @@
-﻿describe("Coldstorm filters", function ()
+describe("Coldstorm filters", function ()
 {
 
 });

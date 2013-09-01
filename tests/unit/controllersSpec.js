@@ -1,4 +1,4 @@
-﻿describe("Coldstorm controllers", function ()
+describe("Coldstorm controllers", function ()
 {
 
 });

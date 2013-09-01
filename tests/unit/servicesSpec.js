@@ -1,4 +1,4 @@
-﻿describe("Coldstorm services", function ()
+describe("Coldstorm services", function ()
 {
 
 });
