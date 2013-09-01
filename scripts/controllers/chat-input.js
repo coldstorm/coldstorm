@@ -100,7 +100,7 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
 
             $scope.caret = this.selectionStart;
 
-            wordStart = val.lastIndexOf(" ", $scope.caret) + 1;
+            wordStart = val.lastIndexOf(" ", $scope.caret -1) + 1;
 
             wordEnd = val.indexOf(" ", wordStart);
 
@@ -119,7 +119,9 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
 
             $scope.matches = users.filter(function (element)
             {
-                return (element.nickName.toUpperCase().indexOf($scope.toComplete.toUpperCase()) === 0);
+                var nickName = element.nickName.toUpperCase();
+
+                return nickName.indexOf($scope.toComplete.toUpperCase()) === 0;
             });
         }
     });
