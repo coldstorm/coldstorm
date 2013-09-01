@@ -14,11 +14,12 @@ Controllers.controller("LoginCtrl",
 
         $location.hash("");
 
-        $http.jsonp("http://freegeoip.net/json/?callback=JSON_CALLBACK")
+        $http.jsonp("http://www.geoplugin.net/json.gp?" +
+                    "jsoncallback=JSON_CALLBACK")
         .success(function (data)
         {
-            $scope.user.country = data.country_name;
-            $scope.user.flag = data.country_code;
+            $scope.user.country = data.geoplugin_countryName;
+            $scope.user.flag = data.geoplugin_countryCode;
         });
 
         $rootScope.$on("err_nicknameinuse", function (evt)
