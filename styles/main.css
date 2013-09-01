@@ -66,6 +66,15 @@ footer {
     text-align: center;
 }
 
+footer div {
+    margin: 0.5em;
+}
+
+footer .news {
+    color: #4a7691;
+    cursor: pointer;
+}
+
 main {
     height: 100%;
 }
@@ -159,6 +168,33 @@ input {
 
 .modal-settings {
     top: 20%;
+}
+
+.news div {
+    background-color: #202226;
+    border: 1px solid #24272e;
+    border-radius: 3px;
+}
+
+.news a {
+    color: #808080;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.news h1 {
+    color: #babbbf;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.news ul {
+    list-style: none;
+    padding: 0px;
+}
+
+.news li {
+    margin: 10px;
 }
 
 .settings {

@@ -49,6 +49,12 @@ function ($http, $location, $rootScope)
         VERSION = "local";
     }
 
+    $http.get("https://api.github.com/repos/coldstorm/coldstorm/issues?state=closed&per_page=5")
+        .success(function (data)
+        {
+            $rootScope.issues = data;
+        });
+
     var clearNotifications = function ()
     {
         $rootScope.$broadcast("read");
@@ -83,4 +89,6 @@ function ($http, $location, $rootScope)
         version: VERSION,
         shortHash: VERSION
     };
+
+    $rootScope.issues = [];
 }]);

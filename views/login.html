@@ -40,10 +40,18 @@
         </span>
         <span class="message">I love this color!</span>
     </div>
+
+    <div class="modal modal-settings" modal="showNews"
+        ng-init="showNews=false">
+        <div ng-include="'views/news.html'"></div>
+    </div>
 </form>
 
 <footer>
     <span class="version">Coldstorm {{ meta.shortHash }}</span>
     <span>|</span>
     <a target="_blank" href="https://github.com/coldstorm/coldstorm">Contribute</a>
+    <div>
+        <span ng-click="showNews=true" class="news">What's new?</span>
+    </div>
 </div>

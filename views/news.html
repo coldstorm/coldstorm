@@ -1,0 +1,12 @@
+﻿<div class="news">
+    <h1>Recently closed issues
+    </h1>
+    <ul>
+        <li ng-repeat="issue in issues">
+            <a target="_blank" href="{{ issue.html_url }}">#{{ issue.number }}: {{ issue.title }}</a>
+        </li>
+        <li>
+            <a target="_blank" href="https://github.com/coldstorm/coldstorm/issues?page=1&state=closed">More closed issues...</a>
+        </li>
+    </ul>
+</div>
