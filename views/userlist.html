@@ -3,7 +3,8 @@
         <li class="user" ng-repeat="user in users | sortUsers:channel">
             <img class="flag"
                     ng-src="res/flags/{{ user.flag | lowercase }}.png"
-                    title="{{ user.country }}" />
+                    title="{{ user.country }}"
+                    onerror="this.onerror=null; this.src='res/flags/qq.png';" />
             <user user="user" channel="channel" options="showOptions"></user>
         </li>
     </ul>
