@@ -3,6 +3,12 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
     $scope.selectionStart = -1;
     $scope.selectionEnd = -1;
 
+    $scope.toComplete = "";
+    $scope.caret = -1;
+    $scope.completeIndex = -1;
+    $scope.matches = [];
+    $scope.matchIndex = 0;
+
     var getSelectedText = function ()
     {
         var elem = document.getElementById("chat-input");
@@ -44,5 +50,79 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
     $("body").mousedown(function ()
     {
         getSelectedText();
+    });
+
+    var wordStart = 0;
+    var wordEnd = 0;
+
+    var autocomplete = function ()
+    {
+        if ($scope.tab.name)
+        {
+            elem = document.getElementById("chat-input");
+
+            if ($scope.matches.length > 0)
+            {
+                var replaceEnd = elem.value.indexOf(" ", wordStart);
+
+                if (replaceEnd === -1)
+                {
+                    replaceEnd = elem.value.length;
+                }
+
+                elem.value = elem.value.substring(0, wordStart) +
+                    $scope.matches[$scope.matchIndex].nickName +
+                    elem.value.substring(replaceEnd);
+            }
+        }
+    };
+
+    $("#chat-input").bind("keydown", function (event)
+    {
+        if (event.type == "keydown" && event.which == 9)
+        {
+            event.preventDefault();
+            autocomplete();
+            $scope.matchIndex++;
+
+            if ($scope.matchIndex >= $scope.matches.length)
+            {
+                $scope.matchIndex = 0;
+            }
+        }
+    });
+
+    $("#chat-input").on("keyup click focus", function (event)
+    {
+        if (event.which != 9)
+        {
+            var val = $(this).val();
+
+            $scope.caret = this.selectionStart;
+
+            wordStart = val.lastIndexOf(" ", $scope.caret -1) + 1;
+
+            wordEnd = val.indexOf(" ", wordStart);
+
+            if (wordEnd === -1)
+            {
+                wordEnd = val.length;
+            }
+
+            $scope.toComplete = val.substring(wordStart, wordEnd);
+
+            $scope.completion = $scope.toComplete;
+
+            $scope.matchIndex = 0;
+
+            var users = $scope.tab.users;
+
+            $scope.matches = users.filter(function (element)
+            {
+                var nickName = element.nickName.toUpperCase();
+
+                return nickName.indexOf($scope.toComplete.toUpperCase()) === 0;
+            });
+        }
     });
 }]);
