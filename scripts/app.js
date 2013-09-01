@@ -49,7 +49,7 @@ function ($http, $location, $rootScope)
         VERSION = "local";
     }
 
-    $http.get("https://api.github.com/repos/coldstorm/coldstorm/issues?state=closed&per_page=5")
+    $http.get("https://api.github.com/repos/coldstorm/coldstorm/issues?state=closed&sort=updated&per_page=5")
         .success(function (data)
         {
             $rootScope.issues = data;
