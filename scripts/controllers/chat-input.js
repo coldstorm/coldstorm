@@ -77,7 +77,7 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
         }
     };
 
-    $("#chat-input").bind("keydown click focus", function (event)
+    $("#chat-input").bind("keydown", function (event)
     {
         if (event.type == "keydown" && event.which == 9)
         {
@@ -89,19 +89,10 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
             {
                 $scope.matchIndex = 0;
             }
-        } else
-        {
-            var val = $(this).val();
-
-            $scope.caret = this.selectionStart;
-
-            wordStart = val.lastIndexOf(" ", $scope.caret - 1) + 1;
-
-            wordEnd = val.indexOf(" ", wordStart);
         }
     });
 
-    $("#chat-input").keyup(function (event)
+    $("#chat-input").on("keyup click focus", function (event)
     {
         if (event.which != 9)
         {
