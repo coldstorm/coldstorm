@@ -73,6 +73,8 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
                 elem.value = elem.value.substring(0, wordStart) +
                     $scope.matches[$scope.matchIndex].nickName +
                     elem.value.substring(replaceEnd);
+
+                $scope.input.text = elem.value;
             }
         }
     };
