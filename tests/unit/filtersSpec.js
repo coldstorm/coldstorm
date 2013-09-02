@@ -1,0 +1,4 @@
+describe("Coldstorm filters", function ()
+{
+
+});

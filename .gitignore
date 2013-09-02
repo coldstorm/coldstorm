@@ -1,3 +1,4 @@
 # Visual Studio for Web
 *.sln
 Web.config
+node_modules
