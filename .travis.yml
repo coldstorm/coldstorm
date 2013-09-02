@@ -12,8 +12,8 @@ script:
     - "karma start --browsers=PhantomJS,Firefox --reporters=dots"
 
 notifications:
-    - email: false
-    - irc:
-        - channels:
+    email: false
+    irc:
+        channels:
             - "frogbox.es#DesktopCS"
-        - skip_join: false
+        skip_join: false
