@@ -1,8 +1,9 @@
-Controllers.controller("UserOptionsCtrl", ["$scope", "$rootScope", "$location",
-function ($scope, $rootScope, $location)
+Controllers.controller("UserOptionsCtrl", ["$scope", "$rootScope", "$location", "Query",
+function ($scope, $rootScope, $location, Query)
 {
     $scope.query = function (user)
     {
-        $location.path("/query/" + user.nickName);
+        var query = Query.register(user.nickName);
+        $location.path("/query/" + query.name);
     };
 }]);
