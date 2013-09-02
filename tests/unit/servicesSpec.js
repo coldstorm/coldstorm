@@ -173,4 +173,76 @@ describe("Coldstorm services", function ()
             expect(query.lines.length).toBe(0);
         });
     });
+
+    describe("User", function ()
+    {
+        var $User;
+        beforeEach(inject(["User", function (User)
+        {
+            $User = User;
+        }]));
+
+        it("should return a user object when calling register(name)", function ()
+        {
+            var user = $User.register("test");
+
+            expect(user.nickName).toBe("test");
+        });
+
+        it("should move a user object correctly when calling move(oldName, newName)", function ()
+        {
+            var user = $User.register("test", "#FFFFFF");
+
+            $User.move("test", "test2");
+
+            var user2 = $User.get("test2");
+
+            expect(user2.color).toBe("#FFFFFF");
+        });
+
+        it("should alias a user correctly when calling alias(first, second)", function ()
+        {
+            var user = $User.register("test", "#FFFFFF");
+
+            $User.alias("test2", "test");
+
+            expect($User.get("test2").color).toBe("#FFFFFF");
+        });
+
+        it("should sort the ranks correctly when calling addRank(channel, rank)",
+            inject(["Channel", function (Channel)
+            {
+                var user = $User.register("test");
+                var testChannel = Channel.register("testChannel");
+
+                user.addRank(testChannel, "%");
+
+                expect(user.ranks[testChannel.name]).toBe("%");
+
+                user.addRank(testChannel, "+");
+
+                expect(user.ranks[testChannel.name]).toBe("%+");
+
+                user.addRank(testChannel, "@");
+
+                expect(user.ranks[testChannel.name]).toBe("@%+");
+            }]));
+
+        it("should remove the ranks correctly when calling removeRank(channel, rank)",
+            inject(["Channel", function (Channel)
+            {
+                var user = $User.register("test");
+                var testChannel = Channel.register("testChannel");
+
+                user.addRank(testChannel, "@");
+                user.addRank(testChannel, "%");
+                user.addRank(testChannel, "+");
+
+                expect(user.ranks[testChannel.name]).toBe("@%+");
+
+                user.removeRank(testChannel, "%");
+
+                expect(user.ranks[testChannel.name]).toBe("@+");
+            }]));
+    });
 });
