@@ -2,6 +2,20 @@
     <span class="option"
         ng-click="query(user); user = null">query</span>
     <span class="option"
+        ng-click="setmode(user, '+v'); user = null">+voice</span>
+    <span class="option"
+        ng-click="setmode(user, '-v'); user = null">-voice</span>
+    <span class="option"
+        ng-click="setmode(user, '+h'); user = null">+halfop</span>
+    <span class="option"
+        ng-click="setmode(user, '-h'); user = null">-halfop</span>
+    <span class="option"
+        ng-click="setmode(user, '+o'); user = null">+op</span>
+    <span class="option"
+        ng-click="setmode(user, '-o'); user = null">-op</span>
+    <span class="option"
+        ng-click="strip(user); user = null">strip</span>
+    <span class="option"
         ng-click="kick(user); user = null">kick</span>
     <span class="option"
         ng-click="ban(user); user = null">ban</span>
