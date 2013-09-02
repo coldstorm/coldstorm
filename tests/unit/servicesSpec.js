@@ -174,6 +174,45 @@ describe("Coldstorm services", function ()
         });
     });
 
+    describe("Server", function ()
+    {
+        var $Server;
+        beforeEach(inject(["Server", function (Server)
+        {
+            $Server = Server;
+        }]));
+
+        it("should add a line when calling addLine(message)", function ()
+        {
+            $Server.addLine("test");
+
+            expect($Server.lines.length).toBe(1);
+            expect($Server.lines[0].message).toBe("test");
+            expect($Server.lines[0].systemMessage).toBe(true);
+        });
+
+        it("should add a line with an author when calling addLine(message, author)",
+            inject(["User", function (User)
+            {
+                $Server.addLine("test", User.register("testAuthor"));
+
+                expect($Server.lines[0].author.nickName).toBe("testAuthor");
+                expect($Server.lines[0].message).toBe("test");
+                expect($Server.lines[0].systemMessage).toBe(false);
+            }]));
+
+        it("should clear the lines when calling clear()", function ()
+        {
+            $Server.addLine("test");
+
+            expect($Server.lines.length).toBe(1);
+
+            $Server.clear();
+
+            expect($Server.lines.length).toBe(0);
+        });
+    });
+
     describe("Settings", function ()
     {
         var $Settings;
