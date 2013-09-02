@@ -174,6 +174,24 @@ describe("Coldstorm services", function ()
         });
     });
 
+    describe("Settings", function ()
+    {
+        var $Settings;
+        beforeEach(inject(["Settings", function (Settings)
+        {
+            $Settings = Settings;
+        }]));
+
+        it("should set the settings cookie when calling save()", function ()
+        {
+            $Settings.save();
+
+            expect($.cookie("settings")).not.toBe(undefined);
+
+            $.removeCookie("settings");
+        });
+    });
+
     describe("User", function ()
     {
         var $User;
