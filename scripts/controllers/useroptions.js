@@ -1,6 +1,25 @@
-Controllers.controller("UserOptionsCtrl", ["$scope", "$rootScope", "$location", "Query", "Connection",
-function ($scope, $rootScope, $location, Query, Connection)
+Controllers.controller("UserOptionsCtrl", ["$scope", "$rootScope", "$location", "User", "Query", "Connection",
+function ($scope, $rootScope, $location, User, Query, Connection)
 {
+    $scope.getRank = function ()
+    {
+        var myUser = User.get("~");
+
+        if (myUser.ranks[$scope.channel.name])
+        {
+            switch (myUser.ranks[$scope.channel.name][0])
+            {
+                case '@': return 2;
+                    break;
+                case '%': return 1;
+                    break;
+                case '+':
+                default: return 0;
+                    break;
+            }
+        }
+    }
+
     $scope.query = function (user)
     {
         var query = Query.register(user.nickName);

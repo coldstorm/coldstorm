@@ -2,21 +2,30 @@
     <span class="option"
         ng-click="query(user); user = null">query</span>
     <span class="option"
-        ng-click="setmode(user, '+v'); user = null">+voice</span>
+        ng-click="setmode(user, '+v'); user = null"
+        ng-show="getRank() >= 1">+voice</span>
     <span class="option"
-        ng-click="setmode(user, '-v'); user = null">-voice</span>
+        ng-click="setmode(user, '-v'); user = null"
+        ng-show="getRank() >= 1">-voice</span>
     <span class="option"
-        ng-click="setmode(user, '+h'); user = null">+halfop</span>
+        ng-click="setmode(user, '+h'); user = null"
+        ng-show="getRank() >= 2">+halfop</span>
     <span class="option"
-        ng-click="setmode(user, '-h'); user = null">-halfop</span>
+        ng-click="setmode(user, '-h'); user = null"
+        ng-show="getRank() >= 2">-halfop</span>
     <span class="option"
-        ng-click="setmode(user, '+o'); user = null">+op</span>
+        ng-click="setmode(user, '+o'); user = null"
+        ng-show="getRank() >= 2">+op</span>
     <span class="option"
-        ng-click="setmode(user, '-o'); user = null">-op</span>
+        ng-click="setmode(user, '-o'); user = null"
+        ng-show="getRank() >= 2">-op</span>
     <span class="option"
-        ng-click="strip(user); user = null">strip</span>
+        ng-click="strip(user); user = null"
+        ng-show="getRank() >= 2">strip</span>
     <span class="option"
-        ng-click="kick(user); user = null">kick</span>
+        ng-click="kick(user); user = null"
+        ng-show="getRank() >= 1">kick</span>
     <span class="option"
-        ng-click="ban(user); user = null">ban</span>
+        ng-click="ban(user); user = null"
+        ng-show="getRank() >= 1">ban</span>
 </div>
