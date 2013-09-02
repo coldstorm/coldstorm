@@ -16,4 +16,4 @@ notifications:
     - irc:
         - channels:
             - "frogbox.es#DesktopCS"
-        - skip_join: true
+        - skip_join: false
