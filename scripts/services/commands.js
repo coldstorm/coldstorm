@@ -256,6 +256,28 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
         "<placeholder>");
     registerCommand(actionCommand);
 
+    var afkCallback = function (cmd, args, target)
+    {
+        if (args.length > 0)
+        {
+            Connection.send("AWAY :" + args[0]);
+        } else
+        {
+            Connection.send("AWAY :afk");
+        }
+    };
+    var afkCommand = new Command("AFK", ["AWAY"], 0, afkCallback, "/AFK [message]",
+        "Marks you as afk.");
+    registerCommand(afkCommand);
+
+    var backCallback = function (cmd, args, target)
+    {
+        Connection.send("AWAY");
+    };
+    var backCommand = new Command("BACK", [], 0, backCallback, "/BACK", 
+        "Unmarks you as afk.");
+    registerCommand(backCommand);
+
     var helpCallback = function (cmd, args, target)
     {
         target.addLine("\\uHelp");

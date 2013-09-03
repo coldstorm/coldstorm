@@ -368,6 +368,24 @@ Services.factory("Parser",
         });
         registerMessage(rpl_awayMessage);
 
+        var rpl_unawayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "305";
+        }, function (ircline)
+        {
+            Server.addLine("You are no longer marked as being away.");
+        });
+        registerMessage(rpl_unawayMessage);
+
+        var rpl_nowawayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "306";
+        }, function (ircline)
+        {
+            Server.addLine("You have been marked as being away.");
+        });
+        registerMessage(rpl_nowawayMessage);
+
         var joinMessage = new Message(function (ircline)
         {
             return ircline.cmd === "JOIN";
