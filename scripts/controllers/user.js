@@ -1,5 +1,16 @@
 Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
 {
+    $scope.toggleOptions = function ()
+    {
+        if ($scope.selectedUser)
+        {
+            $scope.selectedUser = null;
+        } else
+        {
+            $scope.selectedUser = $scope.user;
+        }
+    }
+
     $scope.$watch(function ()
     {
         return $scope.user.ranks[$scope.channel.name];
@@ -22,6 +33,4 @@ Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
             $scope.rank = '';
         }
     });
-
-    $scope.showOptions = false;
 }]);
