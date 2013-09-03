@@ -358,8 +358,8 @@ header {
     border-radius: 3px;
     display: inline-block;
     height: 22px;
-    width: 85%;
-    width: calc(90% - 4px);
+    width: 80%;
+    width: calc(85% - 4px);
     font-size: 11px;
     position: relative;
 }
@@ -404,7 +404,7 @@ header {
     height: 90%;
     height: calc(100% - 34px);
     margin-left: 4px;
-    width: 10%;
+    width: 15%;
     word-wrap: break-word;
     overflow: auto;
 }
