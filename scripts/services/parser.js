@@ -1,8 +1,8 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query", "Server",
+    "Channel", "User", "Query", "Server", "AwayChecker", 
     function ($http, $location, $rootScope, $window, $log, Connection,
-    Channel, User, Query, Server)
+    Channel, User, Query, Server, AwayChecker)
     {
         var messages = [];
 
@@ -115,6 +115,7 @@ Services.factory("Parser",
             return ircline.cmd === "001";
         }, function (ircline)
         {
+            AwayChecker.start();
             for (var i = 0; i < welcomeHandlers.length; i++)
             {
                 welcomeHandlers[i]();
@@ -257,6 +258,16 @@ Services.factory("Parser",
             var user = User.get(ircline.args[5]);
 
             var username = ircline.args[2];
+            var awayflag = ircline.args[6][0];
+
+            if (awayflag === "G")
+            {
+                Connection.send("WHOIS " + user.nickName);
+            } else if (awayflag === "H")
+            {
+                user.awayMsg = null;
+            }
+
             var rank = ircline.args[6].charAt(ircline.args[6].length - 1);
 
             if (rank != "" && ["+", "%", "@"].indexOf(rank) != -1)
@@ -347,6 +358,34 @@ Services.factory("Parser",
         });
         registerMessage(rpl_whoischannelsMessage);
 
+        var rpl_awayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "301";
+        }, function (ircline)
+        {
+            var user = User.get(ircline.args[1]);
+            user.awayMsg = ircline.args[2];
+        });
+        registerMessage(rpl_awayMessage);
+
+        var rpl_unawayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "305";
+        }, function (ircline)
+        {
+            Server.addLine("You are no longer marked as being away.");
+        });
+        registerMessage(rpl_unawayMessage);
+
+        var rpl_nowawayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "306";
+        }, function (ircline)
+        {
+            Server.addLine("You have been marked as being away.");
+        });
+        registerMessage(rpl_nowawayMessage);
+
         var joinMessage = new Message(function (ircline)
         {
             return ircline.cmd === "JOIN";
@@ -367,6 +406,8 @@ Services.factory("Parser",
                 }
 
                 $rootScope.$broadcast("channel.joined", channel);
+
+                AwayChecker.register(channel);
             } else
             {
                 channel.addLine(user.nickName + " joined the room.");

@@ -1,4 +1,4 @@
-Services.factory("Commands", ["Connection", "User", function (Connection, User)
+Services.factory("Commands", ["$filter", "Connection", "User", function ($filter, Connection, User)
 {
     var commands = [];
 
@@ -255,6 +255,34 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     var actionCommand = new Command("ACTION", ["ME"], 1, actionCallback, "/ACTION <action>",
         "<placeholder>");
     registerCommand(actionCommand);
+
+    var afkCallback = function (cmd, args, target)
+    {
+        var awayMsg;
+        if (args.length > 0)
+        {
+            Connection.send("AWAY :" + args[0]);
+            awayMsg = args[0];
+        } else
+        {
+            Connection.send("AWAY :afk");
+            awayMsg = "afk";
+        }
+
+        User.get("~").awayMsg = $filter("truncate")(awayMsg, 7);
+    };
+    var afkCommand = new Command("AFK", ["AWAY"], 0, afkCallback, "/AFK [message]",
+        "Marks you as afk.");
+    registerCommand(afkCommand);
+
+    var backCallback = function (cmd, args, target)
+    {
+        Connection.send("AWAY");
+        User.get("~").awayMsg = null;
+    };
+    var backCommand = new Command("BACK", [], 0, backCallback, "/BACK", 
+        "Unmarks you as afk.");
+    registerCommand(backCommand);
 
     var helpCallback = function (cmd, args, target)
     {
