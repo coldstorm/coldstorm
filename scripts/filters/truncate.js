@@ -2,22 +2,28 @@
 {
     return function (text, length, end)
     {
-        if (isNaN(length))
+        if (text)
         {
-            length = 10;
-        }
+            if (isNaN(length))
+            {
+                length = 10;
+            }
 
-        if (end == undefined)
-        {
-            end = "...";
-        }
+            if (end == undefined)
+            {
+                end = "...";
+            }
 
-        if (text.length <= length || text.length - end.length <= length)
-        {
-            return text;
+            if (text.length <= length || text.length - end.length <= length)
+            {
+                return text;
+            } else
+            {
+                return String(text).substring(0, length - end.length) + end;
+            }
         } else
         {
-            return String(text).substring(0, length - end.length) + end;
+            return text;
         }
     }
 }]);
