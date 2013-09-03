@@ -14,8 +14,7 @@ Controllers.controller("LoginCtrl",
 
         $location.hash("");
 
-        $http.jsonp("http://www.geoplugin.net/json.gp?" +
-                    "jsoncallback=JSON_CALLBACK")
+        $http.jsonp("http://geoip.yonom.org/index.php?callback=JSON_CALLBACK")
         .success(function (data)
         {
             $scope.user.country = data.geoplugin_countryName;
