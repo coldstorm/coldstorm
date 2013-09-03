@@ -636,14 +636,14 @@ Services.factory("Parser",
             var channel = Channel.get(ircline.args[1]);
             var mask = ircline.args[2];
             var setter = ircline.args[3];
-            var time = ircline.args[4];
+            var time = new Date(ircline.args[4] * 1000);
 
             if (channel)
             {
-                channel.addLine("Ban on " + mask + " set on " + time + " by " + setter);
+                channel.addLine("Ban on \\u" + mask + "\\r set on " + time.toLocaleString() + " by \\b" + setter + "\\r.");
             } else
             {
-                Server.addLine(ircline.args[1] + " ban on " + mask + " set on " + time + " by " + setter);
+                Server.addLine(ircline.args[1] + " ban on " + mask + " set on " + time.toLocaleString() + " by \\b" + setter + "\\r.");
             }
         });
         registerMessage(rpl_banlistMessage);
