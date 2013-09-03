@@ -261,9 +261,11 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
         if (args.length > 0)
         {
             Connection.send("AWAY :" + args[0]);
+            User.get("~").awayMsg = args[0];
         } else
         {
             Connection.send("AWAY :afk");
+            User.get("~").awayMsg = "afk";
         }
     };
     var afkCommand = new Command("AFK", ["AWAY"], 0, afkCallback, "/AFK [message]",
@@ -273,6 +275,7 @@ Services.factory("Commands", ["Connection", "User", function (Connection, User)
     var backCallback = function (cmd, args, target)
     {
         Connection.send("AWAY");
+        User.get("~").awayMsg = null;
     };
     var backCommand = new Command("BACK", [], 0, backCallback, "/BACK", 
         "Unmarks you as afk.");
