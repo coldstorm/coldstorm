@@ -619,6 +619,9 @@ Services.factory("Parser",
                         {
                             target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
                         }
+                    } else if ("b".indexOf(modes[i]) != -1)
+                    {
+                        target.addLine(setter.nickName + " " + action + " ban on " + parameters[paramIndex] + ".");
                     }
                 }
             }
