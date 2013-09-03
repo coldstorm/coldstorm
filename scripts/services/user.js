@@ -12,6 +12,7 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 country: country != null ? country : "Outlaw",
                 flag: flag != null ? flag : "QQ",
                 nickName: name,
+                awayMsg: null,
                 ranks: {},
                 addRank: function (channel, rank)
                 {

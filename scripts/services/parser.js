@@ -347,6 +347,16 @@ Services.factory("Parser",
         });
         registerMessage(rpl_whoischannelsMessage);
 
+        var rpl_awayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "301";
+        }, function (ircline)
+        {
+            var user = User.get(ircline.args[1]);
+            user.awayMsg = ircline.args[2];
+        });
+        registerMessage(rpl_awayMessage);
+
         var joinMessage = new Message(function (ircline)
         {
             return ircline.cmd === "JOIN";
