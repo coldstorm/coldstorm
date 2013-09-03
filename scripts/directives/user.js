@@ -4,7 +4,7 @@ Directives.directive("user", function ()
         controller: "UserCtrl",
         replace: true,
         restrict: "E",
-        scope: { user: "=user", channel: "=channel", showOptions: "=options" },
+        scope: { user: "=user", channel: "=channel", selectedUser: "=?selectedUser" },
         templateUrl: "views/user.html",
         transclude: true
     };

@@ -1,8 +1,31 @@
-<div ng-show="showOptions">
+<div ng-show="user">
     <span class="option"
-        ng-click="query(user); showOptions = !showOptions">query</span>
+        ng-click="query(user); user = null">query</span>
     <span class="option"
-        ng-click="kick(user); showOptions = !showOptions">kick</span>
+        ng-click="setmode(user, '+v'); user = null"
+        ng-show="getRank() >= 1">+voice</span>
     <span class="option"
-        ng-click="ban(user); showOptions = !showOptions">ban</span>
+        ng-click="setmode(user, '-v'); user = null"
+        ng-show="getRank() >= 1">-voice</span>
+    <span class="option"
+        ng-click="setmode(user, '+h'); user = null"
+        ng-show="getRank() >= 2">+halfop</span>
+    <span class="option"
+        ng-click="setmode(user, '-h'); user = null"
+        ng-show="getRank() >= 2">-halfop</span>
+    <span class="option"
+        ng-click="setmode(user, '+o'); user = null"
+        ng-show="getRank() >= 2">+op</span>
+    <span class="option"
+        ng-click="setmode(user, '-o'); user = null"
+        ng-show="getRank() >= 2">-op</span>
+    <span class="option"
+        ng-click="strip(user); user = null"
+        ng-show="getRank() >= 2">strip</span>
+    <span class="option"
+        ng-click="kick(user); user = null"
+        ng-show="getRank() >= 1">kick</span>
+    <span class="option"
+        ng-click="ban(user); user = null"
+        ng-show="getRank() >= 1">ban</span>
 </div>
