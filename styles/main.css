@@ -420,6 +420,10 @@ header {
     margin-top: 3px;
 }
 
+.away {
+    color: #808080;
+}
+
 .option {
     color: #808080;
     cursor: pointer;
