@@ -1,7 +1,7 @@
 Controllers.controller("LoginCtrl",
-    ["$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
+    ["$log", "$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
     "Connection", "User", "Channel", "Parser",
-    function ($scope, $http, $rootScope, $location, $timeout, $filter,
+    function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
     Connection, User, Channel, Parser)
     {
         var mustKill = false;
@@ -59,12 +59,10 @@ Controllers.controller("LoginCtrl",
                 $scope.port = 81;
             } else
             {
-                $scope.port = 83;
+                $scope.port = 82;
             }
             $scope.error = "";
         }
-
-        $scope.reset();
 
         $scope.login = function ()
         {
@@ -84,14 +82,6 @@ Controllers.controller("LoginCtrl",
             $.cookie("color", $scope.user.color, { expires: new Date(2017, 00, 01) });
 
             $scope.connect();
-
-            while ($scope.connected === false)
-            {
-                if ($scope.retry() === false)
-                {
-                    break;
-                }
-            }
         };
 
         $scope.connect = function ()
@@ -100,9 +90,17 @@ Controllers.controller("LoginCtrl",
             {
                 $scope.connecting = true;
 
+
+                // Attempt to connect
+                $log.log("connecting to ws://frogbox.es:" + $scope.port)
                 Connection.connect("ws://frogbox.es:" + $scope.port);
+
                 Connection.onOpen(function ()
                 {
+                    // Connection successfully opened
+                    $scope.reset();
+                    $scope.connected = true;
+
                     Connection.send("NICK " + $scope.user.nickName);
                     Connection.send("USER " +
                         $scope.user.color.substring(1).toUpperCase() +
@@ -177,23 +175,29 @@ Controllers.controller("LoginCtrl",
 
                 Connection.onClose(function ()
                 {
+                    $scope.connecting = false;
                     if ($scope.connected)
                     {
+                        // We were already connected and on the chat view, go back to login
                         $location.path("/login");
                         $scope.reset();
+                    }
+
+                    else
+                    {
+                        if ($scope.port < 85)
+                        {
+                            $scope.port++;
+                            $scope.connect();
+                        } else
+                        {
+                            $rootScope.$apply(function ()
+                            {
+                                $scope.error = "Couldn't connect to the server";
+                            })
+                        }
                     }
                 });
             }
         };
-
-        $scope.retry = function ()
-        {
-            while ($scope.port < 85)
-            {
-                $scope.port++;
-                $scope.connect();
-                return true;
-            }
-            return false;
-        }
     }]);
