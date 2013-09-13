@@ -59,7 +59,7 @@ Controllers.controller("LoginCtrl",
                 $scope.port = 81;
             } else
             {
-                $scope.port = 82;
+                $scope.port = 83;
             }
             $scope.error = "";
         }
