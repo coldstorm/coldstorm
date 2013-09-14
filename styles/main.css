@@ -421,6 +421,10 @@ header {
 }
 
 .away {
+    opacity: 0.5;
+}
+
+.awayMsg {
     color: #808080;
 }
 
