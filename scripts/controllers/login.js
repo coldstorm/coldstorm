@@ -33,7 +33,6 @@ Controllers.controller("LoginCtrl",
             }
 
             Connection.close();
-            $scope.reset();
 
             $rootScope.$apply(function ()
             {
