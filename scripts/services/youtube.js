@@ -6,7 +6,6 @@
         register: function (id)
         {
             registry[id] = {
-                time: "",
                 id: id,
                 name: id,
                 active: false,
