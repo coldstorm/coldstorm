@@ -108,6 +108,36 @@ Services.factory("Parser",
             return null;
         }
 
+        var serverMessageBlacklist =
+            [
+                "332",
+                "333",
+                "352",
+                "353",
+                "366",
+                "311",
+                "378",
+                "319",
+                "312",
+                "301",
+                "379",
+                "317",
+                "318",
+                "330",
+                "307",
+                "315"
+            ];
+
+        var _serverMessage = new Message(function (ircline)
+        {
+            return ircline.prefix === "Frogbox.es"
+                && serverMessageBlacklist.indexOf(ircline.cmd) < 0;
+        }, function (ircline)
+        {
+            Server.addLine("[" + ircline.cmd + "] " + ircline.args.slice(1).join(" "));
+        });
+        registerMessage(_serverMessage);
+
         var welcomeHandlers = [];
 
         var rpl_welcomeMessage = new Message(function (ircline)
@@ -155,7 +185,6 @@ Services.factory("Parser",
 
             if (ircline.prefix == "Frogbox.es")
             {
-                Server.addLine(line);
                 return;
             }
 
