@@ -10,8 +10,8 @@ Controllers.controller("ServerCtrl",
         console.log(Server);
         if ($scope.user.nickName === "")
         {
-            //$location.path("/login");
-            //return;
+            $location.path("/login");
+            return;
         }
 
         $scope.$watch(function ()
