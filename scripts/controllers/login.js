@@ -51,7 +51,6 @@ Controllers.controller("LoginCtrl",
         {
             $scope.connecting = false;
             $scope.connected = false;
-            $scope.hostToken = "";
 
             if (VERSION === "local")
             {
