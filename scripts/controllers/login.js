@@ -101,6 +101,8 @@ Controllers.controller("LoginCtrl",
                     $scope.reset();
                     $scope.connected = true;
 
+                    $location.path("/server");
+
                     Connection.send("NICK " + $scope.user.nickName);
                     Connection.send("USER " +
                         $scope.user.color.substring(1).toUpperCase() +
