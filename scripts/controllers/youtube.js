@@ -1,5 +1,5 @@
-﻿Controllers.controller("YouTubeCtrl", ["$scope", "$routeParams", "$location", "User", "YouTube", "Query", "Channel",
-    function ($scope, $routeParams, $location, User, YouTube, Query, Channel)
+﻿Controllers.controller("YouTubeCtrl", ["$rootScope", "$scope", "$routeParams", "$location", "User", "YouTube", "Query", "Channel",
+    function ($rootScope, $scope, $routeParams, $location, User, YouTube, Query, Channel)
     {
         $scope.user = User.get("~");
 
@@ -11,15 +11,15 @@
 
         var id = $routeParams.id;
 
-        $scope.youtube = YouTube.get(id);
+        $scope.youtube = YouTube.register(id);
 
-        $scope.$on("youtube.close", function (evt, youtube)
+        $rootScope.$on("youtube.close", function (evt, youtube)
         {
-            if (youtube == $scope.youtube)
+            if (youtube.id === $scope.youtube.id)
             {
                 var channels = $scope.channels;
 
-                if (channels.length > 1)
+                if (channels.length >= 1)
                 {
                     $location.path("/channels/" + channels[0].name)
                 }

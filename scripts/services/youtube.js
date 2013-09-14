@@ -11,7 +11,7 @@
                 active: false,
                 close: function ()
                 {
-                    $rootScope.$broadcast("yt.close", this);
+                    $rootScope.$broadcast("youtube.close", this);
 
                     delete registry[this.id];
                 }

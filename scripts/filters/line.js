@@ -8,6 +8,8 @@ Filters.filter("line", ["$filter", function ($filter)
 
         line = line.replace("<a href", '<a target="_blank" href');
 
+        //TODO: Replace <a href="youtube-link"> with <a href="#/yt/id>
+
         line = $filter("ctcpAction")(line);
         line = $filter("spoiler")(line);
         line = $filter("highlight")(line);
