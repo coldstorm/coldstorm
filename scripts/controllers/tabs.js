@@ -47,4 +47,14 @@ Controllers.controller("TabsCtrl", ["$scope", function ($scope)
 
         return first.user.nickName == second.user.nickName;
     }
+
+    $scope.ytEquals = function (first, second)
+    {
+        if (first === undefined || second === undefined)
+        {
+            return false;
+        }
+
+        return first.id === second.id;
+    }
 }]);

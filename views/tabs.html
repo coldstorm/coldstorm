@@ -10,4 +10,8 @@
         <a href="#/query/{{ queryTab.name }}">{{ queryTab.user.nickName }}</a>
         <a ng-click="queryTab.close()">X</a>
     </li>
+    <li ng-repeat="ytTab in youtubes" class="tab" ng-class="{ active:ytEquals(ytTab, youtube) }">
+        <a href="#/yt/{{ ytTab.id }}">{{ ytTab.name | truncate: 15 }}</a>
+        <a ng-click="ytTab.close()">X</a>
+    </li>
 </ul>
