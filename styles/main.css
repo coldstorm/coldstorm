@@ -303,6 +303,19 @@ header {
     margin: 2px;
 }
 
+.yt-container {
+    background-color: #24272e;
+    border: 1px solid #2a2e36;
+    border-radius: 3px;
+    border-top-left-radius: 0;
+    height: 90%;
+    height: calc(100% - 35px);
+    margin-bottom: 4px;
+    overflow: auto;
+    overflow-y: scroll;
+    word-wrap: break-word;
+}
+
 .lines {
     background-color: #24272e;
     border: 1px solid #2a2e36;
