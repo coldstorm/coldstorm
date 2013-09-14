@@ -1,4 +1,4 @@
-﻿Services.factory("YouTube", ["$rootScope", function ($rootScope)
+﻿Services.factory("YouTube", ["$rootScope", "$http", function ($rootScope, $http)
 {
     var registry = {};
 
@@ -17,6 +17,12 @@
                     delete registry[this.id];
                 }
             };
+
+            $http.jsonp("http://gdata.youtube.com/feeds/api/videos/" + id + "?v=2&alt=json-in-script&callback=JSON_CALLBACK")
+                .success(function (data)
+                {
+                    registry[id].name = data.entry.title.$t;
+                });
 
             return registry[id];
         },
