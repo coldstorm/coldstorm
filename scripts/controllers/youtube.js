@@ -1,6 +1,14 @@
-﻿Controllers.controller("YouTubeCtrl", ["$scope", "$routeParams", "$location", "YouTube", "Query", "Channel",
-    function ($scope, $routeParams, $location, YouTube, Query, Channel)
+﻿Controllers.controller("YouTubeCtrl", ["$scope", "$routeParams", "$location", "User", "YouTube", "Query", "Channel",
+    function ($scope, $routeParams, $location, User, YouTube, Query, Channel)
     {
+        $scope.user = User.get("~");
+
+        if ($scope.user.nickName === "")
+        {
+            $location.path("/login");
+            return;
+        }
+
         var id = $routeParams.id;
 
         $scope.youtube = YouTube.get(id);
