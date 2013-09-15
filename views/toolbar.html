@@ -8,7 +8,7 @@
     </a>
 
     <a ng-click="setAway()" title="Mark Away/Back">
-        <span class="icon-stack">
+        <span ng-class="{ 'icon-stack':user.awayMsg }">
             <i class="icon-coffee icon-large"></i>
             <i ng-show="user.awayMsg" class="icon-ban-circle icon-stack-base red"></i>
         </span>
