@@ -1,4 +1,4 @@
-Services.factory("Input", ["$rootScope", "Connection", "User", "Commands",  function ($rootScope, Connection, User, Commands)
+Services.factory("Input", ["$rootScope", "$filter", "Connection", "User", "Commands",  function ($rootScope, $filter, Connection, User, Commands)
 {
     $rootScope.process = function (input, target)
     {
@@ -19,6 +19,8 @@ Services.factory("Input", ["$rootScope", "Connection", "User", "Commands",  func
             Commands.parse(line, target);
             return;
         }
+
+        line = $filter("spoiler")(line);
 
         //Send the line
         if (target.name) //it's a channel
