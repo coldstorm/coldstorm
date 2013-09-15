@@ -19,4 +19,10 @@
             $scope.user.awayMsg = "afk";
         }
     }
+
+    $scope.rejoin = function (channel)
+    {
+        Connection.send("PART " + channel.name + " :rejoining");
+        Connection.send("JOIN " + channel.name)
+    }
 }])
