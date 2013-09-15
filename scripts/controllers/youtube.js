@@ -11,7 +11,12 @@
 
         var id = $routeParams.id;
 
-        $scope.youtube = YouTube.register(id);
+        $scope.youtube = YouTube.get(id);
+
+        if ($scope.youtube === undefined)
+        {
+            $scope.youtube = YouTube.register(id);
+        }
 
         $rootScope.$on("youtube.close", function (evt, youtube)
         {
