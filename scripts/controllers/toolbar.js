@@ -4,4 +4,9 @@
     {
         Connection.send("MODE " + channel.name + " b");
     }
+
+    $scope.setAway = function ()
+    {
+        Connection.send("AWAY :afk")
+    }
 }])
