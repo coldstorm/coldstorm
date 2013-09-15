@@ -1,0 +1,14 @@
+﻿<div class="toolbar">
+    <a ng-show="channel" ng-click="showBanlist(channel)" title="Channel Banlist">
+        <i class="icon-ban-circle icon-large"></i>
+    </a>
+
+    <a ng-click="showSettings=true" title="Settings">
+        <i class="icon-cog icon-large"></i>
+    </a>
+
+    <div class="modal modal-settings" modal="showSettings"
+         ng-init="showSettings=false">
+        <div ng-include="'views/settings.html'"></div>
+    </div>
+</div>
