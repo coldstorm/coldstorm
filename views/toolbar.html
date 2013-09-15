@@ -1,6 +1,9 @@
 ﻿<div class="toolbar">
-    <a ng-click="setAway()" title="Mark Away">
-        <i class="icon-coffee icon-large"></i>
+    <a ng-click="setAway()" title="Mark Away/Back">
+        <span class="icon-stack">
+            <i class="icon-coffee icon-large"></i>
+            <i ng-show="user.awayMsg" class="icon-ban-circle icon-stack-base red"></i>
+        </span>
     </a>
 
     <a ng-show="channel" ng-click="showBanlist(channel)" title="Channel Banlist">
