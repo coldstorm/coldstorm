@@ -330,6 +330,7 @@ header {
 
 .message {
     color: #babbbf;
+    white-space: pre;
 }
 
 .spoiler {
