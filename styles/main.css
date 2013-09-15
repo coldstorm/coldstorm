@@ -533,43 +533,43 @@ span.link {
     text-decoration: underline;
 }
 
-.c00 {
+.c00, .c0 {
     color: #A0A0A0;
 }
 
-.c01 {
+.c01, .c1 {
     color: #000000;
 }
 
-.c02 {
+.c02, .c2 {
     color: #3535B3;
 }
 
-.c03 {
+.c03, .c3 {
     color: #2A8C2A;
 }
 
-.c04 {
+.c04, .c4 {
     color: #C33B3B;
 }
 
-.c05 {
+.c05, .c5 {
     color: #C73232;
 }
 
-.c06 {
+.c06, .c6 {
     color: #802680;
 }
 
-.c07 {
+.c07, .c7 {
     color: #66361f;
 }
 
-.c08 {
+.c08, .c8 {
     color: #D9A641;
 }
 
-.c09 {
+.c09, .c9 {
     color: #3DCC3D;
 }
 
@@ -665,43 +665,43 @@ span.link {
     color: #FFFFFF;
 }
 
-.bc00 {
+.bc00, .bc0 {
     background-color: #A0A0A0;
 }
 
-.bc01 {
+.bc01, .bc1 {
     background-color: #000000;
 }
 
-.bc02 {
+.bc02, .bc2 {
     background-color: #3535B3;
 }
 
-.bc03 {
+.bc03, .bc3 {
     background-color: #2A8C2A;
 }
 
-.bc04 {
+.bc04, .bc4 {
     background-color: #C33B3B;
 }
 
-.bc05 {
+.bc05, .bc5 {
     background-color: #C73232;
 }
 
-.bc06 {
+.bc06, .bc6 {
     background-color: #802680;
 }
 
-.bc07 {
+.bc07, .bc7 {
     background-color: #66361f;
 }
 
-.bc08 {
+.bc08, .bc8 {
     background-color: #D9A641;
 }
 
-.bc09 {
+.bc09, .bc9 {
     background-color: #3DCC3D;
 }
 
