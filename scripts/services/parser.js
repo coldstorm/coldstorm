@@ -807,6 +807,8 @@ Services.factory("Parser",
         $rootScope.$on("channel.close", function (evt, channel)
         {
             Connection.send("PART " + channel.name);
+
+            AwayChecker.unregister(channel);
         });
 
         return {

@@ -20,6 +20,11 @@
             channels.push(channel.name);
         },
 
+        unregister: function (channel)
+        {
+            channels.splice(channels.indexOf(channel.name), 1);
+        },
+
         start: function ()
         {
             check();
