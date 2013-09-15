@@ -4,7 +4,7 @@
         controller: "ToolbarCtrl",
         replace: true,
         restrict: "E",
-        scope: { channel: "=channel" },
+        scope: { tab: "=tab" },
         templateUrl: "views/toolbar.html",
         transclude: true
     }

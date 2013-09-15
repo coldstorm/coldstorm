@@ -2,11 +2,6 @@
 {
     $scope.user = User.get("~");
 
-    $scope.showBanlist = function (channel)
-    {
-        Connection.send("MODE " + channel.name + " b");
-    }
-
     $scope.setAway = function ()
     {
         if ($scope.user.awayMsg)
@@ -20,9 +15,14 @@
         }
     }
 
-    $scope.rejoin = function (channel)
+    $scope.rejoin = function (tab)
     {
-        Connection.send("PART " + channel.name + " :rejoining");
-        Connection.send("JOIN " + channel.name)
+        Connection.send("PART " + tab.name + " :rejoining");
+        Connection.send("JOIN " + tab.name)
+    }
+
+    $scope.clearLines = function (tab)
+    {
+        tab.clear();
     }
 }])
