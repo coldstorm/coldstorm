@@ -4,7 +4,7 @@
     {
         if (input)
         {
-            var line = input.replace(/\\r/gi, "\u000F");
+            var line = input.replace(/\\o/gi, "\u000F");
             return line;
         } else
         {

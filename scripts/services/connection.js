@@ -92,8 +92,9 @@ Services.factory("Connection", ["$log", function ($log)
             message = message.replace(/\\c/gi, "\u0003");
             message = message.replace(/\\b/gi, "\u0002");
             message = message.replace(/\\u/gi, "\u001F");
+            message = message.replace(/\\s/gi, "\u001D");
             message = message.replace(/\\i/gi, "\u001D");
-            message = message.replace(/\\r/gi, "\u000F");
+            message = message.replace(/\\o/gi, "\u000F");
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
 
