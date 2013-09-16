@@ -302,4 +302,48 @@ describe("Coldstorm services", function ()
                 expect(user.ranks[testChannel.name]).toBe("@+");
             }]));
     });
+
+    describe("YouTube", function ()
+    {
+        var $YouTube;
+        beforeEach(inject(["YouTube", function (YouTube)
+        {
+            $YouTube = YouTube;
+        }]));
+
+        it("should return a YouTube object when calling register(id)", function ()
+        {
+            var youtube = $YouTube.register("test")
+
+            expect(youtube.id).toBe("test")
+        });
+
+        it("should return all YouTube objects when calling all()", function ()
+        {
+            $YouTube.register("test");
+            $YouTube.register("test2");
+
+            var youtubes = $YouTube.all();
+
+            expect(youtubes.length).toBe(2);
+        });
+
+        it("should return the correct YouTube object when calling get(id)", function ()
+        {
+            $YouTube.register("test");
+
+            var youtube = $YouTube.get("test");
+
+            expect(youtube.id).toBe("test");
+        });
+
+        it("should delete the YouTube object when calling close()", function ()
+        {
+            $YouTube.register("test");
+
+            var youtube = $YouTube.get("test").close();
+
+            expect(youtube).toBe(undefined);
+        });
+    });
 });

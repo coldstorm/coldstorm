@@ -1,7 +1,7 @@
 Controllers.controller("ChannelCtrl",
-    ["$scope", "$rootScope", "$routeParams", "$location", "User", "Channel", "Query",
+    ["$scope", "$rootScope", "$routeParams", "$location", "User", "Channel", "Query", "YouTube",
     "Connection", "Input",
-    function ($scope, $rootScope, $routeParams, $location, User, Channel, Query,
+    function ($scope, $rootScope, $routeParams, $location, User, Channel, Query, YouTube,
     Connection, Input)
     {
         $scope.user = User.get("~");
@@ -57,5 +57,10 @@ Controllers.controller("ChannelCtrl",
         $scope.$watch(function ()
         {
             $scope.channels = Channel.all();
+        });
+        
+        $scope.$watch(function ()
+        {
+            $scope.youtubes = YouTube.all();
         });
     }]);

@@ -3,11 +3,15 @@
         <a href="#/server">Server</a>
     </li>
     <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel), highlight:channelTab.active }">
-        <a href="#/channels/{{ channelTab.name }}">{{ channelTab.name }}</a>
+        <a href="#/channels/{{ channelTab.name }}" title="{{ channelTab.name }}">{{ channelTab.name }}</a>
         <a ng-click="channelTab.leave()">X</a>
     </li>
     <li ng-repeat="queryTab in queries" class="tab" ng-class="{ active:queryEquals(query, queryTab), highlight:queryTab.active }">
-        <a href="#/query/{{ queryTab.name }}">{{ queryTab.user.nickName }}</a>
+        <a href="#/query/{{ queryTab.name }}" title="{{ queryTab.user.nickName }}">{{ queryTab.user.nickName }}</a>
         <a ng-click="queryTab.close()">X</a>
+    </li>
+    <li ng-repeat="ytTab in youtubes" class="tab" ng-class="{ active:ytEquals(ytTab, youtube) }">
+        <a href="#/yt/{{ ytTab.id }}" title="{{ ytTab.name }}">{{ ytTab.name | truncate: 15 }}</a>
+        <a ng-click="ytTab.close()">X</a>
     </li>
 </ul>
