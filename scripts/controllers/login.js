@@ -1,8 +1,8 @@
 Controllers.controller("LoginCtrl",
     ["$log", "$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
-    "Connection", "User", "Channel", "Parser",
+    "Connection", "User", "Channel", "YouTube", "Parser",
     function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
-    Connection, User, Channel, Parser)
+    Connection, User, Channel, YouTube, Parser)
     {
         var mustKill = false;
         $scope.user = User.get("~");

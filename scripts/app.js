@@ -25,9 +25,9 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
             templateUrl: "views/query.html",
             controller: "QueryCtrl"
         }).
-        when("/settings", {
-            templateUrl: "views/settings.html",
-            controller: "SettingsCtrl"
+        when("/yt/:id", {
+            templateUrl: "views/youtube.html",
+            controller: "YouTubeCtrl"
         }).
         otherwise({
             redirectTo: "/login"
