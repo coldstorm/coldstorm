@@ -534,43 +534,43 @@ span.link {
     text-decoration: underline;
 }
 
-.c0 {
+.c00, .c0 {
     color: #A0A0A0;
 }
 
-.c1 {
+.c01, .c1 {
     color: #000000;
 }
 
-.c2 {
+.c02, .c2 {
     color: #3535B3;
 }
 
-.c3 {
+.c03, .c3 {
     color: #2A8C2A;
 }
 
-.c4 {
+.c04, .c4 {
     color: #C33B3B;
 }
 
-.c5 {
+.c05, .c5 {
     color: #C73232;
 }
 
-.c6 {
+.c06, .c6 {
     color: #802680;
 }
 
-.c7 {
+.c07, .c7 {
     color: #66361f;
 }
 
-.c8 {
+.c08, .c8 {
     color: #D9A641;
 }
 
-.c9 {
+.c09, .c9 {
     color: #3DCC3D;
 }
 
@@ -664,6 +664,138 @@ span.link {
 
 .c32 {
     color: #FFFFFF;
+}
+
+.bc00, .bc0 {
+    background-color: #A0A0A0;
+}
+
+.bc01, .bc1 {
+    background-color: #000000;
+}
+
+.bc02, .bc2 {
+    background-color: #3535B3;
+}
+
+.bc03, .bc3 {
+    background-color: #2A8C2A;
+}
+
+.bc04, .bc4 {
+    background-color: #C33B3B;
+}
+
+.bc05, .bc5 {
+    background-color: #C73232;
+}
+
+.bc06, .bc6 {
+    background-color: #802680;
+}
+
+.bc07, .bc7 {
+    background-color: #66361f;
+}
+
+.bc08, .bc8 {
+    background-color: #D9A641;
+}
+
+.bc09, .bc9 {
+    background-color: #3DCC3D;
+}
+
+.bc10 {
+    background-color: #195555;
+}
+
+.bc11 {
+    background-color: #2E8C74;
+}
+
+.bc12 {
+    background-color: #4545E6;
+}
+
+.bc13 {
+    background-color: #B037B0;
+}
+
+.bc14 {
+    background-color: #4C4C4C;
+}
+
+.bc15 {
+    background-color: #959595;
+}
+
+.bc16 {
+    background-color: #A0A0A0;
+}
+
+.bc17 {
+    background-color: #000000;
+}
+
+.bc18 {
+    background-color: #3535B3;
+}
+
+.bc19 {
+    background-color: #2A8C2A;
+}
+
+.bc20 {
+    background-color: #C33B3B;
+}
+
+.bc21 {
+    background-color: #C73232;
+}
+
+.bc22 {
+    background-color: #802680;
+}
+
+.bc23 {
+    background-color: #66361f;
+}
+
+.bc24 {
+    background-color: #D9A641;
+}
+
+.bc25 {
+    background-color: #3DCC3D;
+}
+
+.bc26 {
+    background-color: #195555;
+}
+
+.bc27 {
+    background-color: #2E8C74;
+}
+
+.bc28 {
+    background-color: #4545E6;
+}
+
+.bc29 {
+    background-color: #B037B0;
+}
+
+.bc30 {
+    background-color: #4C4C4C;
+}
+
+.bc31 {
+    background-color: #959595;
+}
+
+.bc32 {
+    background-color: #FFFFFF;
 }
 
 .inline-image-container {

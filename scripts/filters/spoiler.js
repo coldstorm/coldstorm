@@ -4,7 +4,7 @@ Filters.filter("spoiler", ["$compile", function ($compile)
     {
         var line = input;
 
-        line = line.replace(/::(.+?)::/g, '<span class="spoiler">$1</span>');
+        line = line.replace(/::(.+?)::/g, '\\c01,01$1\\o');
 
         return line;
     };

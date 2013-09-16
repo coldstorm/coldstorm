@@ -4,6 +4,7 @@
     {
         if (input)
         {
+            var line = input.replace(/\\s/gi, "\u001D");
             var line = input.replace(/\\i/gi, "\u001D");
             line = line.replace(/&#29;/g, "\u001D");
             line = line.replace(/\u001D(.*?)([\n\u000F\u001D]|$)/g,
