@@ -316,13 +316,19 @@ Services.factory("Parser",
                 });
             }
 
-            $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
+            if (user.country === "Unknown")
             {
-                if (data[1])
+                $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
                 {
-                    user.country = data[1][0].name;
-                }
-            });
+                    if (data[1])
+                    {
+                        user.country = data[1][0].name;
+                    } else
+                    {
+                        user.country = "Outlaw";
+                    }
+                });
+            }
         });
         registerMessage(rpl_whoreplyMessage);
 
@@ -346,13 +352,19 @@ Services.factory("Parser",
                 });
             }
 
-            $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
+            if (user.country === "Unknown")
             {
-                if (data[1])
+                $http.jsonp("http://api.worldbank.org/countries/" + user.flag + "?format=jsonp&prefix=JSON_CALLBACK").success(function (data)
                 {
-                    user.country = data[1][0].name;
-                }
-            });
+                    if (data[1])
+                    {
+                        user.country = data[1][0].name;
+                    } else
+                    {
+                        user.country = "Outlaw";
+                    }
+                });
+            }
         });
         registerMessage(rpl_whoisuserMessage);
 

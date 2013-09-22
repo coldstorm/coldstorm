@@ -9,7 +9,7 @@ Services.factory("User", ["$rootScope", function ($rootScope)
         {
             registry[name] = {
                 color: color != null ? color : "#BABBBF",
-                country: country != null ? country : "Outlaw",
+                country: country != null ? country : "Unknown",
                 flag: flag != null ? flag : "QQ",
                 nickName: name,
                 awayMsg: null,
