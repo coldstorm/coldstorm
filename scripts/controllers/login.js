@@ -93,6 +93,14 @@ Controllers.controller("LoginCtrl",
                 $log.log("connecting to ws://frogbox.es:" + $scope.port)
                 Connection.connect("ws://frogbox.es:" + $scope.port);
 
+                $timeout(function ()
+                {
+                    if ($scope.connecting)
+                    {
+                        Connection.close();
+                    }
+                }, 121000)
+
                 Connection.onOpen(function ()
                 {
                     // Connection successfully opened
