@@ -99,7 +99,7 @@ Controllers.controller("LoginCtrl",
                     {
                         Connection.close();
                     }
-                }, 121000)
+                }, 30000)
 
                 Connection.onOpen(function ()
                 {
