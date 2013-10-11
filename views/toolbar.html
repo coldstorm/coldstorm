@@ -20,6 +20,31 @@
 
     <div class="modal modal-settings" modal="showSettings"
          ng-init="showSettings=false">
-        <div ng-include="'views/settings.html'"></div>
+        <form class="settings" name="settingsForm" ng-submit="saveSettings()">
+            <div class="title">
+                <h1>Settings</h1>
+            </div>
+
+            <div id="option1">
+                <span>Sound notifications</span>
+                <div class="checkbox">
+                    <input type="checkbox" id="cb1"
+                           ng-model="settings.soundNotifications" />
+                    <label for="cb1"></label>
+                </div>
+            </div>
+
+            <div id="option2">
+                <span>Desktop notifications</span>
+                <div class="checkbox">
+                    <input type="checkbox" id="cb2"
+                           ng-model="settings.desktopNotifications" />
+                    <label for="cb2"></label>
+                </div>
+            </div>
+
+            <br style="clear: both" />
+        </form>
+
     </div>
 </div>

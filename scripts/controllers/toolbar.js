@@ -1,6 +1,8 @@
-﻿Controllers.controller("ToolbarCtrl", ["$scope", "Connection", "User", function ($scope, Connection, User)
+﻿Controllers.controller("ToolbarCtrl", ["$scope", "$rootScope", "Connection", "User", "Settings", function ($scope, $rootScope, Connection, User, Settings)
 {
     $scope.user = User.get("~");
+
+    $scope.settings = $.parseJSON($.cookie("settings") || "{}");
 
     $scope.setAway = function ()
     {
@@ -25,4 +27,9 @@
     {
         tab.clear();
     }
+
+    $rootScope.$watch(function ()
+    {
+        Settings.save($scope.settings);
+    });
 }])
