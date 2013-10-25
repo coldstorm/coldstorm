@@ -8,7 +8,7 @@
 
             motd = $filter("linky")(motd);
 
-            motd = motd.replace("<a href", '<a target="_blank" href');
+            motd = motd.replace(/<a href/g, '<a target="_blank" href');
 
             motd = $filter("color")(motd);
 

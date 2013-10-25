@@ -3,11 +3,11 @@ Filters.filter("line", ["$filter", function ($filter)
     return function (input)
     {
         var line = input;
-        var yt_regex = /<a target="_blank" href="http:\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)(\w*)(&(amp;)?[\w\?=]*)?"/;
+        var yt_regex = /<a target="_blank" href="http:\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)(\w*)(&(amp;)?[\w\?=]*)?"/g;
 
         line = $filter("linky")(line);
 
-        line = line.replace("<a href", '<a target="_blank" href');
+        line = line.replace(/<a href/g, '<a target="_blank" href');
 
         line = line.replace(yt_regex, '<a href="#/yt/$1"');
 
