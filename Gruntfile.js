@@ -1,5 +1,10 @@
 'use strict';
 
+var LIVERELOAD_PORT = 35729;
+var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
+var mountFolder = function (connect, dir) {
+  return connect.static(require('path').resolve(dir));
+};
 // # Globbing
 // for performance reasons we're only matching one level down:
 // 'test/spec/{,*/}*.js'
@@ -29,9 +34,13 @@ module.exports = function (grunt) {
         files: ['app/styles/{,*/}*.css'],
         tasks: ['copy:styles', 'autoprefixer']
       },
+      resources: {
+        files: ['app/resources/{,*/}*.*'],
+        tasks: ['copy:resources']
+      },
       livereload: {
         options: {
-          livereload: 35729
+          livereload: LIVERELOAD_PORT
         },
         files: [
           'app/{,*/}*.html',
@@ -54,34 +63,44 @@ module.exports = function (grunt) {
     },
     connect: {
       options: {
-        port: 9000,
+        port: '9000',
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
       },
       livereload: {
         options: {
-          open: true,
-          base: [
-            '.tmp',
-            'app'
-          ]
+          middleware: function (connect) {
+            return [
+              lrSnippet,
+              mountFolder(connect, '.tmp'),
+              mountFolder(connect, 'app')
+            ];
+          }
         }
       },
       test: {
         options: {
-          port: 9001,
-          base: [
-            '.tmp',
-            'test',
-            'app'
-          ]
+          middleware: function (connect) {
+            return [
+              mountFolder(connect, '.tmp'),
+              mountFolder(connect, 'tests')
+            ];
+          }
         }
       },
       dist: {
         options: {
-          base: 'dist'
+          middleware: function (connect) {
+            return [
+              mountFolder(connect, 'dist')
+            ];
+          }
         }
+      }
+    },
+    open: {
+      server: {
+        url: 'http://localhost:9000'
       }
     },
     clean: {
@@ -244,16 +263,24 @@ module.exports = function (grunt) {
         cwd: 'app/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      resources: {
+        expand: true,
+        cwd: 'app/resources',
+        dest: '.tmp/resources/',
+      src: '{,*/}*.*'
       }
     },
     concurrent: {
       server: [
         'coffee:dist',
-        'copy:styles'
+        'copy:styles',
+        'copy:resources'
       ],
       test: [
         'coffee',
-        'copy:styles'
+        'copy:styles',
+        'copy:resources'
       ],
       dist: [
         'coffee',
@@ -305,6 +332,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
+      'open',
       'watch'
     ]);
   });
