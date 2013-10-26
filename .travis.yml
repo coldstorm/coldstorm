@@ -21,3 +21,5 @@ notifications:
         channels:
             - "frogbox.es#DesktopCS"
         skip_join: true
+        template:
+            - "%{repository} %{branch}/%{commit} (%{author}): %{message}"
