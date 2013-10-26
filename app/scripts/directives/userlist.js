@@ -5,7 +5,7 @@ Directives.directive("userlist", function ()
         replace: true,
         restrict: "E",
         scope: { users: "=users", channel: "=channel" },
-        templateUrl: "views/userlist.html",
+        templateUrl: "app/views/userlist.html",
         transclude: true
     };
 });

@@ -2,7 +2,7 @@
     <ul class="users">
         <li class="user" ng-class="{ away:user.awayMsg }" ng-repeat="user in users | sortUsers:channel">
             <img class="flag"
-                    ng-src="resources/flags/{{ user.flag | lowercase }}.png"
+                    ng-src="app/resources/flags/{{ user.flag | lowercase }}.png"
                     title="{{ user.country }}"
                     onerror="this.onerror=null; this.src='res/flags/qq.png';" />
             <user user="user" channel="channel" selectedUser="selectedUser"></user>

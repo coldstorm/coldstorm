@@ -5,7 +5,7 @@
         replace: true,
         restrict: "E",
         scope: { text: "=text" },
-        templateUrl: "views/spoiler.html",
+        templateUrl: "app/views/spoiler.html",
         transclude: true
     };
 });

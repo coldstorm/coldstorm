@@ -4,6 +4,6 @@ Directives.directive("tabs", function ()
         controller: "TabsCtrl",
         replace: true,
         restrict: "E",
-        templateUrl: "views/tabs.html",
+        templateUrl: "app/views/tabs.html",
     };
 });

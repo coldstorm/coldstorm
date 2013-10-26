@@ -5,7 +5,7 @@ Directives.directive("motd", function ()
         replace: true,
         restrict: "E",
         scope: { message: "=message", author: "=author", date: "=date" },
-        templateUrl: "views/motd.html",
+        templateUrl: "app/views/motd.html",
         transclude: true
     };
 });
