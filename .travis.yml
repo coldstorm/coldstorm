@@ -9,11 +9,11 @@ before_script:
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
 script:
-    - "karma start --browsers=PhantomJS,Firefox --reporters=dots"
+    - "npm test"
 
 notifications:
     email: false
     irc:
         channels:
             - "frogbox.es#DesktopCS"
-        skip_join: false
+        skip_join: true
