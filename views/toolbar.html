@@ -1,21 +1,21 @@
 ﻿<div class="toolbar">
     <a ng-show="tab.name" ng-click="clearLines(tab)" title="Clear Lines">
-        <i class="icon-ban-circle icon-large"></i>
+        <i class="icon-ban-circle icon-large" style="vertical-align: baseline !important;"></i>
     </a>
 
     <a ng-show="tab.name" ng-click="rejoin(tab)" title="Rejoin Channel">
-        <i class="icon-refresh icon-large"></i>
+        <i class="icon-refresh icon-large" style="vertical-align: baseline !important;"></i>
     </a>
 
     <a ng-click="setAway()" title="Mark Away/Back">
         <span ng-class="{ 'icon-stack':user.awayMsg }">
-            <i class="icon-coffee icon-large"></i>
+            <i class="icon-coffee icon-large" style="vertical-align: baseline !important;"></i>
             <i ng-show="user.awayMsg" class="icon-ban-circle icon-stack-base red"></i>
         </span>
     </a>
 
     <a ng-click="showSettings=true" title="Settings">
-        <i class="icon-cog icon-large"></i>
+        <i class="icon-cog icon-large" style="vertical-align: baseline !important;"></i>
     </a>
 
     <div class="modal modal-settings" modal="showSettings"
