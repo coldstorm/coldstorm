@@ -247,7 +247,7 @@ module.exports = function (grunt) {
         expand: true,
         cwd: 'app/styles',
         dest: '.tmp/styles/',
-        src: '{,*/}*.css'
+        src: '**/*'
       },
       resources: {
         expand: true,
