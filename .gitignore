@@ -2,3 +2,5 @@
 *.sln
 Web.config
 node_modules
+.tmp
+dist

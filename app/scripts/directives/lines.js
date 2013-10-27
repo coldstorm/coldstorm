@@ -5,7 +5,7 @@ Directives.directive("lines", function ()
         replace: true,
         restrict: "E",
         scope: { lines: "=lines", channel: "=channel" },
-        templateUrl: "views/lines.html",
+        templateUrl: "app/views/lines.html",
         transclude: true
     };
 });

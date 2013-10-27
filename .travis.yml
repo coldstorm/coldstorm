@@ -2,18 +2,24 @@ language: node_js
 node_js:
     - "0.10"
 
-install:
-    - "npm install karma"
-
-before_script:
+before_install:
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
+
+install:
+    - "npm install"
+
+before_script:
+    - "npm install -g grunt-cli"
+
 script:
-    - "karma start --browsers=PhantomJS,Firefox --reporters=dots"
+    - "npm test"
 
 notifications:
     email: false
     irc:
         channels:
             - "frogbox.es#DesktopCS"
-        skip_join: false
+        skip_join: true
+        template:
+            - "%{repository} %{branch}/%{commit} (%{author}): %{message}"

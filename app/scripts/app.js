@@ -10,23 +10,23 @@ Coldstorm.config(["$routeProvider", function ($routeProvider)
 {
     $routeProvider.
         when("/login", {
-            templateUrl: "views/login.html",
+            templateUrl: "app/views/login.html",
             controller: "LoginCtrl"
         }).
         when("/server", {
-            templateUrl: "views/server.html",
+            templateUrl: "app/views/server.html",
             controller: "ServerCtrl"
         }).
         when("/channels/:channelName", {
-            templateUrl: "views/channel.html",
+            templateUrl: "app/views/channel.html",
             controller: "ChannelCtrl"
         }).
         when("/query/:nickName", {
-            templateUrl: "views/query.html",
+            templateUrl: "app/views/query.html",
             controller: "QueryCtrl"
         }).
         when("/yt/:id", {
-            templateUrl: "views/youtube.html",
+            templateUrl: "app/views/youtube.html",
             controller: "YouTubeCtrl"
         }).
         otherwise({

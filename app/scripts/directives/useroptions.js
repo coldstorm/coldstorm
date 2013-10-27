@@ -5,7 +5,7 @@ Directives.directive("useroptions", function ()
         replace: true,
         restrict: "E",
         scope: { user: "=user", channel: "=channel" },
-        templateUrl: "views/useroptions.html",
+        templateUrl: "app/views/useroptions.html",
         transclude: true
     };
 });

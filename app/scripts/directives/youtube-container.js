@@ -5,7 +5,7 @@
         replace: true,
         restrict: "E",
         scope: { youtube: "=youtube" },
-        templateUrl: "views/youtube-container.html",
+        templateUrl: "app/views/youtube-container.html",
         transclude: true
     };
 }]);

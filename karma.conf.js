@@ -14,24 +14,17 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'include/angular.min.js',
-      'include/angular-mocks.js',
-      'include/jquery.min.js',
-      'include/**/*.js',
-      'scripts/**/*.js',
+      'app/include/angular.min.js',
+      'app/include/angular-mocks.js',
+      'app/include/jquery.min.js',
+      'app/include/**/*.js',
+      'app/scripts/**/*.js',
       'tests/unit/**/*.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-      
-    ],
-
-
-    // test results reporter to use
-    // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    exclude: [],
 
 
     // web server port
@@ -48,7 +41,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: false,
 
 
     // Start these browsers, currently available:
@@ -59,15 +52,11 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Chrome', 'PhantomJS'],
-
-
-    // If browser does not capture in given timeout [ms], kill it
-    captureTimeout: 60000,
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: true
+    singleRun: false
   });
 };
