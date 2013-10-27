@@ -5,7 +5,7 @@
         replace: true,
         restrict: "E",
         scope: { tab: "=tab" },
-        templateUrl: "views/toolbar.html",
+        templateUrl: "app/views/toolbar.html",
         transclude: true
     }
 })
