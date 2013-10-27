@@ -374,13 +374,14 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = User.get(ircline.args[1]);
+            var userChannels = ircline.args[2].split(" ");
 
-            for (var i = 2; i < ircline.args.length; i++)
+            for (var i = 0; i < userChannels.length; i++)
             {
-                if (["+", "%", "@"].indexOf(ircline.args[i][0]) != -1)
+                if (["+", "%", "@"].indexOf(userChannels[i][0]) != -1)
                 {
-                    var rank = ircline.args[i][0];
-                    var channel = Channel.get(ircline.args[i].substring(1));
+                    var rank = userChannels[i][0];
+                    var channel = Channel.get(userChannels[i].substring(1));
 
                     if (channel)
                     {
@@ -388,11 +389,14 @@ Services.factory("Parser",
                     }
                 } else
                 {
-                    var channel = Channel.get(ircline.args[i]);
+                    var channel = Channel.get(userChannels[i]);
 
                     if (channel)
                     {
-                        $rootScope.$apply(function () { user.ranks[channel.name] = ""; });
+                        $rootScope.$apply(function ()
+                        {
+                            user.ranks[channel.name] = "";
+                        });
                     }
                 }
             }
@@ -465,10 +469,11 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = getUser(ircline.prefix);
+            var myUser = User.get("~");
             var channel = Channel.get(ircline.args[0]);
             var reason = ircline.args[1];
 
-            if (user.nickName !== User.get("~").nickName)
+            if (user.nickName !== myUser.nickName)
             {
                 if (reason == null)
                 {
