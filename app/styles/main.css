@@ -517,12 +517,16 @@ div.inner {
     word-wrap: break-word;
 }
 
-.icons {
+.toolbar {
     color: #babbbf;
     float: right;
     margin-bottom: 2px;
     margin-right: 2px;
     height: 16px;
+}
+
+.toolbar .red {
+    color: #f05e56;
 }
 
 span.highlight {

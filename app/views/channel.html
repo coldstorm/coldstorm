@@ -1,11 +1,7 @@
 <div class="chat">
     <header>
         <motd message="channel.topic" author="channel.topicauthor" date="channel.topicdate"></motd>
-        <div class="icons">
-            <a ng-click="showSettings=true" title="Settings">
-                <i class="icon-cog icon-large"></i>
-            </a>
-        </div>
+        <toolbar tab="channel"></toolbar>
         <tabs></tabs>
     </header>
     <main>
@@ -13,8 +9,4 @@
         <lines lines="channel.lines" channel="channel"></lines>
         <chat-input input="input" tab="channel"></chat-input>
     </main>
-    <div class="modal modal-settings" modal="showSettings"
-        ng-init="showSettings=false">
-        <div ng-include="'app/views/settings.html'"></div>
-    </div>
 </div>
