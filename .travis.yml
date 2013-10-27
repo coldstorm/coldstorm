@@ -22,4 +22,9 @@ notifications:
             - "frogbox.es#DesktopCS"
         skip_join: true
         template:
+            - "Build #%{build_number}: %{build_url}"
             - "%{repository} %{branch}/%{commit} (%{author}): %{message}"
+
+branches:
+    only:
+    - gh-pages
