@@ -14,6 +14,15 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 nickName: name,
                 awayMsg: null,
                 ranks: {},
+                channels: [],
+                addChannel: function (channel)
+                {
+                    if (this.channels.indexOf(channel) == -1)
+                    {
+                        this.channels.push(channel);
+                    }
+                },
+
                 addRank: function (channel, rank)
                 {
                     if (channel.name in this.ranks)
@@ -80,6 +89,11 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     {
                         this.ranks[channel.name] = this.ranks[channel.name].replace(rank, '');
                     }
+                }, 
+
+                delete: function ()
+                {
+                    delete registry[this.nickName];
                 }
             };
 
@@ -115,6 +129,11 @@ Services.factory("User", ["$rootScope", function ($rootScope)
         alias: function (first, second)
         {
             registry[first] = registry[second];
+        }, 
+
+        delete: function (name)
+        {
+            delete registry[name];
         }
     }
 }]);

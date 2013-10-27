@@ -272,6 +272,8 @@ Services.factory("Parser",
                     var user = User.get(users[i]);
                 }
                 channel.addUser(user);
+
+                user.addChannel(channel);
             }
 
             Connection.send("WHO " + channel.name);
@@ -459,6 +461,8 @@ Services.factory("Parser",
                 channel.addUser(user);
             }
 
+            user.addChannel(channel);
+
             Connection.send("WHOIS " + user.nickName);
         });
         registerMessage(joinMessage);
@@ -483,6 +487,20 @@ Services.factory("Parser",
                     channel.addLine(user.nickName + " left the room (" + reason + ").");
                 }
                 channel.users.splice(channel.users.indexOf(user), 1);
+
+                user.channels.splice(channel.name, 1)
+
+                // Check what channels we share with this user
+                for (var i = 0; i < user.channels.length; i++) {
+                    if (myUser.channels.indexOf(user.channels[i]) >= 0)
+                    {
+                        // There is a common channel, so don't delete this user
+                        return;
+                    }
+                }
+
+                // We didn't find a common channel
+                User.delete(user.nickName);
             }
         });
         registerMessage(partMessage);
@@ -508,6 +526,9 @@ Services.factory("Parser",
                         channels[i].addLine(user.nickName + " quit (" + reason + ").");
                     }
                     channels[i].users.splice(channels[i].users.indexOf(user), 1);
+
+                    // We can safely delete the user since he quit from all common channels
+                    User.delete(user.nickName);
                 }
             }
         });
