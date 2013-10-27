@@ -4,6 +4,8 @@
 
     $scope.settings = $.parseJSON($.cookie("settings") || "{}");
 
+    $rootScope.settings = $scope.settings;
+
     $scope.setAway = function ()
     {
         if ($scope.user.awayMsg)
@@ -28,8 +30,10 @@
         tab.clear();
     }
 
-    $rootScope.$watch(function ()
+    $rootScope.$watch(function (scope)
     {
         Settings.save($scope.settings);
+
+        scope.settings = $scope.settings;
     });
 }])
