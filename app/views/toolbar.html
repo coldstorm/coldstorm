@@ -25,7 +25,7 @@
                 <h1>Settings</h1>
             </div>
 
-            <div id="option1">
+            <div>
                 <span>Sound notifications</span>
                 <div class="checkbox">
                     <input type="checkbox" id="cb1"
@@ -34,12 +34,21 @@
                 </div>
             </div>
 
-            <div id="option2">
+            <div>
                 <span>Desktop notifications</span>
                 <div class="checkbox">
                     <input type="checkbox" id="cb2"
                            ng-model="settings.desktopNotifications" />
                     <label for="cb2"></label>
+                </div>
+            </div>
+
+            <div>
+                <span>Preserve channels when leaving</span>
+                <div class="checkbox">
+                    <input type="checkbox" id="cb3"
+                            ng-model="settings.preserveChannels" />
+                    <label for="cb3"></label>
                 </div>
             </div>
 
