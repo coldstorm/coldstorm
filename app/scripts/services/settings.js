@@ -9,5 +9,7 @@ function ($timeout, $filter, $rootScope)
         }
     };
 
+    $rootScope.settings = $.parseJSON($.cookie("settings") || "{}");
+
     return settingsFactory;
 }]);

@@ -1,8 +1,8 @@
 Controllers.controller("LoginCtrl",
     ["$log", "$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
-    "Connection", "User", "Channel", "YouTube", "Parser",
+    "Connection", "User", "Channel", "YouTube", "Parser", "Settings",
     function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
-    Connection, User, Channel, YouTube, Parser)
+    Connection, User, Channel, YouTube, Parser, Settings)
     {
         var mustKill = false;
         $scope.user = User.get("~");
@@ -183,6 +183,19 @@ Controllers.controller("LoginCtrl",
 
                 Connection.onClose(function ()
                 {
+                    if ($rootScope.settings.PRESERVE_CHANNELS)
+                    {
+                        $rootScope.settings.CHANNELS = [];
+                        for (var i = 0; i < User.get("~").channels.length; i++)
+                        {
+                            // Only store the channel name
+                            $rootScope.settings.CHANNELS[i] = User.get("~").channels[i].name;
+                        }
+                        $log.log($rootScope.settings.CHANNELS);
+
+                        Settings.save($rootScope.settings);
+                    }
+
                     $scope.connecting = false;
                     if ($scope.connected)
                     {
