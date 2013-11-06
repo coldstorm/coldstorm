@@ -159,15 +159,26 @@ Controllers.controller("LoginCtrl",
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
                         " :Tada") > -1)
                     {
-                        if (VERSION == "local")
+                        if ($rootScope.settings.PRESERVE_CHANNELS)
                         {
+                            var channels = [];
+
+                            for (var i = 0; i < $rootScope.settings.CHANNELS.length; i++) {
+                                channels[i] = Channel.register($rootScope.settings.CHANNELS[i]);
+                                channels[i].join();
+                            };
+
+                            if (channels.length > 0)
+                            {
+                                $location.path("/channels/" + channels[0].name);
+                            }
+                        } else if (VERSION == "local") {
                             var test = Channel.register("#test");
 
                             test.join();
 
                             $location.path("/channels/#test");
-                        } else
-                        {
+                        } else {
                             var cs = Channel.register("#Coldstorm");
                             var two = Channel.register("#2");
 

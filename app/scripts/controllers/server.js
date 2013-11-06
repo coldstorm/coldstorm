@@ -1,8 +1,8 @@
 Controllers.controller("ServerCtrl",
     ["$scope", "$location", "User", "Channel", "Query", "YouTube", "Server",
-    "Connection",
+    "Connection", "Input",
     function ($scope, $location, User, Channel, Query, YouTube, Server,
-    Connection)
+    Connection, Input)
     {
         $scope.user = User.get("~");
 
