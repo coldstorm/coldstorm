@@ -43,8 +43,26 @@ Controllers.controller("LoginCtrl",
         $rootScope.$on("channel.joined", function (evt, channel)
         {
             $scope.connecting = false;
-            $scope.connected = false;
             $scope.error = "";
+        });
+
+        $rootScope.$on("disconnecting", function (evt)
+        {
+            if ($scope.connected) // Don't change the channels array unless we were really connected
+            {
+                if ($rootScope.settings.PRESERVE_CHANNELS)
+                {
+                    $rootScope.settings.CHANNELS = [];
+                    for (var i = 0; i < User.get("~").channels.length; i++)
+                    {
+                        // Only store the channel name
+                        $rootScope.settings.CHANNELS[i] = User.get("~").channels[i].name;
+                    }
+                    $log.log($rootScope.settings.CHANNELS);
+
+                    Settings.save($rootScope.settings);
+                }
+            }
         });
 
         $scope.reset = function ()
@@ -87,7 +105,6 @@ Controllers.controller("LoginCtrl",
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-
 
                 // Attempt to connect
                 $log.log("connecting to ws://frogbox.es:" + $scope.port)
@@ -183,19 +200,6 @@ Controllers.controller("LoginCtrl",
 
                 Connection.onClose(function ()
                 {
-                    if ($rootScope.settings.PRESERVE_CHANNELS)
-                    {
-                        $rootScope.settings.CHANNELS = [];
-                        for (var i = 0; i < User.get("~").channels.length; i++)
-                        {
-                            // Only store the channel name
-                            $rootScope.settings.CHANNELS[i] = User.get("~").channels[i].name;
-                        }
-                        $log.log($rootScope.settings.CHANNELS);
-
-                        Settings.save($rootScope.settings);
-                    }
-
                     $scope.connecting = false;
                     if ($scope.connected)
                     {

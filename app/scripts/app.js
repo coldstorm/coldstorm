@@ -83,6 +83,11 @@ function ($http, $location, $rootScope)
         $rootScope.blurred = true;
     };
 
+    window.onunload = window.onbeforeunload = function ()
+    {
+        $rootScope.$broadcast("disconnecting");
+    };
+
     $rootScope.blurred = false;
 
     $rootScope.meta = {
