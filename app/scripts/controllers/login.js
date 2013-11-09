@@ -159,7 +159,9 @@ Controllers.controller("LoginCtrl",
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
                         " :Tada") > -1)
                     {
-                        if ($rootScope.settings.PRESERVE_CHANNELS)
+                        if ($rootScope.settings.PRESERVE_CHANNELS &&
+                            $rootScope.settings.CHANNELS &&
+                            $rootScope.settings.CHANNELS.length > 0)
                         {
                             var channels = [];
 
