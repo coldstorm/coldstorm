@@ -1,8 +1,8 @@
 Controllers.controller("LoginCtrl",
     ["$log", "$scope", "$http", "$rootScope", "$location", "$timeout", "$filter",
-    "Connection", "User", "Channel", "YouTube", "Parser",
+    "Connection", "User", "Channel", "YouTube", "Parser", "Settings",
     function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
-    Connection, User, Channel, YouTube, Parser)
+    Connection, User, Channel, YouTube, Parser, Settings)
     {
         var mustKill = false;
         $scope.user = User.get("~");
@@ -43,8 +43,26 @@ Controllers.controller("LoginCtrl",
         $rootScope.$on("channel.joined", function (evt, channel)
         {
             $scope.connecting = false;
-            $scope.connected = false;
             $scope.error = "";
+        });
+
+        $rootScope.$on("disconnecting", function (evt)
+        {
+            if ($scope.connected) // Don't change the channels array unless we were really connected
+            {
+                if ($rootScope.settings.PRESERVE_CHANNELS)
+                {
+                    $rootScope.settings.CHANNELS = [];
+                    for (var i = 0; i < User.get("~").channels.length; i++)
+                    {
+                        // Only store the channel name
+                        $rootScope.settings.CHANNELS[i] = User.get("~").channels[i].name;
+                    }
+                    $log.log($rootScope.settings.CHANNELS);
+
+                    Settings.save($rootScope.settings);
+                }
+            }
         });
 
         $scope.reset = function ()
@@ -87,7 +105,6 @@ Controllers.controller("LoginCtrl",
             if ($scope.connecting === false)
             {
                 $scope.connecting = true;
-
 
                 // Attempt to connect
                 $log.log("connecting to ws://frogbox.es:" + $scope.port)
@@ -142,15 +159,28 @@ Controllers.controller("LoginCtrl",
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
                         " :Tada") > -1)
                     {
-                        if (VERSION == "local")
+                        if ($rootScope.settings.PRESERVE_CHANNELS &&
+                            $rootScope.settings.CHANNELS &&
+                            $rootScope.settings.CHANNELS.length > 0)
                         {
+                            var channels = [];
+
+                            for (var i = 0; i < $rootScope.settings.CHANNELS.length; i++) {
+                                channels[i] = Channel.register($rootScope.settings.CHANNELS[i]);
+                                channels[i].join();
+                            };
+
+                            if (channels.length > 0)
+                            {
+                                $location.path("/channels/" + channels[0].name);
+                            }
+                        } else if (VERSION == "local") {
                             var test = Channel.register("#test");
 
                             test.join();
 
                             $location.path("/channels/#test");
-                        } else
-                        {
+                        } else {
                             var cs = Channel.register("#Coldstorm");
                             var two = Channel.register("#2");
 

@@ -69,7 +69,7 @@ function ($filter, $rootScope, $timeout, Settings)
 
     var notify = function (location, notifier, message)
     {
-        if ($rootScope.settings.desktopNotifications)
+        if ($rootScope.settings.DESKTOP_NOTIFICATIONS)
         {
             if (supportsNotifications)
             {
@@ -134,7 +134,7 @@ function ($filter, $rootScope, $timeout, Settings)
 
     var playPing = function ()
     {
-        if ($rootScope.settings.soundNotifications)
+        if ($rootScope.settings.SOUND_NOTIFICATIONS)
         {
             $("#ping").get(0).load();
             $("#ping").get(0).play();
