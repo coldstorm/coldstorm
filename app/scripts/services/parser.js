@@ -488,7 +488,7 @@ Services.factory("Parser",
                 }
                 channel.users.splice(channel.users.indexOf(user), 1);
 
-                user.channels.splice(channel.name, 1)
+                user.channels.splice(channel.name, 1);
 
                 // Check what channels we share with this user
                 for (var i = 0; i < user.channels.length; i++) {
@@ -501,6 +501,8 @@ Services.factory("Parser",
 
                 // We didn't find a common channel
                 User.delete(user.nickName);
+            } else {
+                user.channels.splice(ircline.args[0], 1);
             }
         });
         registerMessage(partMessage);
