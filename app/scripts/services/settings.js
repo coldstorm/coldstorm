@@ -12,11 +12,17 @@ function ($timeout, $filter, $rootScope)
     $rootScope.settings = $.parseJSON($.cookie("settings") || "{}");
     
     // migrate old settings
-    $rootScope.settings["DESKTOP_NOTIFICATIONS"] = $rootScope.settings["desktopNotifications"];
-    $rootScope.settings["SOUND_NOTIFICATIONS"] = $rootScope.settings["soundNotifications"];
+    if ($rootScope.settings["desktopNotifications"])
+    {
+        $rootScope.settings["DESKTOP_NOTIFICATIONS"] = $rootScope.settings["desktopNotifications"];
+        delete $rootScope.settings["desktopNotifications"];
+    }
 
-    delete $rootScope.settings["desktopNotifications"];
-    delete $rootScope.settings["soundNotifications"];
+    if ($rootScope.settings["soundNotifications"])
+    {
+        $rootScope.settings["SOUND_NOTIFICATIONS"] = $rootScope.settings["soundNotifications"];
+        delete $rootScope.settings["soundNotifications"];
+    }
 
     settingsFactory.save($rootScope.settings);
 
