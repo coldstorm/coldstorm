@@ -1,8 +1,8 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query", "Server", "AwayChecker", 
+    "Channel", "User", "Query", "Server", 
     function ($http, $location, $rootScope, $window, $log, Connection,
-    Channel, User, Query, Server, AwayChecker)
+    Channel, User, Query, Server)
     {
         var messages = [];
 
@@ -151,7 +151,6 @@ Services.factory("Parser",
             return ircline.cmd === "001";
         }, function (ircline)
         {
-            //AwayChecker.start();
             for (var i = 0; i < welcomeHandlers.length; i++)
             {
                 welcomeHandlers[i]();
@@ -469,8 +468,6 @@ Services.factory("Parser",
                 }
 
                 $rootScope.$broadcast("channel.joined", channel);
-
-                AwayChecker.register(channel);
             } else
             {
                 channel.addLine(user.nickName + " joined the room.");
@@ -863,8 +860,6 @@ Services.factory("Parser",
         $rootScope.$on("channel.close", function (evt, channel)
         {
             Connection.send("PART " + channel.name);
-
-            AwayChecker.unregister(channel);
         });
 
         return {
