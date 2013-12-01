@@ -35,7 +35,9 @@ Services.factory("Parser",
             if (match = line.match(prefix_re))
             {
                 ircline.prefix = match[1];
+                $log.log("prefix=", ircline.prefix);
                 line = line.replace(prefix_re, "");
+                $log.log("line=", line);
             }
 
             //match cmd
@@ -50,8 +52,11 @@ Services.factory("Parser",
             if (line.search(/^:|\s+:/) != -1)
             {
                 match = line.match(arg_re);
+                $log.log("match=", match);
                 middle = match[1].replace(/\s+$/, "");
+                $log.log("middle=",middle);
                 trailing = match[2];
+                $log.log("trailing=",trailing);
             } else
             {
                 middle = line;
@@ -60,6 +65,7 @@ Services.factory("Parser",
             if (middle.length)
             {
                 ircline.args = middle.split(/ +/);
+                $log.log("args=", ircline.args);
             }
 
             if (typeof (trailing) != "undefined" && trailing.length)
