@@ -7,7 +7,7 @@ Controllers.controller("ServerCtrl",
         $scope.user = User.get("~");
 
         $scope.server = Server;
-        console.log(Server);
+        //console.log(Server);
         if ($scope.user.nickName === "")
         {
             $location.path("/login");

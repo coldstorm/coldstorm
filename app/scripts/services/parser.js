@@ -57,12 +57,12 @@ Services.factory("Parser",
                 $log.log("middle=",middle);
                 trailing = match[2];
                 $log.log("trailing=",trailing);
-            } else
+            } else if (line.split(" ").length > 1)
             {
                 middle = line;
             }
 
-            if (middle.length)
+            if (middle && middle.length)
             {
                 ircline.args = middle.split(/ +/);
                 $log.log("args=", ircline.args);
@@ -151,7 +151,7 @@ Services.factory("Parser",
             return ircline.cmd === "001";
         }, function (ircline)
         {
-            AwayChecker.start();
+            //AwayChecker.start();
             for (var i = 0; i < welcomeHandlers.length; i++)
             {
                 welcomeHandlers[i]();
@@ -410,6 +410,16 @@ Services.factory("Parser",
             }
         });
         registerMessage(rpl_whoischannelsMessage);
+
+        var awayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "AWAY";
+        }, function (ircline)
+        {
+            var user = getUser(ircline.prefix);
+            user.awayMsg = ircline.args[0];
+        });
+        registerMessage(awayMessage);
 
         var rpl_awayMessage = new Message(function (ircline)
         {
