@@ -82,9 +82,22 @@ Controllers.controller("LoginCtrl",
 
         $scope.login = function ()
         {
+            // jQuery trim the nickname to prevent whitespace names
+            $.trim($scope.user.nickName);
+
             $scope.reset();
-            User.register($scope.user.nickName);
-            User.alias("~", $scope.user.nickName);
+
+            try
+            {
+                User.register($scope.user.nickName);
+                User.alias("~", $scope.user.nickName);
+            }
+
+            catch (e)
+            {
+                $scope.error = e;
+                return;
+            }
 
             $http.jsonp("http://kaslai.us/coldstorm/fixip2.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +

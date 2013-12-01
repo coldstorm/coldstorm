@@ -7,6 +7,11 @@ Services.factory("User", ["$rootScope", function ($rootScope)
     return {
         register: function (name, color, country, flag)
         {
+            if (name == null)
+            {
+                throw "Undefined name";
+            }
+
             registry[name] = {
                 color: color != null ? color : "#BABBBF",
                 country: country != null ? country : "Unknown",
