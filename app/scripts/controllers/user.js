@@ -16,9 +16,6 @@ Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
         return $scope.user.ranks[$scope.channel.name];
     }, function ()
     {
-        // $log.log($scope.user, $scope.channel, $scope.user.ranks,
-        //     $scope.user.ranks[$scope.channel.name]);
-
         if ($scope.user != null &&
             $scope.user.ranks[$scope.channel.name] != null)
         {
