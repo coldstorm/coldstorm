@@ -139,6 +139,11 @@ Controllers.controller("LoginCtrl",
 
                     $location.path("/server");
 
+                    // Capability negotiation
+                    Connection.send("CAP REQ :away-notify")
+                    Connection.send("CAP END")
+
+                    // Registration process
                     Connection.send("NICK " + $scope.user.nickName);
                     Connection.send("USER " +
                         $scope.user.color.substring(1).toUpperCase() +

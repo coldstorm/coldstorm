@@ -1,8 +1,8 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query", "Server", "AwayChecker", 
+    "Channel", "User", "Query", "Server", 
     function ($http, $location, $rootScope, $window, $log, Connection,
-    Channel, User, Query, Server, AwayChecker)
+    Channel, User, Query, Server)
     {
         var messages = [];
 
@@ -35,7 +35,9 @@ Services.factory("Parser",
             if (match = line.match(prefix_re))
             {
                 ircline.prefix = match[1];
+                $log.log("prefix=", ircline.prefix);
                 line = line.replace(prefix_re, "");
+                $log.log("line=", line);
             }
 
             //match cmd
@@ -50,16 +52,20 @@ Services.factory("Parser",
             if (line.search(/^:|\s+:/) != -1)
             {
                 match = line.match(arg_re);
+                $log.log("match=", match);
                 middle = match[1].replace(/\s+$/, "");
+                $log.log("middle=",middle);
                 trailing = match[2];
-            } else
+                $log.log("trailing=",trailing);
+            } else if (line.split(" ").length > 1)
             {
                 middle = line;
             }
 
-            if (middle.length)
+            if (middle && middle.length)
             {
                 ircline.args = middle.split(/ +/);
+                $log.log("args=", ircline.args);
             }
 
             if (typeof (trailing) != "undefined" && trailing.length)
@@ -145,7 +151,6 @@ Services.factory("Parser",
             return ircline.cmd === "001";
         }, function (ircline)
         {
-            AwayChecker.start();
             for (var i = 0; i < welcomeHandlers.length; i++)
             {
                 welcomeHandlers[i]();
@@ -405,6 +410,16 @@ Services.factory("Parser",
         });
         registerMessage(rpl_whoischannelsMessage);
 
+        var awayMessage = new Message(function (ircline)
+        {
+            return ircline.cmd === "AWAY";
+        }, function (ircline)
+        {
+            var user = getUser(ircline.prefix);
+            user.awayMsg = ircline.args[0];
+        });
+        registerMessage(awayMessage);
+
         var rpl_awayMessage = new Message(function (ircline)
         {
             return ircline.cmd === "301";
@@ -453,8 +468,6 @@ Services.factory("Parser",
                 }
 
                 $rootScope.$broadcast("channel.joined", channel);
-
-                AwayChecker.register(channel);
             } else
             {
                 channel.addLine(user.nickName + " joined the room.");
@@ -847,8 +860,6 @@ Services.factory("Parser",
         $rootScope.$on("channel.close", function (evt, channel)
         {
             Connection.send("PART " + channel.name);
-
-            AwayChecker.unregister(channel);
         });
 
         return {
