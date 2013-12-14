@@ -43,7 +43,7 @@ Services.factory("Parser",
             //match cmd
             match = line.match(cmd_re);
             ircline.cmd = match[1];
-            line = line.replace(/^[^ ]+ +/, "");
+            line = line.replace(/^[^ ]+ ?/, "");
 
             //match args
             ircline.args = [];
@@ -57,7 +57,7 @@ Services.factory("Parser",
                 $log.log("middle=",middle);
                 trailing = match[2];
                 $log.log("trailing=",trailing);
-            } else if (line.split(" ").length > 1)
+            } else if (line.length)
             {
                 middle = line;
             }
