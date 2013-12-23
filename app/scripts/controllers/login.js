@@ -75,7 +75,7 @@ Controllers.controller("LoginCtrl",
                 $scope.port = 81;
             } else
             {
-                $scope.port = 82;
+                $scope.port = 80 + (Math.floor(Math.random() * (5 - 2 + 1) + 2));
             }
             $scope.error = "";
         }
