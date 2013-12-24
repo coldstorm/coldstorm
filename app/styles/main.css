@@ -202,6 +202,9 @@ input {
     border: 1px solid #24272e;
     border-radius: 3px;
 }
+    .settings div {
+        margin-bottom: 1em;
+    }
 
     .settings h1 {
         color: #babbbf;
@@ -249,7 +252,6 @@ input {
         margin-top: 5px;
         position: relative;
         border-radius: 3px;
-        float: right;
     }
 
         .settings .checkbox label {
@@ -273,6 +275,11 @@ input {
             left: 27px;
             background: #26ca28;
         }
+
+    .settings .setting {
+        float: right;
+        margin-right: 10px;
+    }
 
 .preview {
     background-color: #24272e;
