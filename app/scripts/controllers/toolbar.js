@@ -12,10 +12,21 @@
         {
             Connection.send("AWAY")
             $scope.user.awayMsg = "";
-        } else
+        } 
+
+        else
         {
-            Connection.send("AWAY :afk")
-            $scope.user.awayMsg = "afk";
+            if ($rootScope.settings.AWAY_MESSAGE)
+            {
+                Connection.send("AWAY :" + $rootScope.settings.AWAY_MESSAGE);
+                $scope.user.awayMsg = $rootScope.settings.AWAY_MESSAGE;
+            }
+
+            else
+            {
+                Connection.send("AWAY :afk");
+                $scope.user.awayMsg = "afk";
+            }
         }
     }
 

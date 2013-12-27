@@ -27,7 +27,7 @@
 
             <div>
                 <span>Sound notifications</span>
-                <div class="checkbox">
+                <div class="checkbox setting">
                     <input type="checkbox" id="cb1"
                            ng-model="settings.SOUND_NOTIFICATIONS" />
                     <label for="cb1"></label>
@@ -36,7 +36,7 @@
 
             <div>
                 <span>Desktop notifications</span>
-                <div class="checkbox">
+                <div class="checkbox setting">
                     <input type="checkbox" id="cb2"
                            ng-model="settings.DESKTOP_NOTIFICATIONS" />
                     <label for="cb2"></label>
@@ -45,10 +45,18 @@
 
             <div>
                 <span>Preserve channels when leaving</span>
-                <div class="checkbox">
+                <div class="checkbox setting">
                     <input type="checkbox" id="cb3"
                             ng-model="settings.PRESERVE_CHANNELS" />
                     <label for="cb3"></label>
+                </div>
+            </div>
+
+            <div>
+                <span>Default away message</span>
+                <div class="setting">
+                <input type="text"
+                        ng-model="settings.AWAY_MESSAGE" />
                 </div>
             </div>
 
