@@ -28,4 +28,10 @@
     <span class="option"
         ng-click="ban(user); user = null"
         ng-show="getRank() >= 1">ban</span>
+    <span class="option"
+        ng-click="banUsername(user); user = null"
+        ng-show="getRank() >= 1">ban username</span>
+    <span class="option"
+        ng-click="banHostname(user); user = null"
+        ng-show="getRank() >= 1">ban hostname</span>
 </div>
