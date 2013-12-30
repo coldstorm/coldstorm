@@ -17,6 +17,8 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 country: country != null ? country : "Unknown",
                 flag: flag != null ? flag : "QQ",
                 nickName: name,
+                userName: null,
+                hostName: null,
                 awayMsg: null,
                 ranks: {},
                 channels: [],
