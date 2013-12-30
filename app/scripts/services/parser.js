@@ -305,8 +305,9 @@ Services.factory("Parser",
         {
             var channel = Channel.get(ircline.args[1]);
             var user = User.get(ircline.args[5]);
-
-            var username = ircline.args[2];
+            user.userName = ircline.args[2];
+            user.hostName = ircline.args[3];
+            
             var awayflag = ircline.args[6][0];
 
             if (awayflag === "G")
@@ -325,7 +326,7 @@ Services.factory("Parser",
             }
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = username.match(colorflag_regexp);
+            var matches = user.userName.match(colorflag_regexp);
 
             if (matches != null)
             {
@@ -358,10 +359,11 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = User.get(ircline.args[1]);
-            var username = ircline.args[2];
+            user.userName = ircline.args[2];
+            user.hostName = ircline.args[3];
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = username.match(colorflag_regexp);
+            var matches = user.userName.match(colorflag_regexp);
 
             if (matches != null)
             {
