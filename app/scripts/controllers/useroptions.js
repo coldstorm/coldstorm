@@ -46,4 +46,20 @@ function ($scope, $rootScope, $location, User, Query, Connection)
     {
         Connection.send("MODE " + $scope.channel.name + " +b " + user.nickName);
     };
+
+    $scope.banUsername = function (user)
+    {
+        if (user.userName)
+        {
+            Connection.send("MODE " + $scope.channel.name + " +b " + "*!" + user.userName + "@*");
+        }
+    };
+
+    $scope.banHostname = function (user)
+    {
+        if (user.hostName)
+        {
+            Connection.send("MODE " + $scope.channel.name + " +b " + "*!*@" + user.hostName);
+        }
+    };
 }]);

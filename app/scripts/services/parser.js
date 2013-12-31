@@ -35,9 +35,7 @@ Services.factory("Parser",
             if (match = line.match(prefix_re))
             {
                 ircline.prefix = match[1];
-                $log.log("prefix=", ircline.prefix);
                 line = line.replace(prefix_re, "");
-                $log.log("line=", line);
             }
 
             //match cmd
@@ -52,11 +50,8 @@ Services.factory("Parser",
             if (line.search(/^:|\s+:/) != -1)
             {
                 match = line.match(arg_re);
-                $log.log("match=", match);
                 middle = match[1].replace(/\s+$/, "");
-                $log.log("middle=",middle);
                 trailing = match[2];
-                $log.log("trailing=",trailing);
             } else if (line.length)
             {
                 middle = line;
@@ -65,7 +60,6 @@ Services.factory("Parser",
             if (middle && middle.length)
             {
                 ircline.args = middle.split(/ +/);
-                $log.log("args=", ircline.args);
             }
 
             if (typeof (trailing) != "undefined" && trailing.length)
@@ -112,6 +106,25 @@ Services.factory("Parser",
             }
 
             return null;
+        }
+
+        function parsePrefix(prefix)
+        {
+            var parsed = {};
+            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i // UserMask regex
+            var matches = prefix.match(regexp);
+
+            if (matches !== null)
+            {
+                parsed.nickName = matches[1];
+                parsed.userName = matches[2];
+                parsed.hostName = matches[3];
+
+                return parsed;
+            }
+
+            else
+                return null;
         }
 
         var serverMessageBlacklist =
@@ -292,8 +305,9 @@ Services.factory("Parser",
         {
             var channel = Channel.get(ircline.args[1]);
             var user = User.get(ircline.args[5]);
-
-            var username = ircline.args[2];
+            user.userName = ircline.args[2];
+            user.hostName = ircline.args[3];
+            
             var awayflag = ircline.args[6][0];
 
             if (awayflag === "G")
@@ -312,7 +326,7 @@ Services.factory("Parser",
             }
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = username.match(colorflag_regexp);
+            var matches = user.userName.match(colorflag_regexp);
 
             if (matches != null)
             {
@@ -345,10 +359,11 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = User.get(ircline.args[1]);
-            var username = ircline.args[2];
+            user.userName = ircline.args[2];
+            user.hostName = ircline.args[3];
 
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = username.match(colorflag_regexp);
+            var matches = user.userName.match(colorflag_regexp);
 
             if (matches != null)
             {
@@ -453,7 +468,15 @@ Services.factory("Parser",
             return ircline.cmd === "JOIN";
         }, function (ircline)
         {
-            var user = getUser(ircline.prefix);
+            var parsedUser = parsePrefix(ircline.prefix);
+
+            if (!parsedUser)
+                return;
+
+            var user = User.get(parsedUser.nickName);
+            user.userName = parsedUser.userName;
+            user.hostName = parsedUser.hostName;
+
             var channel = Channel.get(ircline.args[0]);
 
             if (user.nickName === User.get("~").nickName)
