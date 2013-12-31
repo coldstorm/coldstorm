@@ -875,6 +875,17 @@ Services.factory("Parser",
         });
         registerMessage(browserCTCPMessage);
 
+        var pingCTCPMessage = new Message(function (ircline)
+        {
+            return getCTCP(ircline) === "PING";
+        }, function (ircline)
+        {
+            var user = getUser(ircline.prefix);
+            Connection.send("NOTICE " + user.nickName + 
+                " \u0001PING " + ircline.args[1].split(' ')[1]);
+        });
+        registerMessage(pingCTCPMessage);
+
         $rootScope.$on("channel.join", function (evt, channel)
         {
             Connection.send("JOIN " + channel.name);
