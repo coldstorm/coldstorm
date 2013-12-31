@@ -59,7 +59,7 @@ function ($scope, $rootScope, $location, User, Query, Connection)
     {
         if (user.hostName)
         {
-            Connection.send("MODE " + $scope.channel.name + " +b " + user.hostName);
+            Connection.send("MODE " + $scope.channel.name + " +b " + "*!*@" + user.hostName);
         }
     };
 }]);
