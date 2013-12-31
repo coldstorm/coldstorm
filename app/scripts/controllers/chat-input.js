@@ -12,6 +12,12 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
     var getSelectedText = function ()
     {
         var elem = document.getElementById("chat-input");
+        
+        if (!elem)
+        {
+            return;
+        }
+
         $scope.selectionStart = elem.selectionStart;
         $scope.selectionEnd = elem.selectionEnd;
 
@@ -118,6 +124,11 @@ Controllers.controller("ChatInputCtrl", ["$scope", "$rootScope", "$window", func
             $scope.matchIndex = 0;
 
             var users = $scope.tab.users;
+
+            if (!users)
+            {
+                return;
+            }
 
             $scope.matches = users.filter(function (element)
             {
