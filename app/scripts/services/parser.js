@@ -886,6 +886,18 @@ Services.factory("Parser",
         });
         registerMessage(pingCTCPMessage);
 
+        var timeCTCPMessage = new Message(function (ircline)
+        {
+            return getCTCP(ircline) === "TIME";
+        }, function (ircline)
+        {
+            var user = getUser(ircline.prefix);
+            Connection.send("NOTICE " + user.nickName +
+                " \u0001TIME " + Date.now() +
+                "\u0001");
+        });
+        registerMessage(timeCTCPMessage);
+
         $rootScope.$on("channel.join", function (evt, channel)
         {
             Connection.send("JOIN " + channel.name);
