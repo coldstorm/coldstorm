@@ -21,7 +21,7 @@ $(document).on("click", ".inline-image", function (evt)
         return;
     }
 
-    if (chanRegex.text(this.href))
+    if (chanRegex.test(this.href))
     {
         return;
     }
