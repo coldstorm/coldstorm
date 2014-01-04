@@ -599,6 +599,8 @@ Services.factory("Parser",
             if (matches !== null)
             {
                 user = User.get(matches[1]);
+            } else {
+                user = User.get(ircline.args[2]);
             }
 
             $rootScope.$apply(function ()
