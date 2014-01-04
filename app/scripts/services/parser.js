@@ -592,14 +592,7 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var channel = Channel.get(ircline.args[1]);
-            var user;
-            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-            var matches = ircline.args[2].match(regexp);
-
-            if (matches !== null)
-            {
-                user = User.get(matches[1]);
-            }
+            var user = User.get(ircline.args[2]);
 
             $rootScope.$apply(function ()
             {
