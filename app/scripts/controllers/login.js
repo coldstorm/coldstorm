@@ -99,7 +99,7 @@ Controllers.controller("LoginCtrl",
                 return;
             }
 
-            $http.jsonp("http://kaslai.us/coldstorm/fixip2.php?nick=" +
+            $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000) +
 		        "&callback=JSON_CALLBACK").success(function (data)
