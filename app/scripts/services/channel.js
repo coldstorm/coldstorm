@@ -37,7 +37,18 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
             registry[name] = {
                 addLine: function (message, author)
                 {
-                    var splice = this.lines.length - ($rootScope.settings.BACKLOG_AMOUNT * 1.05);
+                    var backlog_amount;
+                    if ($rootScope.settings && $rootScope.settings.BACKLOG_AMOUNT)
+                    {
+                        backlog_amount = $rootScope.settings.BACKLOG_AMOUNT;
+                    }
+
+                    else
+                    {
+                        backlog_amount = 250;
+                    }
+
+                    var splice = this.lines.length - (backlog_amount * 1.05);
 
                     this.lines.splice(0, splice);
 
