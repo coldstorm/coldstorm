@@ -32,6 +32,10 @@ function ($rootScope, User)
             registry[name] = {
                 addLine: function (message, author)
                 {
+                    var splice = this.lines.length - ($rootScope.settings.BACKLOG_AMOUNT * 1.05);
+
+                    this.lines.splice(0, splice);
+                    
                     line = {
                         author: null,
                         message: "",
