@@ -202,9 +202,6 @@ input {
     border: 1px solid #24272e;
     border-radius: 3px;
 }
-    .settings div {
-        margin-bottom: 1em;
-    }
 
     .settings h1 {
         color: #babbbf;
@@ -275,6 +272,10 @@ input {
             left: 27px;
             background: #26ca28;
         }
+        
+    .settings .setting-container {
+        margin-bottom: 1em;
+    }
 
     .settings .setting {
         float: right;

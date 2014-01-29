@@ -25,7 +25,7 @@
                 <h1>Settings</h1>
             </div>
 
-            <div>
+            <div class="setting-container" title="Enable this if you want a 'ping' sound to be played when someone highlights you/sends you a private message">
                 <span>Sound notifications</span>
                 <div class="checkbox setting">
                     <input type="checkbox" id="cb1"
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="setting-container" title="Enable this if you want desktop notifications to be shown when someone highlights you/sends you a private message">
                 <span>Desktop notifications</span>
                 <div class="checkbox setting">
                     <input type="checkbox" id="cb2"
@@ -43,7 +43,7 @@
                 </div>
             </div>
 
-            <div>
+            <div class="setting-container" title="Enable this if you want Coldstorm to join all the channels from your previous session">
                 <span>Preserve channels when leaving</span>
                 <div class="checkbox setting">
                     <input type="checkbox" id="cb3"
@@ -52,11 +52,19 @@
                 </div>
             </div>
 
-            <div>
+            <div class="setting-container" title="The away message that will be set when using the 'coffee' button">
                 <span>Default away message</span>
                 <div class="setting">
                 <input type="text"
                         ng-model="settings.AWAY_MESSAGE" />
+                </div>
+            </div>
+
+            <div class="setting-container" title="The maximum amount of lines that will be shown in any window">
+                <span>Amount of backlog lines</span>
+                <div class="setting">
+                <input type="text"
+                        ng-model="settings.BACKLOG_AMOUNT" />
                 </div>
             </div>
 

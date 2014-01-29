@@ -32,6 +32,21 @@ function ($rootScope, User)
             registry[name] = {
                 addLine: function (message, author)
                 {
+                    var backlog_amount;
+                    if ($rootScope.settings && $rootScope.settings.BACKLOG_AMOUNT)
+                    {
+                        backlog_amount = $rootScope.settings.BACKLOG_AMOUNT;
+                    }
+
+                    else
+                    {
+                        backlog_amount = 250;
+                    }
+
+                    var splice = this.lines.length - (backlog_amount * 1.05);
+
+                    this.lines.splice(0, splice);
+
                     line = {
                         author: null,
                         message: "",
