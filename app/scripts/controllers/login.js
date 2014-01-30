@@ -102,10 +102,14 @@ Controllers.controller("LoginCtrl",
             $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" +
                 encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000) +
-		        "&callback=JSON_CALLBACK").success(function (data)
-		        {
-		            $scope.hostToken = data.tag;
-		        });
+                "&callback=JSON_CALLBACK").success(function (data)
+                {
+                    $scope.hostToken = data.tag;
+                    if ($scope.connected)
+                    {
+                        Connection.send("PRIVMSG Jessica :~fixmyip " + $scope.hostToken);
+                    }
+                });
 
             $.cookie("nickName", $scope.user.nickName, { expires: new Date(2017, 00, 01) });
             $.cookie("color", $scope.user.color, { expires: new Date(2017, 00, 01) });
