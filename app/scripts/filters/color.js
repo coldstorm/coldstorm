@@ -30,4 +30,3 @@ Filters.filter("color", [function ()
         }
     };
 }]);
-'<span class="c$1 bc$2">$3</span>'

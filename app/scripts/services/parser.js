@@ -913,7 +913,7 @@ Services.factory("Parser",
         return {
             parse: function (line)
             {
-                $log.log("< " + line);
+                $log.log("> " + line);
 
                 var ircline = clean(line);
                 for (var mIndex = 0; mIndex < messages.length; mIndex++)

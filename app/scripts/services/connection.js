@@ -98,7 +98,7 @@ Services.factory("Connection", ["$log", function ($log)
 
             connection.send_string(unescape(encodeURIComponent(message + "\r\n")));
 
-            $log.log("> " + message);
+            $log.log("< " + message);
         }
     };
 }]);
