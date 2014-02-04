@@ -109,7 +109,7 @@ function ($filter, $rootScope, $timeout, Settings)
                 canNotify = true;
             }
             supportsNotifications = true;
-            $timeout(function () { welcome_notification.cancel(); }, 25);
+            //$timeout(function () { welcome_notification.cancel(); }, 25);
         }
         catch (err)
         {

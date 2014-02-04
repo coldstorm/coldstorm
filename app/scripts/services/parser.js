@@ -212,6 +212,13 @@ Services.factory("Parser",
                 Server.addLine(line, service);
                 return;
             }
+	    
+	    if (ircline.prefix.indexOf("irc.frogbox.es") > -1)
+            {
+                var service = getUser(ircline.prefix)
+                Server.addLine(line, service);
+                return;
+            }
 
             var user = getUser(ircline.prefix);
 
