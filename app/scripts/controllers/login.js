@@ -3,11 +3,7 @@ Controllers.controller("LoginCtrl",
     "Connection", "User", "Channel", "YouTube", "Parser", "Settings",
     function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
     Connection, User, Channel, YouTube, Parser, Settings)
-    {
-	//THIS IS ONLY TEMPORARY WHILE THE SERVER IS LIMPING ALONG. REMOVE ASAP
-	window.location.href = 'http://widget02.mibbit.com/?server=frogbox.es&channel=%23coldstorm';
-	//THIS IS ONLY TEMPORARY WHILE THE SERVER IS LIMPING ALONG. REMOVE ASAP
-	    
+    {	    
         var mustKill = false;
         $scope.user = User.get("~");
         $scope.user.nickName = $.cookie("nickName");
