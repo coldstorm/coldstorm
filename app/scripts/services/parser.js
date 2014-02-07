@@ -144,12 +144,13 @@ Services.factory("Parser",
                 "318",
                 "330",
                 "307",
-                "315"
+                "315",
+                "671"
             ];
 
         var _serverMessage = new Message(function (ircline)
         {
-            return ircline.prefix === "Frogbox.es"
+            return ircline.prefix === "irc.frogbox.es"
                 && serverMessageBlacklist.indexOf(ircline.cmd) < 0;
         }, function (ircline)
         {
@@ -201,19 +202,12 @@ Services.factory("Parser",
         {
             var line = ircline.args.slice(1).join(" ");
 
-            if (ircline.prefix == "Frogbox.es")
+            if (ircline.prefix == "irc.frogbox.es")
             {
                 return;
             }
 
             if (ircline.prefix.indexOf("services@frogbox.es") > -1)
-            {
-                var service = getUser(ircline.prefix)
-                Server.addLine(line, service);
-                return;
-            }
-	    
-	    if (ircline.prefix.indexOf("irc.frogbox.es") > -1)
             {
                 var service = getUser(ircline.prefix)
                 Server.addLine(line, service);
