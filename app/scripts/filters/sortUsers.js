@@ -5,7 +5,7 @@ Filters.filter("sortUsers", [function () {
         {
             var users = input.sort(function (a, b)
             {
-                var ranks = ["", "+", "%", "@"];
+                var ranks = ["", "+", "%", "@", "&", "~"];
 
                 if (a.ranks[channel.name] === undefined)
                 {

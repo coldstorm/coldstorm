@@ -289,7 +289,7 @@ Services.factory("Parser",
 
             for (var i = 0; i < users.length; i++)
             {
-                if (["+", "%", "@"].indexOf(users[i][0]) != -1)
+                if (["+", "%", "@", "&", "~"].indexOf(users[i][0]) != -1)
                 {
                     var user = User.get(users[i].substring(1));
                 } else
@@ -327,7 +327,7 @@ Services.factory("Parser",
 
             var rank = ircline.args[6].charAt(ircline.args[6].length - 1);
 
-            if (rank != "" && ["+", "%", "@"].indexOf(rank) != -1)
+            if (rank != "" && ["+", "%", "@", "&", "~"].indexOf(rank) != -1)
             {
                 user.addRank(channel, rank);
             }
@@ -407,7 +407,7 @@ Services.factory("Parser",
 
             for (var i = 0; i < userChannels.length; i++)
             {
-                if (["+", "%", "@"].indexOf(userChannels[i][0]) != -1)
+                if (["+", "%", "@", "&", "~"].indexOf(userChannels[i][0]) != -1)
                 {
                     var rank = userChannels[i][0];
                     var channel = Channel.get(userChannels[i].substring(1));
@@ -416,7 +416,9 @@ Services.factory("Parser",
                     {
                         user.addRank(channel, rank);
                     }
-                } else
+                } 
+
+                else
                 {
                     var channel = Channel.get(userChannels[i]);
 

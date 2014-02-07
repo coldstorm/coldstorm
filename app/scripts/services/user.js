@@ -35,13 +35,15 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     if (channel.name in this.ranks)
                     {
                         if (this.ranks[channel.name].indexOf(rank) == -1 &&
-                            "+%@".indexOf(rank) != -1)
+                            "+%@&~".indexOf(rank) != -1)
                         {
                             this.ranks[channel.name] += rank;
                         }
-                    } else
+                    } 
+
+                    else
                     {
-                        if ("+%@".indexOf(rank) != -1)
+                        if ("+%@&~".indexOf(rank) != -1)
                         {
                             this.ranks[channel.name] = rank;
                         }
@@ -64,6 +66,10 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                                 break;
                             case '@': firstRank = 3;
                                 break;
+                            case '&': firstRank = 4;
+                                break;
+                            case '~': firstRank = 5;
+                                break;
                         }
 
                         switch (b)
@@ -73,6 +79,10 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                             case '%': secondRank = 2;
                                 break;
                             case '@': secondRank = 3;
+                                break;
+                            case '&': firstRank = 4;
+                                break;
+                            case '~': firstRank = 5;
                                 break;
                         }
 
@@ -92,7 +102,7 @@ Services.factory("User", ["$rootScope", function ($rootScope)
 
                 removeRank: function (channel, rank)
                 {
-                    if (this.ranks[channel.name].indexOf(rank) != -1 && "+%@".indexOf(rank) != -1)
+                    if (this.ranks[channel.name].indexOf(rank) != -1 && "+%@&~".indexOf(rank) != -1)
                     {
                         this.ranks[channel.name] = this.ranks[channel.name].replace(rank, '');
                     }
