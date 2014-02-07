@@ -81,7 +81,7 @@ function ($filter, $rootScope, $timeout, Settings)
                     var notification = new Notification(title,
                         {
                             tag: tag,
-                            icon: "//coldstorm.github.io/coldstorm/favicon.png",
+                            icon: "//coldstorm.github.io/coldstorm/app/favicon.png",
                             body: body
                         });
 
@@ -101,7 +101,7 @@ function ($filter, $rootScope, $timeout, Settings)
             var welcome_notification = new Notification("Welcome to Coldstorm!", 
                 {
                     tag: "welcome",
-                    icon: "//coldstorm.github.io/coldstorm/favicon.png",
+                    icon: "//coldstorm.github.io/coldstorm/app/favicon.png",
                 });
 
             if (welcome_notification.permission === "granted")
