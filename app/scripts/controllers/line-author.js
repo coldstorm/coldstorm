@@ -5,9 +5,15 @@
         $scope.user.ranks[$scope.channel.name] != null)
     {
         $scope.rank = $scope.user.ranks[$scope.channel.name][0];
+
         if ($scope.rank === '%')
         {
             $scope.rank = '#';
+        }
+
+        if ($scope.rank === '&' || $scope.rank === '~')
+        {
+            $scope.rank = '@';
         }
     } else
     {
