@@ -1,10 +1,17 @@
 ﻿Controllers.controller("ToolbarCtrl", ["$scope", "$rootScope", "Connection", "User", "Settings", function ($scope, $rootScope, Connection, User, Settings)
 {
+    $scope.notification = "This is a test notification.";
+
     $scope.user = User.get("~");
 
     $scope.settings = $.parseJSON($.cookie("settings") || "{}");
 
     $rootScope.settings = $scope.settings;
+
+    $scope.dismissNotification = function ()
+    {
+        $scope.notification = "";
+    }
 
     $scope.setAway = function ()
     {
