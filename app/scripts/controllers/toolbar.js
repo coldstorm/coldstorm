@@ -1,10 +1,19 @@
-﻿Controllers.controller("ToolbarCtrl", ["$scope", "$rootScope", "Connection", "User", "Settings", function ($scope, $rootScope, Connection, User, Settings)
+﻿Controllers.controller("ToolbarCtrl", 
+["$scope", "$rootScope", "Connection", "User", "Settings", "AppNotification",
+function ($scope, $rootScope, Connection, User, Settings, AppNotification)
 {
     $scope.user = User.get("~");
 
     $scope.settings = $.parseJSON($.cookie("settings") || "{}");
 
     $rootScope.settings = $scope.settings;
+
+    $scope.appNotification = $rootScope.appNotification;
+
+    $scope.dismissNotification = function ()
+    {
+        AppNotification.dismiss();
+    }
 
     $scope.setAway = function ()
     {
@@ -41,10 +50,11 @@
         tab.clear();
     }
 
-    $rootScope.$watch(function (scope)
+    $rootScope.$watch(function (rootScope)
     {
         Settings.save($scope.settings);
 
-        scope.settings = $scope.settings;
+        rootScope.settings = $scope.settings;
+        $scope.appNotification = rootScope.appNotification;
     });
 }])

@@ -537,6 +537,11 @@ div.inner {
     color: #f05e56;
 }
 
+.toolbar .app-notification {
+    color: #ff921e;
+    cursor: pointer;
+}
+
 span.highlight {
     color: #ff921e;
     font-weight: bold;

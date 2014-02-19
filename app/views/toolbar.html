@@ -1,4 +1,9 @@
 ﻿<div class="toolbar">
+    <span class="app-notification" ng-click="dismissNotification()" ng-show="appNotification">
+        {{ appNotification }}
+        <i class="icon-remove icon-small"></i>
+    </span>
+
     <a ng-show="tab.name" ng-click="clearLines(tab)" title="Clear Lines">
         <i class="icon-ban-circle icon-large" style="vertical-align: baseline !important;"></i>
     </a>
