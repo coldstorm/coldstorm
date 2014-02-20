@@ -22,7 +22,7 @@ function ($rootScope, $http, $timeout)
                     {
                         if (events[i].type == "PushEvent" && events[i].payload.ref == "refs/heads/gh-pages")
                         {
-                            commit = events[i].payload.commits[0];
+                            commit = events[i].payload.commits[events[i].payload.commits.length - 1]; // Take the last commit in a bunch as it's the newest one
                             break;
                         }
                     };
