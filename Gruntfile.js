@@ -19,7 +19,7 @@ module.exports = function (grunt)
       styles: 
       {
         files: ['app/styles/{,*/}*.css'],
-        tasks: ['copy:styles', 'autoprefixer']
+        tasks: ['copy:styles']
       },
       resources: 
       {
