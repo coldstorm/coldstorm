@@ -540,7 +540,10 @@ Services.factory("Parser",
 
                 // We didn't find a common channel
                 User.delete(user.nickName);
-            } else {
+            } 
+
+            else 
+            {
                 user.channels.splice(ircline.args[0], 1);
             }
         });
@@ -908,9 +911,12 @@ Services.factory("Parser",
             Connection.send("JOIN " + channel.name);
         });
 
-        $rootScope.$on("channel.close", function (evt, channel)
+        $rootScope.$on("channel.close", function (evt, leave)
         {
-            Connection.send("PART " + channel.name);
+            if (leave.reason)
+                Connection.send("PART " + leave.channel.name + " :" + leave.reason);
+            else
+                Connection.send("PART " + leave.channel.name);
         });
 
         return {

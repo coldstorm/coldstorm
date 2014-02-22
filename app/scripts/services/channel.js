@@ -95,9 +95,9 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
                 {
                     $rootScope.$broadcast("channel.join", this);
                 },
-                leave: function ()
+                leave: function (reason)
                 {
-                    $rootScope.$broadcast("channel.close", this);
+                    $rootScope.$broadcast("channel.close", { channel: this, reason: reason });
 
                     delete registry[this.name];
                 },

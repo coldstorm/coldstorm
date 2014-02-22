@@ -1,6 +1,6 @@
 ﻿Controllers.controller("ToolbarCtrl", 
-["$scope", "$rootScope", "Connection", "User", "Settings", "AppNotification",
-function ($scope, $rootScope, Connection, User, Settings, AppNotification)
+["$scope", "$rootScope", "Connection", "User", "Settings", "AppNotification", "Channel",
+function ($scope, $rootScope, Connection, User, Settings, AppNotification, Channel)
 {
     $scope.user = User.get("~");
 
@@ -41,8 +41,9 @@ function ($scope, $rootScope, Connection, User, Settings, AppNotification)
 
     $scope.rejoin = function (tab)
     {
-        Connection.send("PART " + tab.name + " :rejoining");
-        Connection.send("JOIN " + tab.name)
+        var channel = Channel.get(tab.name);
+        channel.leave("rejoining");
+        channel.join();
     }
 
     $scope.clearLines = function (tab)
