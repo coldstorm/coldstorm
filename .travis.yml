@@ -19,11 +19,11 @@ notifications:
     email: false
     irc:
         channels:
-            - "frogbox.es#DesktopCS"
+            - "frogbox.es#Frogdev"
         skip_join: true
         template:
-            - "Build #%{build_number}: %{build_url}"
-            - "%{repository} %{branch}/%{commit} (%{author}): %{message}"
+            - "[coldstorm] Build #%{build_number}: %{build_url}"
+            - "[%{repository}] %{branch}/%{commit} (%{author}): %{message}"
 
 branches:
     only:
