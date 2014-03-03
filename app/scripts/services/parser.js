@@ -1,6 +1,6 @@
 Services.factory("Parser",
     ["$http", "$location", "$rootScope", "$window", "$log", "Connection",
-    "Channel", "User", "Query", "Server", 
+    "Channel", "User", "Query", "Server",
     function ($http, $location, $rootScope, $window, $log, Connection,
     Channel, User, Query, Server)
     {
@@ -306,9 +306,10 @@ Services.factory("Parser",
         {
             var channel = Channel.get(ircline.args[1]);
             var user = User.get(ircline.args[5]);
+
             user.userName = ircline.args[2];
             user.hostName = ircline.args[3];
-            
+
             var awayflag = ircline.args[6][0];
 
             if (awayflag === "G")
@@ -818,11 +819,14 @@ Services.factory("Parser",
             {
                 var channel = channels[i];
 
-                //console.log(channel);
+                if ($.inArray(user, channel.users) === -1) {
+                    continue;
+                }
 
                 if (user.nickName === User.get("~").nickName)
                 {
-                    channel.addLine("You are now known as " + newNickName + ".");
+                    channel.addLine("You are now known as " + newNickName +
+                                    ".");
                 } else
                 {
                     channel.addLine(user.nickName + " is now known as " +
