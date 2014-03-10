@@ -29,7 +29,7 @@ function ($rootScope, $http, $timeout)
 
                     if (commit)
                     {
-                        if (commit.sha != $rootScope.meta.version)
+                        if (commit.sha != $rootScope.meta.version && $rootScope.meta.version != "local")
                         {
                             $rootScope.appNotification = "Reload the page to get the newest version of Coldstorm!";
                         }
