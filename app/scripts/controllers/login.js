@@ -99,18 +99,6 @@ Controllers.controller("LoginCtrl",
                 return;
             }
 
-            $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" +
-                encodeURI($scope.user.nickName) + "&random=" +
-                Math.floor(Math.random() * 10000000) +
-                "&callback=JSON_CALLBACK").success(function (data)
-                {
-                    $scope.hostToken = data.tag;
-                    if ($scope.connected)
-                    {
-                        Connection.send("PRIVMSG Jessica :~fixmyip " + $scope.hostToken);
-                    }
-                });
-
             $.cookie("nickName", $scope.user.nickName, { expires: new Date(2017, 00, 01) });
             $.cookie("color", $scope.user.color, { expires: new Date(2017, 00, 01) });
 
@@ -155,6 +143,7 @@ Controllers.controller("LoginCtrl",
 
                     Connection.onWelcome(function ()
                     {
+                        $scope.welcomed = true;
                         if (mustKill)
                         {
                             Connection.send("PRIVMSG NickServ :GHOST " +
@@ -168,11 +157,15 @@ Controllers.controller("LoginCtrl",
                                 $scope.user.password);
                         }
 
-                        if ($scope.hostToken)
+                        // Do fixip2 here to ensure that we are already connected and Jessica will respond
+                        $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" + encodeURI($scope.user.nickName) + "&random=" +
+                            Math.floor(Math.random() * 10000000) +
+                            "&callback=JSON_CALLBACK").success(function (data)
                         {
-                            Connection.send("PRIVMSG Jessica :~fixmyip " +
+                            $scope.hostToken = data.tag;
+                            Connection.send("PRIVMSG Jessica :~fixmyip " + 
                                 $scope.hostToken);
-                        }
+                        });
                     });
                 });
 
