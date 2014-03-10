@@ -283,15 +283,25 @@ Services.factory("Parser",
 
             for (var i = 0; i < users.length; i++)
             {
-                if (["+", "%", "@", "&", "~"].indexOf(users[i][0]) != -1)
+                var ranks, nick = "";
+                for (var j = 0; j < users[i].length; j++) 
                 {
-                    var user = User.get(users[i].substring(1));
-                } else
-                {
-                    var user = User.get(users[i]);
-                }
-                channel.addUser(user);
+                    if (["+", "%", "@", "&", "~"].indexOf(users[i][j]) > -1)
+                    {
+                        ranks += users[i][j];
+                    } 
 
+                    else
+                    {
+                        nick = users[i].slice(j, users[i].length);
+                        break;
+                    }
+                };
+
+                var user = User.get(nick);
+                user.ranks[channel] = ranks;
+
+                channel.addUser(user);
                 user.addChannel(channel);
             }
 
@@ -725,10 +735,10 @@ Services.factory("Parser",
                         case 'v':
                             currMode = "voice";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "set")
+                            if (action == "set")
                             {
                                 userTarget.addRank(target, '+');
-                            } else if (action === "removed")
+                            } else if (action == "removed")
                             {
                                 userTarget.removeRank(target, '+');
                             }
@@ -737,10 +747,10 @@ Services.factory("Parser",
                         case 'h':
                             currMode = "halfop";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "set")
+                            if (action == "set")
                             {
                                 userTarget.addRank(target, '%');
-                            } else if (action === "removed")
+                            } else if (action == "removed")
                             {
                                 userTarget.removeRank(target, '%');
                             }
@@ -749,12 +759,36 @@ Services.factory("Parser",
                         case 'o':
                             currMode = "op";
                             userTarget = User.get(parameters[paramIndex]);
-                            if (action === "set")
+                            if (action == "set")
                             {
                                 userTarget.addRank(target, '@');
-                            } else if (action === "removed")
+                            } else if (action == "removed")
                             {
                                 userTarget.removeRank(target, '@');
+                            }
+                            paramIndex++;
+                            break;
+                        case 'a':
+                            currMode = "admin";
+                            userTarget = User.get(parameters[paramIndex]);
+                            if (action == "set")
+                            {
+                                userTarget.addRank(target, '&');
+                            } else if (action == "removed")
+                            {
+                                userTarget.removeRank(target, '&');
+                            }
+                            paramIndex++;
+                            break;
+                        case 'q':
+                            currMode = "owner";
+                            userTarget = User.get(parameters[paramIndex]);
+                            if (action == "set")
+                            {
+                                userTarget.addRank(target, '~');
+                            } else if (action == "removed")
+                            {
+                                userTarget.removeRank(target, '~');
                             }
                             paramIndex++;
                             break;
@@ -765,12 +799,12 @@ Services.factory("Parser",
                     if ("imnpst".indexOf(modes[i]) != -1)
                     {
                         target.addLine(setter.nickName + " " + action + " mode \"" + currMode + "\".");
-                    } else if ("vho".indexOf(modes[i]) != -1)
+                    } else if ("vhoaq".indexOf(modes[i]) != -1)
                     {
-                        if (action === "set")
+                        if (action == "set")
                         {
                             target.addLine(setter.nickName + " gave " + currMode + " to " + userTarget.nickName + ".");
-                        } else if (action === "removed")
+                        } else if (action == "removed")
                         {
                             target.addLine(setter.nickName + " " + action + " " + currMode + " from " + userTarget.nickName + ".");
                         }

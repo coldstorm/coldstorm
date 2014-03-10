@@ -133,6 +133,7 @@ Controllers.controller("LoginCtrl",
 
                     // Capability negotiation
                     Connection.send("CAP REQ :away-notify")
+                    Connection.send("CAP REQ :multi-prefix");
                     Connection.send("CAP END")
 
                     // Registration process
@@ -143,7 +144,6 @@ Controllers.controller("LoginCtrl",
 
                     Connection.onWelcome(function ()
                     {
-                        $scope.welcomed = true;
                         if (mustKill)
                         {
                             Connection.send("PRIVMSG NickServ :GHOST " +
