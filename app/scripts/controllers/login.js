@@ -5,6 +5,37 @@ Controllers.controller("LoginCtrl",
     Connection, User, Channel, YouTube, Parser, Settings)
     {	    
         var mustKill = false;
+
+        //Get Channels from URL
+        var channelParam = $location.search().channels;
+        if (channelParam != null) //If present
+        {
+            $scope.channel = "#" + channelParam.replace(',',',#');
+        }
+        else //Default
+        {
+            $scope.channel = "";
+            //If saved channels, add them
+            if ($rootScope.settings.PRESERVE_CHANNELS &&
+                $rootScope.settings.CHANNELS &&
+                $rootScope.settings.CHANNELS.length > 0)
+            {
+                for (var i = 0; i < $rootScope.settings.CHANNELS.length; i++) 
+                {
+                    $scope.channel = $scope.channel + $rootScope.settings.CHANNELS[i] + ((i + 1 === $rootScope.settings.CHANNELS.length) ? '' : ',');
+                }
+            } 
+            else if (VERSION == "local")
+            {
+                $scope.channel = "#test"; //Local Version joins Test Channel
+            } 
+            else 
+            {
+                $scope.channel = "#Coldstorm,#2"; //Normal version joins #coldstorm & #2
+            }
+        }
+
+        //Setup user
         $scope.user = User.get("~");
         $scope.user.nickName = $.cookie("nickName");
         if ($.cookie("color"))
@@ -174,43 +205,22 @@ Controllers.controller("LoginCtrl",
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
                         " :Tada") > -1)
                     {
-                        if ($rootScope.settings.PRESERVE_CHANNELS &&
-                            $rootScope.settings.CHANNELS &&
-                            $rootScope.settings.CHANNELS.length > 0)
+                        var channelNames = $scope.channel.split(",");
+                        var channels = [];
+                        var pageSet = false;
+                        for (var i = 0; i < channelNames.length; i++) 
                         {
-                            var channels = [];
-
-                            for (var i = 0; i < $rootScope.settings.CHANNELS.length; i++) 
+                            channelNames[i] = $.trim(channelNames[i]);
+                            if (RegExp(/([#&][a-zA-Z0-9]{0,25})/).test(channelNames[i]))
                             {
-                                channels[i] = Channel.register($rootScope.settings.CHANNELS[i]);
+                                channels[i] = Channel.register(channelNames[i]);
                                 channels[i].join();
+                                if (pageSet === false)
+                                {
+                                    $location.path("/channels/" + channelNames[i]);
+                                }
+                                pageSet = true;
                             }
-
-                            if (channels.length > 0)
-                            {
-                                $location.path("/channels/" + channels[0].name);
-                            }
-
-                        } 
-
-                        else if (VERSION == "local")
-                        {
-                            var test = Channel.register("#test");
-
-                            test.join();
-
-                            $location.path("/channels/#test");
-                        } 
-
-                        else 
-                        {
-                            var cs = Channel.register("#Coldstorm");
-                            var two = Channel.register("#2");
-
-                            cs.join();
-                            two.join();
-
-                            $location.path("/channels/#Coldstorm");
                         }
                     }
 
