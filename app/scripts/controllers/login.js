@@ -6,16 +6,9 @@ Controllers.controller("LoginCtrl",
     {	    
         var mustKill = false;
 
-        //Gets URL parameters
-        $scope.getParams = function (name)
-        {
-           return decodeURI(
-            (RegExp(name + '=' + '(.+?)(&|$)').exec($location.url())||[,null])[1]
-            );
-        }
         //Get Channels from URL
-        var channelParam = $scope.getParams("channels");
-        if (channelParam != "null") //If present
+        var channelParam = $location.search().channels;
+        if (channelParam != null) //If present
         {
             $scope.channel = "#" + channelParam.replace(',',',#');
         }
@@ -214,6 +207,7 @@ Controllers.controller("LoginCtrl",
                     {
                         var channelNames = $scope.channel.split(",");
                         var channels = [];
+                        var pageSet = false;
                         for (var i = 0; i < channelNames.length; i++) 
                         {
                             channelNames[i] = $.trim(channelNames[i]);
@@ -221,13 +215,11 @@ Controllers.controller("LoginCtrl",
                             {
                                 channels[i] = Channel.register(channelNames[i]);
                                 channels[i].join();
-                            }
-                        }
-                        if (channelNames.length > 0)
-                        {
-                            if (RegExp(/([#&][a-zA-Z0-9]{0,25})/).test(channelNames[0]))
-                            {
-                                $location.path("/channels/" + channelNames[0]);
+                                if (pageSet === false)
+                                {
+                                    $location.path("/channels/" + channelNames[i]);
+                                }
+                                pageSet = true;
                             }
                         }
                     }
