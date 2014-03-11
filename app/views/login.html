@@ -40,7 +40,7 @@
     <button type="submit" ng-disabled="connecting">Login</button>
 
     <div class="preview" style="color:{{ user.color }}">
-        <span class="time">[11:11]</span>
+        <span class="time">[{{ time | date:"HH:mm"}}]</span>
         <span style="color:{{ user.color }}">
             {{ user.nickName }}
         </span>

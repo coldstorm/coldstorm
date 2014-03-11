@@ -6,6 +6,7 @@ Controllers.controller("LoginCtrl",
     {	    
         var mustKill = false;
 
+      $scope.time = new Date();
         //Get Channels from URL
         var channelParam = $location.search().channels;
         if (channelParam != null) //If present
