@@ -6,7 +6,7 @@ Controllers.controller("LoginCtrl",
     {	    
         var mustKill = false;
 
-      $scope.time = new Date();
+        $scope.time = new Date();
         //Get Channels from URL
         var channelParam = $location.search().channels;
         if (channelParam != null) //If present
@@ -219,7 +219,7 @@ Controllers.controller("LoginCtrl",
                 Connection.onMessage(function (message)
                 {
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
-                        " :Tada") > -1)
+                        " :Tada") > -1 && $scope.user.password == null)
                     {
                         if ($scope.user.password)
                         {
