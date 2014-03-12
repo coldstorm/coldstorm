@@ -68,9 +68,18 @@
             <div class="setting-container" title="The maximum amount of lines that will be shown in any window">
                 <span>Amount of backlog lines</span>
                 <div class="setting">
-                <input type="text"
-                        ng-model="settings.BACKLOG_AMOUNT" />
+                    <input type="text"
+                            ng-model="settings.BACKLOG_AMOUNT" />
                 </div>
+            </div>
+
+            <div class="setting-container" title="The amount of time that notifications show up for before fading away. Set to 0 to disable fading.">
+                <span>Notification fade time (in seconds)</span>
+                <div class="setting">
+                    <input type="number"
+                            min="0"
+                            ng-model="settings.FADE_NOTIFICATIONS_TIME" />
+                </div>    
             </div>
 
             <br style="clear: both" />

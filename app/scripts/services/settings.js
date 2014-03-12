@@ -10,6 +10,12 @@ function ($timeout, $filter, $rootScope)
     };
 
     $rootScope.settings = $.parseJSON($.cookie("settings") || "{}");
+
+    // FADE_NOTIFICATIONS_TIME must have a value
+    if ($rootScope.settings["FADE_NOTIFICATIONS_TIME"] == null)
+    {
+        $rootScope.settings["FADE_NOTIFICATIONS_TIME"] = 1;
+    }
     
     // migrate old settings
     if ($rootScope.settings["desktopNotifications"])

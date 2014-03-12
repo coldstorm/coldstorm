@@ -85,10 +85,13 @@ function ($filter, $rootScope, $timeout, Settings)
                             body: body
                         });
 
-                    $timeout(function ()
+                    if ($rootScope.settings.FADE_NOTIFICATIONS_TIME > 0)
                     {
-                        notification.cancel();
-                    }, 5000);
+                        $timeout(function ()
+                        {
+                            notification.close();
+                        }, $rootScope.settings.FADE_NOTIFICATIONS_TIME * 1000);
+                    }
                 }
             }
         }
@@ -109,7 +112,7 @@ function ($filter, $rootScope, $timeout, Settings)
                 canNotify = true;
             }
             supportsNotifications = true;
-            //$timeout(function () { welcome_notification.cancel(); }, 25);
+            $timeout(function () { welcome_notification.close(); }, 1000);
         }
         catch (err)
         {
