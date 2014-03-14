@@ -37,7 +37,7 @@
 
     <input colorpicker="hex" class="span2" value="" type="text" ng-model="user.color" />
 
-    <button type="submit" ng-disabled="connecting">Login</button>
+    <button type="submit" ng-disabled="Connection.isOpen()">Login</button>
 
     <div class="preview" style="color:{{ user.color }}">
         <span class="time">[{{ time | date:"HH:mm"}}]</span>
