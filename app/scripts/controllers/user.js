@@ -1,5 +1,10 @@
 Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
 {
+    $scope.$on("$destroy", function (event) {
+        $scope.user = null;
+        $scope.selectedUser = null;
+    });
+
     $scope.toggleOptions = function ()
     {
         if ($scope.selectedUser)
@@ -30,7 +35,7 @@ Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
             {
                 $scope.rank = '@';
             }
-        } 
+        }
 
         else
         {

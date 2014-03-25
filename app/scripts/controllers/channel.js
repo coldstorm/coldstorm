@@ -4,6 +4,14 @@ Controllers.controller("ChannelCtrl",
     function ($scope, $rootScope, $routeParams, $location, User, Channel, Query, YouTube,
     Connection, Input)
     {
+        $scope.$on("$destroy", function (event) {
+            delete $scope.channel;
+            delete $scope.user;
+
+            delete $scope.channels;
+            delete $scope.queries;
+        });
+
         $scope.user = User.get("~");
 
         if ($scope.user.nickName === "")
@@ -58,7 +66,7 @@ Controllers.controller("ChannelCtrl",
         {
             $scope.channels = Channel.all();
         });
-        
+
         $scope.$watch(function ()
         {
             $scope.youtubes = YouTube.all();
