@@ -3,7 +3,7 @@ var Directives = angular.module("coldstorm.directives", ["luegg.directives"]);
 var Services = angular.module("coldstorm.services", []);
 var Filters = angular.module("coldstorm.filters", []);
 var Coldstorm = angular.module("coldstorm", ["colorpicker.module", "ui.bootstrap", "coldstorm.controllers", "coldstorm.directives", "coldstorm.services",
-    "coldstorm.filters", "ngSanitize", "ngCookies"]);
+    "coldstorm.filters", "ngSanitize", "ngCookies", "ngRoute"]);
 var VERSION = "not-loaded";
 
 Coldstorm.config(["$routeProvider", function ($routeProvider)
