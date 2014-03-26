@@ -3,6 +3,6 @@
         <span class="time">[{{ line.time | date:"HH:mm" }}]</span>
         <line-author user="line.author" channel="channel"></line-author>
         <span class="message" ng-class="{ systemMessage: line.systemMessage }"
-            ng-bind-html-unsafe="line.message | line"></span>
+            ng-bind-html="line.message | line"></span>
     </div>
 </div>

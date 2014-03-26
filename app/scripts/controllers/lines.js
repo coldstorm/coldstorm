@@ -1,5 +1,10 @@
 Controllers.controller("LinesCtrl", ["$scope", "$rootScope", function ($scope, $rootScope)
 {
+    $scope.$on("$destroy", function (event) {
+        delete $scope.lines;
+        delete $scope.channel;
+    });
+
     $scope.limit = 250;
 
     $rootScope.$watch(function (scope)

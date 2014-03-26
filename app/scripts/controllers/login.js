@@ -88,7 +88,7 @@ Controllers.controller("LoginCtrl",
                     for (var i = 0; i < User.get("~").channels.length; i++)
                     {
                         // Only store the channel name
-                        $rootScope.settings.CHANNELS[i] = User.get("~").channels[i].name;
+                        $rootScope.settings.CHANNELS[i] = User.get("~").channels[i];
                     }
                     $log.log($rootScope.settings.CHANNELS);
 

@@ -2,15 +2,15 @@
     <li class="tab" ng-class="{ active:server }">
         <a href="#/server">Server</a>
     </li>
-    <li ng-repeat="channelTab in channels" class="tab" ng-class="{ active:channelEquals(channelTab, channel), highlight:channelTab.active }">
-        <a href="#/channels/{{ channelTab.name }}" title="{{ channelTab.name }}">{{ channelTab.name }}</a>
+    <li ng-repeat="channelTab in channels track by $index" class="tab" ng-class="{ active:channelEquals(channelTab, channel), highlight:channelTab.active }">
+        <a href="#/channels/{{ channelTab.name.replace('#', '%23') }}" title="{{ channelTab.name }}">{{ channelTab.name }}</a>
         <a ng-click="channelTab.leave()">X</a>
     </li>
-    <li ng-repeat="queryTab in queries" class="tab" ng-class="{ active:queryEquals(query, queryTab), highlight:queryTab.active }">
+    <li ng-repeat="queryTab in queries track by $index" class="tab" ng-class="{ active:queryEquals(query, queryTab), highlight:queryTab.active }">
         <a href="#/query/{{ queryTab.name }}" title="{{ queryTab.user.nickName }}">{{ queryTab.user.nickName }}</a>
         <a ng-click="queryTab.close()">X</a>
     </li>
-    <li ng-repeat="ytTab in youtubes" class="tab" ng-class="{ active:ytEquals(ytTab, youtube) }">
+    <li ng-repeat="ytTab in youtubes track by $index" class="tab" ng-class="{ active:ytEquals(ytTab, youtube) }">
         <a href="#/yt/{{ ytTab.id }}" title="{{ ytTab.name }}">{{ ytTab.name | truncate: 15 }}</a>
         <a ng-click="ytTab.close()">X</a>
     </li>

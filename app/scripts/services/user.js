@@ -24,9 +24,9 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 channels: [],
                 addChannel: function (channel)
                 {
-                    if (this.channels.indexOf(channel) == -1)
+                    if (this.channels.indexOf(channel.name) == -1)
                     {
-                        this.channels.push(channel);
+                        this.channels.push(channel.name);
                     }
                 },
 
