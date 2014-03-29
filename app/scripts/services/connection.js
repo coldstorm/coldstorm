@@ -21,7 +21,6 @@ Services.factory("Connection", ["$log", function ($log)
         }
 
         connected = true;
-        $log.log("connection.on('open'): connection opened")
     });
 
     connection.on("message", function ()
@@ -44,6 +43,7 @@ Services.factory("Connection", ["$log", function ($log)
 
     connection.on("close", function ()
     {
+        $log.log("connection.on('close') start");
         for (var handlerIndex = 0; handlerIndex < closeHandlers.length; handlerIndex++)
         {
             var handler = closeHandlers[handlerIndex];
@@ -58,8 +58,7 @@ Services.factory("Connection", ["$log", function ($log)
 
         open = false;
         connected = false;
-        // connection = new Websock(); // make a new Websocket object so we can open a new connection
-        $log.log("connection.on('close'): connection closed");
+        $log.log("connection.on('close') end");
     });
 
     connection.on("error", function ()

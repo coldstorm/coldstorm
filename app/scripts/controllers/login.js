@@ -100,7 +100,7 @@ Controllers.controller("LoginCtrl",
             {
                 $rootScope.$digest();
             }
-        }
+        };
 
         var joinChannels = function ()
         {
@@ -121,7 +121,7 @@ Controllers.controller("LoginCtrl",
                     pageSet = true;
                 }
             }
-        }
+        };
 
         var cyclePort = function ()
         {
@@ -134,7 +134,16 @@ Controllers.controller("LoginCtrl",
             {
                 $scope.port = 80 + (Math.floor(Math.random() * (5 - 2 + 1) + 2));
             }
-        }
+        };
+
+        var registerEventHandlers = function ()
+        {
+            Connection.onOpen(connection_onOpen);
+            Connection.onWelcome(connection_onWelcome);
+            Connection.onMessage(connection_onMessage);
+            Connection.onClose(connection_onClose);
+            $log.log("registerEventHandlers() events registered")
+        };
 
         $scope.login = function ()
         {
@@ -169,15 +178,10 @@ Controllers.controller("LoginCtrl",
             // Generate new port
             cyclePort()
 
+            registerEventHandlers();
             // Attempt to connect
             $log.log("connecting to ws://frogbox.es:" + $scope.port)
             Connection.connect("ws://frogbox.es:" + $scope.port);
-
-            Connection.onOpen(connection_onOpen);
-            Connection.onWelcome(connection_onWelcome);
-            Connection.onMessage(connection_onMessage);
-            Connection.onClose(connection_onClose);
-            $log.log("$scope.connect(): events registered")
 
             $timeout(function ()
             {
@@ -188,7 +192,6 @@ Controllers.controller("LoginCtrl",
 
         var connection_onOpen = function ()
         {
-            $log.log("connection_onOpen(): connection opened, handler called")
             $location.path("/server");
 
             // Capability negotiation
@@ -276,8 +279,9 @@ Controllers.controller("LoginCtrl",
 
         var connection_onClose = function ()
         {
-            $log.log("connection_onClose(): connection closed, handler called")
+            $log.log("connection_onClose() start")
             $location.path("/login");
             cyclePort();
+            $log.log("connection_onClose() end")
         };
     }]);
