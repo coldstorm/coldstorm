@@ -97,6 +97,27 @@ Controllers.controller("LoginCtrl",
             }
         });
 
+        var joinChannels = function ()
+        {
+            var channelNames = $scope.channel.split(",");
+            var channels = [];
+            var pageSet = false;
+            for (var i = 0; i < channelNames.length; i++) 
+            {
+                channelNames[i] = $.trim(channelNames[i]);
+                if (RegExp(/([#&][a-zA-Z0-9]{0,25})/).test(channelNames[i]))
+                {
+                    channels[i] = Channel.register(channelNames[i]);
+                    channels[i].join();
+                    if (pageSet === false)
+                    {
+                        $location.path("/channels/" + channelNames[i]);
+                    }
+                    pageSet = true;
+                }
+            }
+        }
+
         $scope.reset = function ()
         {
             $scope.connecting = false;
@@ -183,12 +204,6 @@ Controllers.controller("LoginCtrl",
                                 $scope.user.password);
                         }
 
-                        if ($scope.user.password)
-                        {
-                            Connection.send("PRIVMSG NickServ :identify " +
-                                $scope.user.password);
-                        }
-
                         // Do fixip2 here to ensure that we are already connected and Jessica will respond
                         $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" + encodeURI($scope.user.nickName) + "&random=" +
                             Math.floor(Math.random() * 10000000) +
@@ -206,23 +221,22 @@ Controllers.controller("LoginCtrl",
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
                         " :Tada") > -1)
                     {
-                        var channelNames = $scope.channel.split(",");
-                        var channels = [];
-                        var pageSet = false;
-                        for (var i = 0; i < channelNames.length; i++) 
+                        if ($scope.user.password)
                         {
-                            channelNames[i] = $.trim(channelNames[i]);
-                            if (RegExp(/([#&][a-zA-Z0-9]{0,25})/).test(channelNames[i]))
-                            {
-                                channels[i] = Channel.register(channelNames[i]);
-                                channels[i].join();
-                                if (pageSet === false)
-                                {
-                                    $location.path("/channels/" + channelNames[i]);
-                                }
-                                pageSet = true;
-                            }
+                            Connection.send("PRIVMSG NickServ :identify " +
+                                $scope.user.password);
                         }
+
+                        else
+                        {
+                            joinChannels();
+                        }
+                    }
+
+                    if (message.indexOf("NickServ!services@frogbox.es NOTICE " + $scope.user.nickName + 
+                        " :Password accepted - you are now recognized.") > -1)
+                    {
+                        joinChannels();
                     }
 
                     if (message.indexOf("NOTICE " + $scope.user.nickName +
