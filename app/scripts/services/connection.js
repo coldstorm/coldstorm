@@ -12,7 +12,6 @@ Services.factory("Connection", ["$log", function ($log)
 
     connection.on("open", function ()
     {
-        $log.log(openHandlers);
         for (var handlerIndex = 0; handlerIndex < openHandlers.length; handlerIndex++)
         {
             var handler = openHandlers[handlerIndex];
@@ -43,14 +42,12 @@ Services.factory("Connection", ["$log", function ($log)
 
     connection.on("close", function ()
     {
-        $log.log("connection.on('close') start");
         for (var handlerIndex = 0; handlerIndex < closeHandlers.length; handlerIndex++)
         {
             var handler = closeHandlers[handlerIndex];
 
             handler();
         }
-        $log.log(openHandlers);
         openHandlers.length = 0;
         messageHandlers.length = 0;
         closeHandlers.length = 0;
@@ -58,7 +55,6 @@ Services.factory("Connection", ["$log", function ($log)
 
         open = false;
         connected = false;
-        $log.log("connection.on('close') end");
     });
 
     connection.on("error", function ()

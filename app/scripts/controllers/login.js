@@ -69,11 +69,6 @@ Controllers.controller("LoginCtrl",
             setError("Nickname is in use");
         });
 
-        $rootScope.$on("channel.joined", function (evt, channel)
-        {
-            $scope.connecting = false;
-        });
-
         $rootScope.$on("disconnecting", function (evt)
         {
             if ($scope.connected) // Don't change the channels array unless we were really connected
@@ -182,12 +177,6 @@ Controllers.controller("LoginCtrl",
             // Attempt to connect
             $log.log("connecting to ws://frogbox.es:" + $scope.port)
             Connection.connect("ws://frogbox.es:" + $scope.port);
-
-            $timeout(function ()
-            {
-                if (!Connection.isConnected())
-                    Connection.close();
-            }, 30000)
         };
 
         var connection_onOpen = function ()
@@ -279,9 +268,6 @@ Controllers.controller("LoginCtrl",
 
         var connection_onClose = function ()
         {
-            $log.log("connection_onClose() start")
             $location.path("/login");
-            cyclePort();
-            $log.log("connection_onClose() end")
         };
     }]);
