@@ -7,6 +7,8 @@ Services.factory("Connection", ["$log", function ($log)
     var closeHandlers = [];
     var errorHandlers = [];
 
+    var open = false; // The Websocket is in an OPEN state but not necessarily connected yet
+    var connected = false; // The Websocket is connected
 
     connection.on("open", function ()
     {
@@ -16,6 +18,8 @@ Services.factory("Connection", ["$log", function ($log)
 
             handler();
         }
+
+        connected = true;
     });
 
     connection.on("message", function ()
@@ -48,6 +52,9 @@ Services.factory("Connection", ["$log", function ($log)
         messageHandlers.length = 0;
         closeHandlers.length = 0;
         errorHandlers.length = 0;
+
+        open = false;
+        connected = false;
     });
 
     connection.on("error", function ()
@@ -66,10 +73,19 @@ Services.factory("Connection", ["$log", function ($log)
         connect: function (uri)
         {
             connection.open(uri);
+            open = true;
         },
         close: function ()
         {
             connection.close();
+        },
+        isOpen: function ()
+        {
+            return open;
+        },
+        isConnected: function ()
+        {
+            return connected;
         },
         onOpen: function (handler)
         {

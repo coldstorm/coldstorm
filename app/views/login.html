@@ -3,11 +3,6 @@
         <h1>Coldstorm</h1>
     </div>
 
-    <div ng-show="connecting" class="notice info">
-        Connecting to the server...
-        <i class="icon-spin icon-refresh"></i>
-    </div>
-
     <div ng-show="error" class="notice error">
         {{ error }}
         <i class="icon-exclamation"></i>
@@ -37,7 +32,7 @@
 
     <input colorpicker="hex" class="span2" value="" type="text" ng-model="user.color" />
 
-    <button type="submit" ng-disabled="connecting">Login</button>
+    <button type="submit" ng-disabled="Connection.isOpen()">Login</button>
 
     <div class="preview" style="color:{{ user.color }}">
         <span class="time">[{{ time | date:"HH:mm"}}]</span>
