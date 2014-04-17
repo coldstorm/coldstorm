@@ -3,7 +3,7 @@ Controllers.controller("LoginCtrl",
     "Connection", "User", "Channel", "Server", "YouTube", "Parser", "Settings",
     function ($log, $scope, $http, $rootScope, $location, $timeout, $filter,
     Connection, User, Channel, Server, YouTube, Parser, Settings)
-    {	    
+    {       
         var mustKill = false;
         $scope.time = new Date(); // Used for timestamp in preview
 
@@ -204,12 +204,6 @@ Controllers.controller("LoginCtrl",
                     $scope.user.password);
             }
 
-            if ($scope.user.password)
-            {
-                Connection.send("PRIVMSG NickServ :identify " +
-                    $scope.user.password);
-            }
-
             // Do fixip2 here to ensure that we are already connected and Jessica will respond
             $http.jsonp("http://kaslai.com/coldstorm/fixip2.php?nick=" + encodeURI($scope.user.nickName) + "&random=" +
                 Math.floor(Math.random() * 10000000) +
@@ -225,22 +219,22 @@ Controllers.controller("LoginCtrl",
         var connection_onMessage = function (message)
         {
             if (message.indexOf("NOTICE " + $scope.user.nickName +
-                " :Tada") > -1 && $scope.user.password == null)
+                " :Tada") > -1)
             {
-				if ($scope.user.password)
-				{
-					Connection.send("PRIVMSG NickServ :identify " +
-						$scope.user.password);
-				}
-
-				else
+                if ($scope.user.password)
                 {
-					joinChannels();
+                    Connection.send("PRIVMSG NickServ :identify " +
+                        $scope.user.password);
+                }
+
+                else
+                {
+                    joinChannels();
                 }
             }
 
-			if (message.indexOf("NickServ!services@frogbox.es NOTICE " + $scope.user.nickName + 
-				" :Password accepted - you are now recognized.") > -1)
+            if (message.indexOf("NickServ!services@frogbox.es NOTICE " + $scope.user.nickName + 
+                " :Password accepted - you are now recognized.") > -1)
             {
                 joinChannels();
             }
