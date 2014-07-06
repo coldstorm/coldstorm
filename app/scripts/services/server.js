@@ -55,6 +55,10 @@ Services.factory("Server", ["$rootScope", function ($rootScope)
 
                     return this;
                 },
+                clear: function ()
+                {
+                    this.lines.length = 0;
+                },
                 active: false,
                 lines: [],
                 name: name
