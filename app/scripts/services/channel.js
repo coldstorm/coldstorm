@@ -5,6 +5,7 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
     $rootScope.$on("channel.joined", function (evt, channel)
     {
         channel.addLine("You joined the room.");
+        channel.connected = true;
     });
 
     $rootScope.$on("channel.message", function (evt, message)
@@ -22,7 +23,7 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         if ($rootScope.blurred)
         {
             $rootScope.$broadcast("unread", message);
-            if (matches != null)
+            if (matches !== null)
             {
                 $rootScope.$broadcast("highlighted", message);
             }
@@ -96,21 +97,31 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
                     return this;
                 },
-                active: false,
                 join: function ()
                 {
                     $rootScope.$broadcast("channel.join", this);
                 },
-                leave: function (reason)
+                close: function (reason)
                 {
-                    $rootScope.$broadcast("channel.close", { channel: this, reason: reason });
+                    if (this.connected)
+                    {
+                        // The user is connected to this tab, don't close it
+                        $rootScope.$broadcast("channel.part", { channel : this, reason: reason });
+                        this.connected = false;
+                    }
 
-                    delete registry[this.name];
+                    else
+                    {
+                        // The user isn't connected so we can close it
+                        delete registry[this.name];
+                    }
                 },
                 clear: function ()
                 {
                     this.lines.length = 0;
                 },
+                active: false,
+                connected: false,
                 lines: [],
                 name: name,
                 topic: "",
@@ -126,7 +137,7 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         {
             var channels = [];
 
-            for (channel in registry)
+            for (var channel in registry)
             {
                 channels.push(registry[channel]);
             }

@@ -181,6 +181,7 @@ Controllers.controller("LoginCtrl",
 
         var connection_onOpen = function ()
         {
+            Server.register("Server");
             $location.path("/server");
 
             // Capability negotiation
