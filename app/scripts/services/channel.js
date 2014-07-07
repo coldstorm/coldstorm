@@ -34,6 +34,12 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
         {
             name = name.replace("%23", "#");
 
+            // Check for duplicates
+            for (var channel in registry)
+            {
+                if (registry[channel].name.toLowerCase() === name.toLowerCase()) return registry[channel];
+            }
+
             registry[name] = {
                 addLine: function (message, author)
                 {
@@ -130,7 +136,21 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
         get: function (name)
         {
-            return registry[name];
+            for (var channel in registry)
+            {
+                if (registry[channel].name.toLowerCase() === name.toLowerCase()) return registry[channel];
+            }
+            return null;
+        },
+
+        set: function (oldname, newname)
+        {
+            if (registry[oldname])
+            {
+                registry[newname] = registry[oldname];
+                registry[newname].name = newname;
+                delete registry[oldname];
+            }
         }
     };
 

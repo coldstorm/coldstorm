@@ -498,6 +498,8 @@ Services.factory("Parser",
                 var switchToChannel = channel === undefined;
 
                 channel = channel || Channel.register(ircline.args[0]);
+                // Make sure the name of the channel is the same as it's registered on the server
+                Channel.set(channel.name, ircline.args[0]);
 
                 if (switchToChannel)
                 {
@@ -505,7 +507,9 @@ Services.factory("Parser",
                 }
 
                 $rootScope.$broadcast("channel.joined", channel);
-            } else
+            } 
+
+            else
             {
                 channel.addLine(user.nickName + " joined the room.");
                 channel.addUser(user);
