@@ -567,6 +567,7 @@ Services.factory("Parser",
 
             else 
             {
+                channel.addLine("You left the room.");
                 user.removeChannel(ircline.args[0]);
             }
         });

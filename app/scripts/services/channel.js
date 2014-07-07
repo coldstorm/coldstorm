@@ -106,8 +106,12 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
                     if (this.connected)
                     {
                         // The user is connected to this tab, don't close it
-                        $rootScope.$broadcast("channel.part", { channel : this, reason: reason });
+                        $rootScope.$broadcast("channel.part", { channel: this, reason: reason });
                         this.connected = false;
+                        this.users.length = 0;
+                        this.topic = "";
+                        this.topicauthor = {};
+                        this.topicdate = "";
                     }
 
                     else
