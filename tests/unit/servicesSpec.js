@@ -76,7 +76,7 @@ describe("Coldstorm services", function ()
 
             channel = $Channel.get("test");
 
-            expect(channel).toBe(undefined);
+            expect(channel).toBeNull();
         });
 
         it("should clear the lines when calling clear()", function ()
