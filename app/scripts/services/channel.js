@@ -145,7 +145,7 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
         set: function (oldname, newname)
         {
-            if (registry[oldname])
+            if (registry[oldname] && oldname !== newname)
             {
                 registry[newname] = registry[oldname];
                 registry[newname].name = newname;
