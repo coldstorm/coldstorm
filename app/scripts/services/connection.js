@@ -25,7 +25,7 @@ Services.factory("Connection", ["$log", function ($log)
     connection.on("message", function ()
     {
         var messages = connection.rQshiftStr().split("\r\n");
-        messages = messages.filter(function (n) { return n });
+        messages = messages.filter(function (n) { return n; });
 
         for (var messageIndex = 0; messageIndex < messages.length; messageIndex++)
         {

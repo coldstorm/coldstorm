@@ -30,6 +30,16 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     }
                 },
 
+                removeChannel: function (name)
+                {
+                    var index = this.channels.indexOf(name);
+
+                    if (index !== -1)
+                    {
+                        this.channels.splice(index, 1);
+                    }
+                },
+
                 addRank: function (channel, rank)
                 {
                     if (channel.name in this.ranks)
@@ -135,7 +145,7 @@ Services.factory("User", ["$rootScope", function ($rootScope)
 
         move: function (oldName, newName)
         {
-            if (oldName in registry)
+            if (oldName in registry && oldName !== newName)
             {
                 registry[newName] = registry[oldName];
 
@@ -152,5 +162,5 @@ Services.factory("User", ["$rootScope", function ($rootScope)
         {
             delete registry[name];
         }
-    }
+    };
 }]);

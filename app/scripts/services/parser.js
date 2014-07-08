@@ -546,7 +546,7 @@ Services.factory("Parser",
                 }
                 channel.users.splice(channel.users.indexOf(user), 1);
 
-                user.channels.splice(channel.name, 1);
+                user.removeChannel(channel.name);
 
                 // Check what channels we share with this user
                 for (var i = 0; i < user.channels.length; i++) {
@@ -563,7 +563,7 @@ Services.factory("Parser",
 
             else 
             {
-                user.channels.splice(ircline.args[0], 1);
+                user.removeChannel(ircline.args[0]);
             }
         });
         registerMessage(partMessage);

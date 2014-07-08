@@ -71,16 +71,16 @@ Controllers.controller("LoginCtrl",
 
         $rootScope.$on("disconnecting", function (evt)
         {
-            if ($scope.connected) // Don't change the channels array unless we were really connected
+            if (Connection.isConnected()) // Don't change the channels array unless we were really connected
             {
                 if ($rootScope.settings.PRESERVE_CHANNELS)
                 {
                     $rootScope.settings.CHANNELS = [];
-
-                    for (var i = 0; i < User.get("~").channels.length; i++)
+                    var user = User.get("~");
+                    for (var i = 0; i < user.channels.length; i++)
                     {
                         // Only store the channel name
-                        $rootScope.settings.CHANNELS[i] = User.get("~").channels[i];
+                        $rootScope.settings.CHANNELS[i] = user.channels[i];
                     }
 
                     Settings.save($rootScope.settings);
@@ -137,7 +137,7 @@ Controllers.controller("LoginCtrl",
             Connection.onWelcome(connection_onWelcome);
             Connection.onMessage(connection_onMessage);
             Connection.onClose(connection_onClose);
-            $log.log("registerEventHandlers() events registered")
+            $log.log("registerEventHandlers() events registered");
         };
 
         $scope.login = function ()
@@ -171,11 +171,11 @@ Controllers.controller("LoginCtrl",
             }
             
             // Generate new port
-            cyclePort()
+            cyclePort();
 
             registerEventHandlers();
             // Attempt to connect
-            $log.log("connecting to ws://frogbox.es:" + $scope.port)
+            $log.log("connecting to ws://frogbox.es:" + $scope.port);
             Connection.connect("ws://frogbox.es:" + $scope.port);
         };
 

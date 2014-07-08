@@ -58,7 +58,7 @@ function ($http, $location, $rootScope)
     var clearNotifications = function ()
     {
         $rootScope.$broadcast("read");
-    }
+    };
 
     window.onclick = function ()
     {
@@ -83,7 +83,7 @@ function ($http, $location, $rootScope)
         $rootScope.blurred = true;
     };
 
-    window.onunload = window.onbeforeunload = function ()
+    window.onbeforeunload = function ()
     {
         $rootScope.$broadcast("disconnecting");
     };
