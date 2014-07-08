@@ -52,7 +52,9 @@ Services.factory("Parser",
                 match = line.match(arg_re);
                 middle = match[1].replace(/\s+$/, "");
                 trailing = match[2];
-            } else if (line.length)
+            } 
+
+            else if (line.length)
             {
                 middle = line;
             }
@@ -248,19 +250,21 @@ Services.factory("Parser",
             var user = getUser(ircline.prefix);
             var line = ircline.args.slice(1).join(" ");
 
-            if (channel !== undefined)
+            if (channel !== null)
             {
                 $rootScope.$broadcast("channel.message", {
                     channel: channel,
                     user: user,
                     line: line
                 });
-            } else
+            } 
+
+            else
             {
                 var query = Query.get(user.nickName) ||
                             Query.register(user.nickName);
 
-                if (query !== undefined)
+                if (query !== null)
                 {
                     $rootScope.$broadcast("query.message", {
                         query: query,
@@ -495,7 +499,7 @@ Services.factory("Parser",
 
             if (user.nickName === User.get("~").nickName)
             {
-                var switchToChannel = channel === undefined;
+                var switchToChannel = channel === null;
 
                 channel = channel || Channel.register(ircline.args[0]);
                 // Make sure the name of the channel is the same as it's registered on the server

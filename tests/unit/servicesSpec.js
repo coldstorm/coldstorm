@@ -157,7 +157,7 @@ describe("Coldstorm services", function ()
 
             query = $Query.get("test");
 
-            expect(query).toBe(undefined);
+            expect(query).toBeNull();
         });
 
         it("should clear the lines when calling clear()", function ()
@@ -313,9 +313,9 @@ describe("Coldstorm services", function ()
 
         it("should return a YouTube object when calling register(id)", function ()
         {
-            var youtube = $YouTube.register("test")
+            var youtube = $YouTube.register("test");
 
-            expect(youtube.id).toBe("test")
+            expect(youtube.id).toBe("test");
         });
 
         it("should return all YouTube objects when calling all()", function ()

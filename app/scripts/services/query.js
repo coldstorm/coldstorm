@@ -19,7 +19,7 @@ function ($rootScope, User)
         if ($rootScope.blurred)
         {
             $rootScope.$broadcast("unread_pm", message);
-            if (matches != null)
+            if (matches !== null)
             {
                 $rootScope.$broadcast("highlighted_pm", message);
             }
@@ -29,6 +29,12 @@ function ($rootScope, User)
     var queries = {
         register: function (name)
         {
+            // Check for duplicates
+            for (var query in registry)
+            {
+                if (registry[query].name.toLowerCase() === name.toLowerCase()) return registry[query];
+            }
+
             registry[name] = {
                 addLine: function (message, author)
                 {
@@ -79,7 +85,6 @@ function ($rootScope, User)
 
                     return this;
                 },
-                active: false,
                 close: function ()
                 {
                     $rootScope.$broadcast("query.close", this);
@@ -90,6 +95,7 @@ function ($rootScope, User)
                 {
                     this.lines.length = 0;
                 },
+                active: false,
                 lines: [],
                 name: name,
                 user: User.get(name)
@@ -102,7 +108,7 @@ function ($rootScope, User)
         {
             var queries = [];
 
-            for (query in registry)
+            for (var query in registry)
             {
                 queries.push(registry[query]);
             }
@@ -111,8 +117,12 @@ function ($rootScope, User)
         },
 
         get: function (name)
-        {
-            return registry[name];
+        { 
+            for (var query in registry)
+            {
+                if (registry[query].name.toLowerCase() === name.toLowerCase()) return registry[query];
+            }
+            return null;
         }
     };
 
