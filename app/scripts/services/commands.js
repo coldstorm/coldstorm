@@ -4,7 +4,7 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
 
     function Command(name, aliases, args, callback, usage, description)
     {
-        command = new Object();
+        command = {};
         command.name = name;
         command.aliases = aliases;
         command.args = args;
@@ -48,6 +48,27 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
     }
 
     // Channel management
+    var joinCallback = function (cmd, args, target)
+    {
+        if (target.name)
+        {
+            var channel = target;
+            var targetChannel = args[0];
+            if (targetChannel)
+            {
+                Connection.send("JOIN " + targetChannel);
+            }
+
+            else
+            {
+                if (channel.connected === false) Connection.send("JOIN " + channel.name);
+            }
+        }
+    };
+    var joinCommand = new Command("JOIN", [], 0, joinCallback, "/JOIN [channel]",
+        "Joins the specified channel or the current channel if unspecified.");
+    registerCommand(joinCommand);
+
     var kickCallback = function (cmd, args, target)
     {
         if (target.name)
@@ -58,7 +79,9 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
             if (reason)
             {
                 Connection.send("KICK " + channel.name + " " + nickname + " :" + reason);
-            } else
+            } 
+
+            else
             {
                 Connection.send("KICK " + channel.name + " " + nickname);
             }
@@ -103,7 +126,9 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
             if (args.length < 1)
             {
                 Connection.send("MODE " + target.name + " b");
-            } else
+            } 
+
+            else
             {
                 Connection.send("MODE " + args[0] + " b");
             }
@@ -119,7 +144,7 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
         {
             Connection.send("TOPIC " + target.name + " :" + args.join(" "));
         }
-    }
+    };
     var topicCommand = new Command("TOPIC", ["MOTD"], 1, topicCallback, "/TOPIC <topic>",
         "Sets the topic of the current channel.");
     registerCommand(topicCommand);
@@ -236,7 +261,7 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
     var msgCallback = function (cmd, args, target)
     {
         Connection.send("PRIVMSG " + args[0] + " :" + args.slice(1).join(" "));
-    }
+    };
     var msgCommand = new Command("MSG", ["QUERY"], 2, msgCallback, "/MSG <target> <message>",
         "Sends a private message to the target.");
     registerCommand(msgCommand);
@@ -263,7 +288,9 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
         {
             Connection.send("AWAY :" + args[0]);
             awayMsg = args[0];
-        } else
+        } 
+
+        else
         {
             Connection.send("AWAY :afk");
             awayMsg = "afk";
@@ -297,7 +324,9 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
             if (matches.length < 1)
             {
                 target.addLine("Command couldn't be found.");
-            } else
+            } 
+
+            else
             {
                 for (var i = 0; i < matches.length; i++)
                 {
@@ -307,7 +336,9 @@ Services.factory("Commands", ["$filter", "Connection", "User", function ($filter
                 }
             }
 
-        } else
+        } 
+
+        else
         {
             for (var i = 0; i < commands.length; i++)
             {
