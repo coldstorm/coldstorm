@@ -535,11 +535,11 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = getUser(ircline.prefix);
-            var myUser = User.get("~");
+            var client = User.get("~");
             var channel = Channel.get(ircline.args[0]);
             var reason = ircline.args[1];
 
-            if (user.nickName !== myUser.nickName)
+            if (user.nickName !== client.nickName)
             {
                 if (reason === null)
                 {
@@ -554,7 +554,7 @@ Services.factory("Parser",
 
                 // Check what channels we share with this user
                 for (var i = 0; i < user.channels.length; i++) {
-                    if (myUser.channels.indexOf(user.channels[i]) >= 0)
+                    if (client.channels.indexOf(user.channels[i]) >= 0)
                     {
                         // There is a common channel, so don't delete this user
                         return;
@@ -567,8 +567,8 @@ Services.factory("Parser",
 
             else 
             {
+                // Don't remove the channel from the user's list when he parts
                 channel.addLine("You left the room.");
-                user.removeChannel(ircline.args[0]);
             }
         });
         registerMessage(partMessage);

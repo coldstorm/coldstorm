@@ -12,8 +12,8 @@ function ($rootScope, User)
 
         query.addLine(line, user);
 
-        var myUser = User.get("~");
-        var re = new RegExp("\\b(" + myUser.nickName + ")\\b", "ig");
+        var client = User.get("~");
+        var re = new RegExp("\\b(" + client.nickName + ")\\b", "ig");
         var matches = message.line.match(re);
 
         if ($rootScope.blurred)

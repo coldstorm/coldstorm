@@ -16,8 +16,8 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
         channel.addLine(line, user);
 
-        var myUser = User.get("~");
-        var re = new RegExp("\\b(" + myUser.nickName + ")\\b", "ig");
+        var client = User.get("~");
+        var re = new RegExp("\\b(" + client.nickName + ")\\b", "ig");
         var matches = message.line.match(re);
 
         if ($rootScope.blurred)
@@ -116,6 +116,9 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
                     else
                     {
+                        // Remove the channel from the user's list
+                        var client = User.get("~");
+                        client.removeChannel(this.name);
                         // The user isn't connected so we can close it
                         delete registry[this.name];
                     }
