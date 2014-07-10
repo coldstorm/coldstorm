@@ -27,20 +27,20 @@ Services.factory("Parser",
             var match;
 
             //regexes
-            var prefix_re = /^:([^ ]+) +/;
-            var cmd_re = /^([^ ]+) */;
-            var arg_re = /(.*?)(?:^:|\s+:)(.*)/;
+            var prefixRe = /^:([^ ]+) +/;
+            var cmdRe = /^([^ ]+) */;
+            var argRe = /(.*?)(?:^:|\s+:)(.*)/;
 
             //match prefix
-            match = line.match(prefix_re);
+            match = line.match(prefixRe);
             if (match !== null)
             {
                 ircline.prefix = match[1];
-                line = line.replace(prefix_re, "");
+                line = line.replace(prefixRe, "");
             }
 
             //match cmd
-            match = line.match(cmd_re);
+            match = line.match(cmdRe);
             ircline.cmd = match[1];
             line = line.replace(/^[^ ]+ ?/, "");
 
@@ -50,7 +50,7 @@ Services.factory("Parser",
 
             if (line.search(/^:|\s+:/) != -1)
             {
-                match = line.match(arg_re);
+                match = line.match(argRe);
                 middle = match[1].replace(/\s+$/, "");
                 trailing = match[2];
             } 
@@ -85,8 +85,8 @@ Services.factory("Parser",
 
         function getUser(prefix)
         {
-            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
-            var matches = prefix.match(regexp);
+            var usermaskRe = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\.\-\~]+)\@([a-z0-9\.\-]+)/i;
+            var matches = prefix.match(usermaskRe);
 
             if (matches !== null)
             {
@@ -114,8 +114,8 @@ Services.factory("Parser",
         function parsePrefix(prefix)
         {
             var parsed = {};
-            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i; // Usermask regex
-            var matches = prefix.match(regexp);
+            var usermaskRe = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i;
+            var matches = prefix.match(usermaskRe);
 
             if (matches !== null)
             {
@@ -326,25 +326,29 @@ Services.factory("Parser",
             user.userName = ircline.args[2];
             user.hostName = ircline.args[3];
 
-            var awayflag = ircline.args[6][0];
+            var modifiers = ircline.args[6];
+            var modifierRe = /(G|H)(\*?)([~&@%+]*)/;
+            var modifierMatches = modifiers.match(modifierRe);
+            var awayflag = modifierMatches[1];
+            var ranks = modifierMatches[3];
 
             if (awayflag === "G")
             {
                 Connection.send("WHOIS " + user.nickName);
-            } else if (awayflag === "H")
+            } 
+
+            else if (awayflag === "H")
             {
                 user.awayMsg = null;
             }
 
-            var rank = ircline.args[6].charAt(ircline.args[6].length - 1);
-
-            if (rank !== "" && ["+", "%", "@", "&", "~"].indexOf(rank) != -1)
+            for (var rank in ranks)
             {
-                user.addRank(channel, rank);
+                user.addRank(channel, ranks[rank]);
             }
 
-            var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = user.userName.match(colorflag_regexp);
+            var colorflagRe = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
+            var matches = user.userName.match(colorflagRe);
 
             if (matches !== null)
             {
@@ -380,8 +384,8 @@ Services.factory("Parser",
             user.userName = ircline.args[2];
             user.hostName = ircline.args[3];
 
-            var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
-            var matches = user.userName.match(colorflag_regexp);
+            var colorflagRe = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
+            var matches = user.userName.match(colorflagRe);
 
             if (matches !== null)
             {
