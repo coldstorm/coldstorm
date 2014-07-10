@@ -516,6 +516,28 @@ div.inner {
         color: #ff921e;
     }
 
+    .tab.active.disconnected {
+        background-color: #24272e;
+        color: #4e4f51;
+        height: 18px;        
+    }
+
+    .tab.disconnected {
+        background-color: #202226;
+        border: 1px solid #35373c;
+        border-top: 1px solid #35373c;
+        border-left: 1px solid #35373c;
+        border-right: 1px solid #35373c;
+        border-bottom: none;
+        color: #4e4f51;
+        height: 17px;
+        display: inline-block;
+        margin-right: 2px;
+        margin-top: 3px;
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
 .motd {
     color: #8c9096;
     height: 15px;

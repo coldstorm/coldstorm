@@ -8,7 +8,7 @@ Services.factory("Parser",
 
         function Message(check, process)
         {
-            message = new Object();
+            message = {};
             message.check = check;
             message.process = process;
 
@@ -32,7 +32,8 @@ Services.factory("Parser",
             var arg_re = /(.*?)(?:^:|\s+:)(.*)/;
 
             //match prefix
-            if (match = line.match(prefix_re))
+            match = line.match(prefix_re);
+            if (match !== null)
             {
                 ircline.prefix = match[1];
                 line = line.replace(prefix_re, "");
@@ -113,7 +114,7 @@ Services.factory("Parser",
         function parsePrefix(prefix)
         {
             var parsed = {};
-            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i // UserMask regex
+            var regexp = /^([a-z0-9_\-\[\]\\^{}|`]+)!([a-z0-9_\-\~]+)\@([a-z0-9\.\-]+)/i; // Usermask regex
             var matches = prefix.match(regexp);
 
             if (matches !== null)
@@ -152,11 +153,11 @@ Services.factory("Parser",
 
         var _serverMessage = new Message(function (ircline)
         {
-            return ircline.prefix === "irc.frogbox.es"
-                && serverMessageBlacklist.indexOf(ircline.cmd) < 0;
+            return ircline.prefix === "irc.frogbox.es" && serverMessageBlacklist.indexOf(ircline.cmd) < 0;
         }, function (ircline)
         {
-            Server.addLine("[" + ircline.cmd + "] " + ircline.args.slice(1).join(" "));
+            var server = Server.get("Server");
+            server.addLine("[" + ircline.cmd + "] " + ircline.args.slice(1).join(" "));
         });
         registerMessage(_serverMessage);
 
@@ -211,8 +212,9 @@ Services.factory("Parser",
 
             if (ircline.prefix.indexOf("services@frogbox.es") > -1)
             {
-                var service = getUser(ircline.prefix)
-                Server.addLine(line, service);
+                var service = getUser(ircline.prefix);
+                var server = Server.get("Server");
+                server.addLine(line, service);
                 return;
             }
 
@@ -283,7 +285,7 @@ Services.factory("Parser",
         {
             var channel = Channel.get(ircline.args[2]);
             var users = ircline.args[3].split(" ");
-            users = users.filter(function (n) { return n });
+            users = users.filter(function (n) { return n; });
 
             for (var i = 0; i < users.length; i++)
             {
@@ -300,7 +302,7 @@ Services.factory("Parser",
                         nick = users[i].slice(j, users[i].length);
                         break;
                     }
-                };
+                }
 
                 var user = User.get(nick);
                 user.ranks[channel] = ranks;
@@ -336,7 +338,7 @@ Services.factory("Parser",
 
             var rank = ircline.args[6].charAt(ircline.args[6].length - 1);
 
-            if (rank != "" && ["+", "%", "@", "&", "~"].indexOf(rank) != -1)
+            if (rank !== "" && ["+", "%", "@", "&", "~"].indexOf(rank) != -1)
             {
                 user.addRank(channel, rank);
             }
@@ -344,7 +346,7 @@ Services.factory("Parser",
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
             var matches = user.userName.match(colorflag_regexp);
 
-            if (matches != null)
+            if (matches !== null)
             {
                 $rootScope.$apply(function ()
                 {
@@ -381,7 +383,7 @@ Services.factory("Parser",
             var colorflag_regexp = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
             var matches = user.userName.match(colorflag_regexp);
 
-            if (matches != null)
+            if (matches !== null)
             {
                 $rootScope.$apply(function ()
                 {
@@ -468,7 +470,8 @@ Services.factory("Parser",
             return ircline.cmd === "305";
         }, function (ircline)
         {
-            Server.addLine("You are no longer marked as being away.");
+            var server = Server.get("Server");
+            server.addLine("You are no longer marked as being away.");
         });
         registerMessage(rpl_unawayMessage);
 
@@ -477,7 +480,8 @@ Services.factory("Parser",
             return ircline.cmd === "306";
         }, function (ircline)
         {
-            Server.addLine("You have been marked as being away.");
+            var server = Server.get("Server");
+            server.addLine("You have been marked as being away.");
         });
         registerMessage(rpl_nowawayMessage);
 
@@ -531,13 +535,13 @@ Services.factory("Parser",
         }, function (ircline)
         {
             var user = getUser(ircline.prefix);
-            var myUser = User.get("~");
+            var client = User.get("~");
             var channel = Channel.get(ircline.args[0]);
             var reason = ircline.args[1];
 
-            if (user.nickName !== myUser.nickName)
+            if (user.nickName !== client.nickName)
             {
-                if (reason == null)
+                if (reason === null)
                 {
                     channel.addLine(user.nickName + " left the room.");
                 } else
@@ -550,7 +554,7 @@ Services.factory("Parser",
 
                 // Check what channels we share with this user
                 for (var i = 0; i < user.channels.length; i++) {
-                    if (myUser.channels.indexOf(user.channels[i]) >= 0)
+                    if (client.channels.indexOf(user.channels[i]) >= 0)
                     {
                         // There is a common channel, so don't delete this user
                         return;
@@ -563,7 +567,8 @@ Services.factory("Parser",
 
             else 
             {
-                user.removeChannel(ircline.args[0]);
+                // Don't remove the channel from the user's list when he parts
+                channel.addLine("You left the room.");
             }
         });
         registerMessage(partMessage);
@@ -581,7 +586,7 @@ Services.factory("Parser",
             {
                 if (channels[i].users.indexOf(user) != -1)
                 {
-                    if (reason == null)
+                    if (reason === null)
                     {
                         channels[i].addLine(user.nickName + " quit.");
                     } else
@@ -604,9 +609,9 @@ Services.factory("Parser",
         {
             var channel = Channel.get(ircline.args[1]);
 
-            if (channel != null)
+            if (channel !== null)
             {
-                $rootScope.$apply(function () { channel.topic = ircline.args[2] });
+                $rootScope.$apply(function () { channel.topic = ircline.args[2]; });
             }
         });
         registerMessage(rpl_topicMessage);
@@ -669,24 +674,24 @@ Services.factory("Parser",
 
             if (target.nickName === User.get("~").nickName)
             {
-                if (reason == null)
+                if (reason === null)
                 {
                     channel.addLine("You were kicked by " + kicker.nickName + ".");
                 } else
                 {
                     channel.addLine("You were kicked by " + kicker.nickName + " (" + reason + ").");
                 }
-                $rootScope.$apply(function () { channel.users.length = 0 });
+                $rootScope.$apply(function () { channel.users.length = 0; });
             } else
             {
-                if (reason == null)
+                if (reason === null)
                 {
                     channel.addLine(target.nickName + " was kicked by " + kicker.nickName + ".");
                 } else
                 {
                     channel.addLine(target.nickName + " was kicked by " + kicker.nickName + " (" + reason + ").");
                 }
-                $rootScope.$apply(function () { channel.users.splice(channel.users.indexOf(target), 1) });
+                $rootScope.$apply(function () { channel.users.splice(channel.users.indexOf(target), 1); });
             }
         });
         registerMessage(kickMessage);
@@ -763,7 +768,7 @@ Services.factory("Parser",
                                 userTarget.removeRank(target, '%');
                             }
                             paramIndex++;
-                            break
+                            break;
                         case 'o':
                             currMode = "op";
                             userTarget = User.get(parameters[paramIndex]);
@@ -840,7 +845,8 @@ Services.factory("Parser",
                 channel.addLine("Ban on \\u" + mask + "\\r set on " + time.toLocaleString() + " by \\b" + setter + "\\r.");
             } else
             {
-                Server.addLine(ircline.args[1] + " ban on " + mask + " set on " + time.toLocaleString() + " by \\b" + setter + "\\r.");
+                var server = Server.get("Server");
+                server.addLine(ircline.args[1] + " ban on " + mask + " set on " + time.toLocaleString() + " by \\b" + setter + "\\r.");
             }
         });
         registerMessage(rpl_banlistMessage);
@@ -881,7 +887,7 @@ Services.factory("Parser",
                 User.move(user.nickName, newNickName);
 
                 user.nickName = newNickName;
-            })
+            });
         });
         registerMessage(nickMessage);
 
@@ -957,7 +963,7 @@ Services.factory("Parser",
             Connection.send("JOIN " + channel.name);
         });
 
-        $rootScope.$on("channel.close", function (evt, leave)
+        $rootScope.$on("channel.part", function (evt, leave)
         {
             if (leave.reason)
                 Connection.send("PART " + leave.channel.name + " :" + leave.reason);

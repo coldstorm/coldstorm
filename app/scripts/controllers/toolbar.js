@@ -13,13 +13,13 @@ function ($scope, $rootScope, Connection, User, Settings, AppNotification, Chann
     $scope.dismissNotification = function ()
     {
         AppNotification.dismiss();
-    }
+    };
 
     $scope.setAway = function ()
     {
         if ($scope.user.awayMsg)
         {
-            Connection.send("AWAY")
+            Connection.send("AWAY");
             $scope.user.awayMsg = "";
         } 
 
@@ -37,19 +37,19 @@ function ($scope, $rootScope, Connection, User, Settings, AppNotification, Chann
                 $scope.user.awayMsg = "afk";
             }
         }
-    }
+    };
 
     $scope.rejoin = function (tab)
     {
         var channel = Channel.get(tab.name);
-        channel.leave("rejoining");
+        if (channel.connected) channel.close("rejoining");
         channel.join();
-    }
+    };
 
     $scope.clearLines = function (tab)
     {
         tab.clear();
-    }
+    };
 
     $rootScope.$watch(function (rootScope)
     {
@@ -58,4 +58,4 @@ function ($scope, $rootScope, Connection, User, Settings, AppNotification, Chann
         rootScope.settings = $scope.settings;
         $scope.appNotification = rootScope.appNotification;
     });
-}])
+}]);

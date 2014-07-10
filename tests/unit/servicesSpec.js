@@ -68,11 +68,25 @@ describe("Coldstorm services", function ()
                 expect(channel.users[0].nickName).toBe("testUser");
             }]));
 
-        it("should delete the channel object when calling leave()", function ()
+        it("should leave the channel when calling close() once", function ()
         {
             var channel = $Channel.register("test");
+            channel.connected = true;
 
-            channel.leave();
+            channel.close();
+
+            channel = $Channel.get("test");
+
+            expect(channel.connected).toBe(false);
+        });
+
+        it("should close the channel when calling close() after leaving", function ()
+        {
+            var channel = $Channel.register("test");
+            channel.connected = true;
+
+            channel.close(); // leaves the channel
+            channel.close(); // closes the channel
 
             channel = $Channel.get("test");
 
@@ -177,39 +191,42 @@ describe("Coldstorm services", function ()
     describe("Server", function ()
     {
         var $Server;
+        var server;
         beforeEach(inject(["Server", function (Server)
         {
             $Server = Server;
+            $Server.register("Server");
+            server = $Server.get("Server");
         }]));
 
         it("should add a line when calling addLine(message)", function ()
         {
-            $Server.addLine("test");
+            server.addLine("test");
 
-            expect($Server.lines.length).toBe(1);
-            expect($Server.lines[0].message).toBe("test");
-            expect($Server.lines[0].systemMessage).toBe(true);
+            expect(server.lines.length).toBe(1);
+            expect(server.lines[0].message).toBe("test");
+            expect(server.lines[0].systemMessage).toBe(true);
         });
 
         it("should add a line with an author when calling addLine(message, author)",
             inject(["User", function (User)
             {
-                $Server.addLine("test", User.register("testAuthor"));
+                server.addLine("test", User.register("testAuthor"));
 
-                expect($Server.lines[0].author.nickName).toBe("testAuthor");
-                expect($Server.lines[0].message).toBe("test");
-                expect($Server.lines[0].systemMessage).toBe(false);
+                expect(server.lines[0].author.nickName).toBe("testAuthor");
+                expect(server.lines[0].message).toBe("test");
+                expect(server.lines[0].systemMessage).toBe(false);
             }]));
 
         it("should clear the lines when calling clear()", function ()
         {
-            $Server.addLine("test");
+            server.addLine("test");
 
-            expect($Server.lines.length).toBe(1);
+            expect(server.lines.length).toBe(1);
 
-            $Server.clear();
+            server.clear();
 
-            expect($Server.lines.length).toBe(0);
+            expect(server.lines.length).toBe(0);
         });
     });
 

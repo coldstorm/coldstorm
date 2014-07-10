@@ -3,11 +3,11 @@ function ($scope, $rootScope, $location, User, Query, Connection)
 {
     $scope.getRank = function ()
     {
-        var myUser = User.get("~");
+        var client = User.get("~");
 
-        if (myUser.ranks[$scope.channel.name])
+        if (client.ranks[$scope.channel.name])
         {
-            switch (myUser.ranks[$scope.channel.name][0])
+            switch (client.ranks[$scope.channel.name][0])
             {
                 case '@': return 2;
                     break;
@@ -18,7 +18,7 @@ function ($scope, $rootScope, $location, User, Query, Connection)
                     break;
             }
         }
-    }
+    };
 
     $scope.query = function (user)
     {
@@ -33,8 +33,8 @@ function ($scope, $rootScope, $location, User, Query, Connection)
 
     $scope.strip = function (user)
     {
-        Connection.send("MODE " + $scope.channel.name + " -vho "
-            + user.nickName + " " + user.nickName + " " + user.nickName);
+        Connection.send("MODE " + $scope.channel.name + " -vho " + 
+            user.nickName + " " + user.nickName + " " + user.nickName);
     };
 
     $scope.kick = function (user)
