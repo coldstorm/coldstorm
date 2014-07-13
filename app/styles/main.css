@@ -76,7 +76,7 @@ footer .news {
 }
 
 main {
-    height: 100%;
+    height: calc(100% - 35px);
 }
 
 input {
@@ -329,8 +329,7 @@ header {
     border: 1px solid #2a2e36;
     border-radius: 3px;
     border-top-left-radius: 0;
-    height: 90%;
-    height: calc(100% - 21px - 35px - 4px);
+    height: calc(100% - 22px - 4px);
     margin-bottom: 4px;
     overflow: auto;
     overflow-y: scroll;
@@ -423,8 +422,7 @@ header {
     border: 1px solid #2a2e36;
     border-radius: 3px;
     float: right;
-    height: 90%;
-    height: calc(100% - 34px);
+    height: 100%;
     margin-left: 4px;
     width: 15%;
     word-wrap: break-word;
@@ -494,6 +492,7 @@ div.inner {
     border-bottom: none;
     color: #8c9096;
     height: 17px;
+    line-height: 17px;
     display: inline-block;
     margin-right: 2px;
     margin-top: 3px;
@@ -863,17 +862,59 @@ span.link {
         font-size: 15px;
     }
 
-    .chat {
-        margin-top: 5%;
-    }
-
     .login {
         width: 60%;
         margin-left: 20%;
     }
 
+    .chat {
+        margin-top: 5%;
+    }
+
+    header {
+        height: 50px;
+    }
+
+    main {
+        height: calc(100% - 50px);
+    }
+
+    .tabs {
+        height: 35px;
+    }
+
+    .tab {
+        height: 25px;
+        line-height: 25px;
+        margin-top: 10px;
+    }
+
+    .tab.active {
+        height: 26px;
+        line-height: 25px;
+        margin-top: 10px;
+    }
+
+    .tab.active.disconnected {
+        height: 26px;
+        line-height: 25px;
+        margin-top: 10px;
+    }
+
+    .tab.disconnected {
+        height: 25px;
+        line-height: 25px;
+        margin-top: 10px;
+    }
+
+    .lines {
+        height: calc(100% - 30px - 4px);
+    }
+
     .chat-input {
+        height: 30px;
         width: calc(70% - 4px);
+        font-size: 15px;
     }
 
     .userlist {
