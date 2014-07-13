@@ -854,6 +854,41 @@ span.link {
     cursor: pointer;
 }
 
+@media (max-width: 800px) {
+    body {
+        font-size: 12px;
+    }
+
+    input {
+        font-size: 15px;
+    }
+
+    .chat {
+        margin-top: 5%;
+    }
+
+    .login {
+        width: 60%;
+        margin-left: 20%;
+    }
+
+    .chat-input {
+        width: calc(70% - 4px);
+    }
+
+    .userlist {
+        width: 30%
+    }
+
+    .toolbar {
+        display: none;
+    }
+
+    .icons {
+        display: none;
+    }
+}
+
 @media (max-width: 1100px) {
     .userlist {
         width: 100px;
