@@ -1,6 +1,8 @@
 <form class="chat-input" ng-submit="submit()">
     <input id="chat-input" type="text" class="chat-input" ng-model="input.text" />
-    <a ng-click="format('\\b')"><i class="icon-bold"></i></a>
-    <a ng-click="format('\\u')"><i class="icon-underline"></i></a>
-    <a ng-click="format('\\i')"><i class="icon-italic"></i></a>
+    <span class="icons">
+        <a ng-click="format('\\b')"><i class="icon-bold"></i></a>
+        <a ng-click="format('\\u')"><i class="icon-underline"></i></a>
+        <a ng-click="format('\\i')"><i class="icon-italic"></i></a>
+    </span>
 </form>
