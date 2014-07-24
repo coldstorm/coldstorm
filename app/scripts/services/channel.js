@@ -91,11 +91,23 @@ Services.factory("Channel", ["$rootScope", "User", "Notifications", function ($r
 
                     return this;
                 },
-                addUser: function (user)
+                addUser: function (nickName)
                 {
-                    this.users.push(user);
+                    if (this.users.indexOf(nickName) === -1)
+                    {
+                        this.users.push(nickName);
+                    }
 
                     return this;
+                },
+                removeUser: function (nickName)
+                {
+                    var index = this.users.indexOf(nickName);
+
+                    if (index !== -1) 
+                    {
+                        this.users.splice(index, 1);
+                    }
                 },
                 join: function ()
                 {

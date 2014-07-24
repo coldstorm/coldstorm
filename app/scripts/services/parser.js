@@ -289,7 +289,7 @@ Services.factory("Parser",
 
             for (var i = 0; i < users.length; i++)
             {
-                var ranks, nick = "";
+                var ranks = "", nick = "";
                 for (var j = 0; j < users[i].length; j++) 
                 {
                     if (["+", "%", "@", "&", "~"].indexOf(users[i][j]) > -1)
@@ -305,9 +305,9 @@ Services.factory("Parser",
                 }
 
                 var user = User.get(nick);
-                user.ranks[channel] = ranks;
+                user.ranks[channel.name] = ranks;
 
-                channel.addUser(user);
+                channel.addUser(user.nickName);
                 user.addChannel(channel);
             }
 
@@ -344,7 +344,7 @@ Services.factory("Parser",
 
             for (var rank in ranks)
             {
-                user.addRank(channel, ranks[rank]);
+                user.addRank(channel.name, ranks[rank]);
             }
 
             var colorflagRe = /^([0-9a-f]{3}|[0-9a-f]{6})([a-z]{2})$/i;
@@ -429,7 +429,7 @@ Services.factory("Parser",
 
                     if (channel)
                     {
-                        user.addRank(channel, rank);
+                        user.addRank(channel.name, rank);
                     }
                 } 
 
@@ -524,7 +524,7 @@ Services.factory("Parser",
             else
             {
                 channel.addLine(user.nickName + " joined the room.");
-                channel.addUser(user);
+                channel.addUser(user.nickName);
             }
 
             user.addChannel(channel);
@@ -552,7 +552,7 @@ Services.factory("Parser",
                 {
                     channel.addLine(user.nickName + " left the room (" + reason + ").");
                 }
-                channel.users.splice(channel.users.indexOf(user), 1);
+                channel.users.removeUser(user.nickName);
 
                 user.removeChannel(channel.name);
 
@@ -695,7 +695,7 @@ Services.factory("Parser",
                 {
                     channel.addLine(target.nickName + " was kicked by " + kicker.nickName + " (" + reason + ").");
                 }
-                $rootScope.$apply(function () { channel.users.splice(channel.users.indexOf(target), 1); });
+                $rootScope.$apply(function () { channel.users.removeUser(target.nickName); });
             }
         });
         registerMessage(kickMessage);
@@ -754,10 +754,10 @@ Services.factory("Parser",
                             userTarget = User.get(parameters[paramIndex]);
                             if (action == "set")
                             {
-                                userTarget.addRank(target, '+');
+                                userTarget.addRank(target.name, '+');
                             } else if (action == "removed")
                             {
-                                userTarget.removeRank(target, '+');
+                                userTarget.removeRank(target.name, '+');
                             }
                             paramIndex++;
                             break;
@@ -766,10 +766,10 @@ Services.factory("Parser",
                             userTarget = User.get(parameters[paramIndex]);
                             if (action == "set")
                             {
-                                userTarget.addRank(target, '%');
+                                userTarget.addRank(target.name, '%');
                             } else if (action == "removed")
                             {
-                                userTarget.removeRank(target, '%');
+                                userTarget.removeRank(target.name, '%');
                             }
                             paramIndex++;
                             break;
@@ -778,10 +778,10 @@ Services.factory("Parser",
                             userTarget = User.get(parameters[paramIndex]);
                             if (action == "set")
                             {
-                                userTarget.addRank(target, '@');
+                                userTarget.addRank(target.name, '@');
                             } else if (action == "removed")
                             {
-                                userTarget.removeRank(target, '@');
+                                userTarget.removeRank(target.name, '@');
                             }
                             paramIndex++;
                             break;
@@ -790,10 +790,10 @@ Services.factory("Parser",
                             userTarget = User.get(parameters[paramIndex]);
                             if (action == "set")
                             {
-                                userTarget.addRank(target, '&');
+                                userTarget.addRank(target.name, '&');
                             } else if (action == "removed")
                             {
-                                userTarget.removeRank(target, '&');
+                                userTarget.removeRank(target.name, '&');
                             }
                             paramIndex++;
                             break;
@@ -802,10 +802,10 @@ Services.factory("Parser",
                             userTarget = User.get(parameters[paramIndex]);
                             if (action == "set")
                             {
-                                userTarget.addRank(target, '~');
+                                userTarget.addRank(target.name, '~');
                             } else if (action == "removed")
                             {
-                                userTarget.removeRank(target, '~');
+                                userTarget.removeRank(target.name, '~');
                             }
                             paramIndex++;
                             break;
@@ -863,15 +863,13 @@ Services.factory("Parser",
             var user = getUser(ircline.prefix);
             var newNickName = ircline.args[0];
 
-            //console.log(Channel.all());
-
             var channels = Channel.all();
 
             for (var i = 0; i < channels.length; i++)
             {
                 var channel = channels[i];
 
-                if ($.inArray(user, channel.users) === -1) {
+                if ($.inArray(user.nickName, channel.users) === -1) {
                     continue;
                 }
 
@@ -888,7 +886,7 @@ Services.factory("Parser",
 
             $rootScope.$apply(function ()
             {
-                User.move(user.nickName, newNickName);
+                User.set(user.nickName, newNickName);
 
                 user.nickName = newNickName;
             });

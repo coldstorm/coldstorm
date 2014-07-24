@@ -1,9 +1,11 @@
-Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
+Controllers.controller("UserCtrl", ["$scope", "$log", "User", function ($scope, $log, User)
 {
     $scope.$on("$destroy", function (event) {
         $scope.user = null;
         $scope.selectedUser = null;
     });
+
+    $scope.user = User.get($scope.user);
 
     $scope.toggleOptions = function ()
     {
@@ -14,12 +16,14 @@ Controllers.controller("UserCtrl", ["$scope", "$log", function ($scope, $log)
         {
             $scope.selectedUser = $scope.user;
         }
-    }
+    };
 
     $scope.$watch(function ()
     {
         return $scope.user.ranks[$scope.channel.name];
-    }, function ()
+    }, 
+
+    function ()
     {
         if ($scope.user != null &&
             $scope.user.ranks[$scope.channel.name] != null)

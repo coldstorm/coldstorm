@@ -20,7 +20,7 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                 userName: null,
                 hostName: null,
                 awayMsg: null,
-                ranks: {},
+                ranks: [],
                 channels: [],
                 addChannel: function (channel)
                 {
@@ -40,14 +40,14 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     }
                 },
 
-                addRank: function (channel, rank)
+                addRank: function (channelName, rank)
                 {
-                    if (channel.name in this.ranks)
+                    if (channelName in this.ranks)
                     {
-                        if (this.ranks[channel.name].indexOf(rank) == -1 &&
+                        if (this.ranks[channelName].indexOf(rank) == -1 &&
                             "+%@&~".indexOf(rank) != -1)
                         {
-                            this.ranks[channel.name] += rank;
+                            this.ranks[channelName] += rank;
                         }
                     } 
 
@@ -55,14 +55,14 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     {
                         if ("+%@&~".indexOf(rank) != -1)
                         {
-                            this.ranks[channel.name] = rank;
+                            this.ranks[channelName] = rank;
                         }
                     }
 
                     var tempRanks = [];
-                    for (var i = 0; i < this.ranks[channel.name].length; i++)
+                    for (var i = 0; i < this.ranks[channelName].length; i++)
                     {
-                        tempRanks.push(this.ranks[channel.name][i]);
+                        tempRanks.push(this.ranks[channelName][i]);
                     }
 
                     tempRanks.sort(function (a, b)
@@ -106,15 +106,15 @@ Services.factory("User", ["$rootScope", function ($rootScope)
                     var user = this;
                     $rootScope.$apply(function ()
                     {
-                        user.ranks[channel.name] = tempRanks.join("");
+                        user.ranks[channelName] = tempRanks.join("");
                     });
                 },
 
-                removeRank: function (channel, rank)
+                removeRank: function (channelName, rank)
                 {
-                    if (this.ranks[channel.name].indexOf(rank) != -1 && "+%@&~".indexOf(rank) != -1)
+                    if (this.ranks[channelName].indexOf(rank) != -1 && "+%@&~".indexOf(rank) != -1)
                     {
-                        this.ranks[channel.name] = this.ranks[channel.name].replace(rank, '');
+                        this.ranks[channelName] = this.ranks[channelName].replace(rank, '');
                     }
                 }, 
 
@@ -137,17 +137,25 @@ Services.factory("User", ["$rootScope", function ($rootScope)
             if (name in registry)
             {
                 return registry[name];
-            } else
+            } 
+
+            else
             {
                 return this.register(name);
             }
         },
 
-        move: function (oldName, newName)
+        set: function (oldName, newName)
         {
             if (oldName in registry && oldName !== newName)
             {
                 registry[newName] = registry[oldName];
+
+                for (var channel in registry[newName].channels)
+                {
+                    channel.users[newName] = channel.users[oldName];
+                    delete channel.users[oldName];
+                }
 
                 delete registry[oldName];
             }

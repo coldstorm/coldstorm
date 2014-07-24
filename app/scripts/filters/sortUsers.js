@@ -1,10 +1,12 @@
-Filters.filter("sortUsers", [function () {
+Filters.filter("sortUsers", ["User", function (User) {
     return function (input, channel)
     {
         if (input)
         {
             var users = input.sort(function (a, b)
             {
+                a = User.get(a);
+                b = User.get(b);
                 var ranks = ["", "+", "%", "@", "&", "~"];
 
                 if (a.ranks[channel.name] === undefined)

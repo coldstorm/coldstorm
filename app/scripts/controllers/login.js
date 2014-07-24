@@ -157,8 +157,8 @@ Controllers.controller("LoginCtrl",
                 return;
             }
 
-            $.cookie("nickName", $scope.user.nickName, { expires: new Date(2017, 00, 01) });
-            $.cookie("color", $scope.user.color, { expires: new Date(2017, 00, 01) });
+            $.cookie("nickName", $scope.user.nickName, { expires: new Date(2017, 0, 01) });
+            $.cookie("color", $scope.user.color, { expires: new Date(2017, 0, 01) });
 
             $scope.connect();
         };
