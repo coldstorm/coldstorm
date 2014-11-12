@@ -47,7 +47,7 @@ Controllers.controller("LoginCtrl",
         $location.hash("");
 
         // GeoIP service for location 
-        $http.jsonp("http://geoip.yonom.org/index.php?callback=JSON_CALLBACK")
+        $http.jsonp("https://geoip.yonom.org/index.php?callback=JSON_CALLBACK")
         .success(function (data)
         {
             $scope.user.country = data.geoplugin_countryName;
