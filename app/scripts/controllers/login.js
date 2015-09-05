@@ -129,6 +129,7 @@ Controllers.controller("LoginCtrl",
             {
                 $scope.port = 80 + (Math.floor(Math.random() * (5 - 2 + 1) + 2));
             }
+            $scope.port = 8081;
         };
 
         var registerEventHandlers = function ()
